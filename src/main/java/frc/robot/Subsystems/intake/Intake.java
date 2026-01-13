@@ -3,11 +3,13 @@ package frc.robot.Subsystems.intake;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Subsystems.intake.IntakeIO.IntakeIOInputs;
 import org.littletonrobotics.junction.Logger;
 
 public class Intake extends SubsystemBase {
   private IntakeIO io;
   private IntakeIOInputsAutoLogged inputs = new IntakeIOInputsAutoLogged();
+  private IntakeIOInputs IntakeIOInputsAutoLogged = new IntakeIOInputsAutoLogged();
   private double intakeSpeed = 0.0;
   public boolean isStoring = false;
 
