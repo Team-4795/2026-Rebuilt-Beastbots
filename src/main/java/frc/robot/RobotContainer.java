@@ -5,8 +5,13 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Subsystems.Shooter.Shooter;
+import frc.robot.Subsystems.Shooter.ShooterConstants;
+import frc.robot.Subsystems.Shooter.ShooterIOReal;
+import frc.robot.Subsystems.Shooter.ShooterIOSim;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -16,13 +21,25 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-
+  private Shooter shooter;
   // Controllers
-
+  private final CommandXboxController driverController = new CommandXboxController(0);
+  private final CommandXboxController operatorController = new CommandXboxController(1);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
+
+    switch (Constants.currentMode){
+      case REAL:
+        shooter = Shooter.Initialize(new ShooterIOReal());
+      case SIM:
+        shooter = Shooter.Initialize(new ShooterIOSim());
+      default:
+        shooter = Shooter.Initialize(new ShooterIOSim());
+    }
+
+
   }
 
   /**
@@ -34,7 +51,10 @@ public class RobotContainer {
    * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
-  private void configureBindings() {}
+  private void configureBindings() {
+    driverController.rightBumper().onTrue(Commands.run(() -> shooter.setIntakeVoltage(ShooterConstants.shooterVoltage),shooter));
+    shooter.setDefaultCommand(Commands.run(() -> shooter.setIntakeVoltage(0), shooter));
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
