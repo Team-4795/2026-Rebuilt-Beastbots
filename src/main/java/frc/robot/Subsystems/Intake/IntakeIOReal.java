@@ -7,8 +7,6 @@ import com.revrobotics.spark.SparkLowLevel;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
-
-import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -20,21 +18,18 @@ public class IntakeIOReal implements IntakeIO {
   private RelativeEncoder encoder = motor.getEncoder();
   private final SparkMaxConfig config = new SparkMaxConfig();
 
-  private SimpleMotorFeedforward ffmodel = new SimpleMotorFeedforward(
-    IntakeConstants.KS,
-    IntakeConstants.KG,
-    IntakeConstants.KV
-  );
-  private final TrapezoidProfile.Constraints constraints = new TrapezoidProfile.Constraints(
-    IntakeConstants.MAX_VELOCITY, 
-    IntakeConstants.MAX_ACCELERATION
-  );
-  private PIDController controller = new PIDController(KP.get(), KI.get(), KD.get());
+  private SimpleMotorFeedforward ffmodel =
+      new SimpleMotorFeedforward(IntakeConstants.KS, IntakeConstants.KG, IntakeConstants.KV);
+  private final TrapezoidProfile.Constraints constraints =
+      new TrapezoidProfile.Constraints(
+          IntakeConstants.MAX_VELOCITY, IntakeConstants.MAX_ACCELERATION);
+  private PIDController controller =
+      new PIDController(IntakeConstants.KP, IntakeConstants.KI, IntakeConstants.KD);
   private final TrapezoidProfile profile = new TrapezoidProfile(constraints);
   private TrapezoidProfile.State setpoint = new TrapezoidProfile.State();
   private TrapezoidProfile.State goal = new TrapezoidProfile.State();
-  public double pidVolts; 
-  public double feedForwardVolts; 
+  public double pidVolts;
+  public double feedForwardVolts;
 
   public IntakeIOReal() {
     config.idleMode(IdleMode.kCoast);
@@ -50,8 +45,16 @@ public class IntakeIOReal implements IntakeIO {
   }
 
   @Override
-  public void setGoal(double setpoint) {
-    motor.set(pid.calculate(encoder.getPosition(), setpoint));
+  public void setGoal(double velocity) {
+    goal = new TrapezoidProfile.State(velocity,0);
+    setpoint = new TrapezoidProfile.State(encoder.getPosition(),encoder.getVelocity());
+  } 
+
+  public void updateMotionProfile(){
+      setpoint = profile.calculate(0.02, setpoint, goal);
+
+      motor.setVoltage(controller.calculate(encoder.getVelocity(), setpoint.velocity));
+
   }
 
   @Override
