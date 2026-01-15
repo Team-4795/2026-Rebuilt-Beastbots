@@ -1,11 +1,10 @@
-package frc.robot.Subsystems.Shooter;
+package frc.robot.Subsystems.Intake;
 
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
-import frc.robot.Subsystems.Shooter.ShooterIO.ShooterIOInputs;
 
-public class ShooterIOSim implements ShooterIO {
+public class IntakeIOSim implements IntakeIO {
   private DCMotorSim outTakeMotor =
       new DCMotorSim(
           LinearSystemId.createDCMotorSystem(DCMotor.getKrakenX60(1), 0.001, 2),
@@ -19,7 +18,7 @@ public class ShooterIOSim implements ShooterIO {
   }
 
   @Override
-  public void updateInputs(ShooterIOInputs inputs) {
+  public void updateInputs(IntakeIOInputs inputs) {
     inputs.position = outTakeMotor.getAngularPositionRad();
     inputs.voltage = currentVoltage;
     inputs.velocity = outTakeMotor.getAngularVelocityRPM();

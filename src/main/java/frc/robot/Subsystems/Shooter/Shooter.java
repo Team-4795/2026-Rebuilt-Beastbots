@@ -1,7 +1,6 @@
 package frc.robot.Subsystems.Shooter;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Subsystems.Shooter.ShooterIO.ShooterIOInputs;
 import org.littletonrobotics.junction.Logger;
 
 public class Shooter extends SubsystemBase {
