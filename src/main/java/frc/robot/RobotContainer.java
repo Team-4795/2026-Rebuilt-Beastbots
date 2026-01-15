@@ -30,7 +30,7 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureBindings();
 
-    switch (Constants.currentMode){
+    switch (Constants.currentMode) {
       case REAL:
         shooter = Shooter.Initialize(new ShooterIOReal());
       case SIM:
@@ -38,8 +38,6 @@ public class RobotContainer {
       default:
         shooter = Shooter.Initialize(new ShooterIOSim());
     }
-
-
   }
 
   /**
@@ -52,7 +50,10 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    driverController.rightBumper().onTrue(Commands.run(() -> shooter.setIntakeVoltage(ShooterConstants.shooterVoltage),shooter));
+    driverController
+        .rightBumper()
+        .onTrue(
+            Commands.run(() -> shooter.setIntakeVoltage(ShooterConstants.shooterVoltage), shooter));
     shooter.setDefaultCommand(Commands.run(() -> shooter.setIntakeVoltage(0), shooter));
   }
 
