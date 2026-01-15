@@ -12,5 +12,7 @@ public interface IntakeIO {
 
   public default void setVoltage(double voltage) {}
 
+  public default void setGoal(double speed) {}
+
   public default void updateInputs(IntakeIOInputs inputs) {}
 }
