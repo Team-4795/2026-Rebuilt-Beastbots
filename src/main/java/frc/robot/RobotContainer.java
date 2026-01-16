@@ -13,6 +13,10 @@ import frc.robot.Subsystems.Shooter.ShooterConstants;
 import frc.robot.Subsystems.Shooter.ShooterIOReal;
 import frc.robot.Subsystems.Shooter.ShooterIOSim;
 
+import frc.robot.Subsystems.Intake.Intake;
+import frc.robot.Subsystems.Intake.IntakeIOReal;
+import frc.robot.Subsystems.Intake.IntakeIOSim;
+
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -22,6 +26,7 @@ import frc.robot.Subsystems.Shooter.ShooterIOSim;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private Shooter shooter;
+  private Intake intake;
   // Controllers
   private final CommandXboxController driverController = new CommandXboxController(0);
   private final CommandXboxController operatorController = new CommandXboxController(1);
@@ -33,10 +38,13 @@ public class RobotContainer {
     switch (Constants.currentMode) {
       case REAL:
         shooter = Shooter.Initialize(new ShooterIOReal());
+        intake = Intake.Initialize(new IntakeIOReal());
       case SIM:
         shooter = Shooter.Initialize(new ShooterIOSim());
+        intake = Intake.Initialize(new IntakeIOSim());
       default:
         shooter = Shooter.Initialize(new ShooterIOSim());
+        intake = Intake.Initialize(new IntakeIOSim());
     }
   }
 
