@@ -17,4 +17,8 @@ public interface ShooterIO {
   public default void setVoltage(double voltage) {}
 
   public default void updateInputs(ShooterIOInputs inputs1) {}
+
+  public default void updateMotionProfile() {}
+
+  public default void setGoal(double RPM) {}
 }
