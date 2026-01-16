@@ -15,4 +15,6 @@ public interface IntakeIO {
   public default void setGoal(double speed) {}
 
   public default void updateInputs(IntakeIOInputs inputs) {}
+
+  public default void updateMotionProfile() {}
 }

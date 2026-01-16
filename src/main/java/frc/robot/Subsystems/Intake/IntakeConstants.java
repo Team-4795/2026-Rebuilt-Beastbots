@@ -16,4 +16,16 @@ public class IntakeConstants {
 
   public static final double MAX_ACCELERATION = 0.5;
   public static final double MAX_VELOCITY = 0.5;
+  
+  public static class SIM {
+  public static final double KI = 0.1;
+  public static final double KP = 0.1;
+  public static final double KD = 0.1;
+
+  public static final double KG = 0.1;
+  public static final double KS = 0.1;
+  public static final double KV = 0.1;
+  public static final double MAX_ACCELERATION = 0.5;
+  public static final double MAX_VELOCITY = 0.5;
+  }
 }
