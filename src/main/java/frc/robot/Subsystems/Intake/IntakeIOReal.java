@@ -72,12 +72,11 @@ public class IntakeIOReal implements IntakeIO {
 
   @Override
   public void updateMotionProfile(){
-      setpoint = profile.calculate(0.02, setpoint, goal);
-
-      motor.setVoltage(controller.calculate(
-        encoder.getVelocity(),
-        setpoint.velocity
-      ));
+    setpoint = profile.calculate(0.02, setpoint, goal);
+    setVoltage(
+      ffmodel.calculateWithVelocities(encoder.getVelocity(), setpoint.velocity)
+      + controller.calculate(encoder.getPosition(), setpoint.position
+    ));
   }
 
   @Override
