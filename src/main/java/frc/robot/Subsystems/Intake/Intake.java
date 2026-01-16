@@ -6,30 +6,30 @@ import org.littletonrobotics.junction.Logger;
 public class Intake extends SubsystemBase {
   public static Intake instance;
   public IntakeIOInputsAutoLogged inputs = new IntakeIOInputsAutoLogged();
-  public IntakeIO shooterIo;
+  public IntakeIO io;
 
   public static Intake getInstance() {
     return instance;
   }
 
-  public static Intake Initialize(IntakeIO shooterIo) {
+  public static Intake Initialize(IntakeIO io) {
     if (instance == null) {
-      instance = new Intake(shooterIo);
+      instance = new Intake(io);
     }
     return instance;
   }
 
   public void setIntakeVoltage(double volts) {
-    shooterIo.setVoltage(volts);
+    io.setVoltage(volts);
   }
 
   public Intake(IntakeIO io) {
-    shooterIo = io;
+    this.io = io;
   }
 
   @Override
   public void periodic() {
-    shooterIo.updateInputs(inputs);
+    io.updateInputs(inputs);
     Logger.processInputs("Intake info:", inputs);
   }
 }

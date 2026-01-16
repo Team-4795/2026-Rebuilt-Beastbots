@@ -12,19 +12,32 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 
 public class IntakeIOReal implements IntakeIO {
-  private SparkMax motor =
-      new SparkMax(IntakeConstants.motorPort, SparkLowLevel.MotorType.kBrushless);
+  private SparkMax motor = new SparkMax(
+    IntakeConstants.motorPort,
+    SparkLowLevel.MotorType.kBrushless
+  );
   private double currentVoltage = 0;
   private RelativeEncoder encoder = motor.getEncoder();
   private final SparkMaxConfig config = new SparkMaxConfig();
 
-  private SimpleMotorFeedforward ffmodel =
-      new SimpleMotorFeedforward(IntakeConstants.KS, IntakeConstants.KG, IntakeConstants.KV);
-  private final TrapezoidProfile.Constraints constraints =
-      new TrapezoidProfile.Constraints(
-          IntakeConstants.MAX_VELOCITY, IntakeConstants.MAX_ACCELERATION);
-  private PIDController controller =
-      new PIDController(IntakeConstants.KP, IntakeConstants.KI, IntakeConstants.KD);
+  private SimpleMotorFeedforward ffmodel = new SimpleMotorFeedforward(
+    IntakeConstants.KS,
+    IntakeConstants.KG,
+    IntakeConstants.KV
+  );
+
+  private final TrapezoidProfile.Constraints constraints = 
+  new TrapezoidProfile.Constraints(
+    IntakeConstants.MAX_VELOCITY, 
+    IntakeConstants.MAX_ACCELERATION
+  );
+
+  private PIDController controller = new PIDController(
+    IntakeConstants.KP, 
+    IntakeConstants.KI, 
+    IntakeConstants.KD
+  );
+
   private final TrapezoidProfile profile = new TrapezoidProfile(constraints);
   private TrapezoidProfile.State setpoint = new TrapezoidProfile.State();
   private TrapezoidProfile.State goal = new TrapezoidProfile.State();
@@ -34,7 +47,11 @@ public class IntakeIOReal implements IntakeIO {
   public IntakeIOReal() {
     config.idleMode(IdleMode.kCoast);
     config.smartCurrentLimit(IntakeConstants.maxAmps);
-    motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    motor.configure(
+      config, 
+      ResetMode.kResetSafeParameters,
+      PersistMode.kPersistParameters
+    );
     motor.clearFaults();
   }
 
@@ -47,14 +64,20 @@ public class IntakeIOReal implements IntakeIO {
   @Override
   public void setGoal(double velocity) {
     goal = new TrapezoidProfile.State(velocity,0);
-    setpoint = new TrapezoidProfile.State(encoder.getPosition(),encoder.getVelocity());
+    setpoint = new TrapezoidProfile.State(
+      encoder.getPosition(),
+      encoder.getVelocity()
+    );
   } 
 
+  @Override
   public void updateMotionProfile(){
       setpoint = profile.calculate(0.02, setpoint, goal);
 
-      motor.setVoltage(controller.calculate(encoder.getVelocity(), setpoint.velocity));
-
+      motor.setVoltage(controller.calculate(
+        encoder.getVelocity(),
+        setpoint.velocity
+      ));
   }
 
   @Override
