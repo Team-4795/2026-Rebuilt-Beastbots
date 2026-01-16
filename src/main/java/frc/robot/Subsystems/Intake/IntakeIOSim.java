@@ -46,14 +46,14 @@ public class IntakeIOSim implements IntakeIO {
   public void updateMotionProfile() {
       setpoint = profile.calculate(0.02, setpoint, goal);
       setVoltage(
-        ffmodel.calculate(motor.getAngularPositionRad(), setpoint.velocity)
-        + controller.calculate(motor.getAngularPositionRad(), setpoint.position
+        ffmodel.calculateWithVelocities(motor.getAngularVelocityRPM(), setpoint.velocity)
+        + controller.calculate(motor.getAngularPositionRotations(), setpoint.position
       ));
   }
 
   @Override
   public void updateInputs(IntakeIOInputs inputs) {
-    inputs.position = motor.getAngularPositionRad();
+    inputs.position = motor.getAngularPositionRotations();
     inputs.voltage = currentVoltage;
     inputs.velocity = motor.getAngularVelocityRPM();
   }
