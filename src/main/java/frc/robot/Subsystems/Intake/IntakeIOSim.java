@@ -32,6 +32,15 @@ public class IntakeIOSim implements IntakeIO {
     IntakeConstants.SIM.KD
   );
 
+  @Override
+  public void setGoal(double velocity) {
+    goal = new TrapezoidProfile.State(0, velocity);
+    setpoint = new TrapezoidProfile.State(
+      motor.getAngularPositionRotations(),
+      motor.getAngularVelocityRPM()
+    );
+  } 
+
   private final TrapezoidProfile profile = new TrapezoidProfile(constraints);
     private TrapezoidProfile.State goal = new TrapezoidProfile.State();
     private TrapezoidProfile.State setpoint = new TrapezoidProfile.State();

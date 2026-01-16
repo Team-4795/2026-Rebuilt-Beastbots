@@ -12,15 +12,14 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 
 public class IntakeIOReal implements IntakeIO {
-  private SparkMax motor = new SparkMax(
-    IntakeConstants.motorPort,
-    SparkLowLevel.MotorType.kBrushless
-  );
+  private SparkMax motor =
+      new SparkMax(IntakeConstants.motorPort, SparkLowLevel.MotorType.kBrushless);
   private double currentVoltage = 0;
   private RelativeEncoder encoder = motor.getEncoder();
   private final SparkMaxConfig config = new SparkMaxConfig();
 
-  private SimpleMotorFeedforward ffmodel = new SimpleMotorFeedforward(
+  private SimpleMotorFeedforward ffmodel =
+      new SimpleMotorFeedforward(
     IntakeConstants.KS,
     IntakeConstants.KG,
     IntakeConstants.KV
@@ -63,7 +62,7 @@ public class IntakeIOReal implements IntakeIO {
 
   @Override
   public void setGoal(double velocity) {
-    goal = new TrapezoidProfile.State(velocity,0);
+    goal = new TrapezoidProfile.State(0, velocity);
     setpoint = new TrapezoidProfile.State(
       encoder.getPosition(),
       encoder.getVelocity()
