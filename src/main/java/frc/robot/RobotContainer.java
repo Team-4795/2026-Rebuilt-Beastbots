@@ -8,14 +8,14 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Subsystems.Intake.Intake;
+import frc.robot.Subsystems.Intake.IntakeConstants;
+import frc.robot.Subsystems.Intake.IntakeIOReal;
+import frc.robot.Subsystems.Intake.IntakeIOSim;
 import frc.robot.Subsystems.Shooter.Shooter;
 import frc.robot.Subsystems.Shooter.ShooterConstants;
 import frc.robot.Subsystems.Shooter.ShooterIOReal;
 import frc.robot.Subsystems.Shooter.ShooterIOSim;
-
-import frc.robot.Subsystems.Intake.Intake;
-import frc.robot.Subsystems.Intake.IntakeIOReal;
-import frc.robot.Subsystems.Intake.IntakeIOSim;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -27,14 +27,12 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private Shooter shooter;
   private Intake intake;
+
   // Controllers
   private final CommandXboxController driverController = new CommandXboxController(0);
   private final CommandXboxController operatorController = new CommandXboxController(1);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    // Configure the trigger bindings
-    configureBindings();
-
     switch (Constants.currentMode) {
       case REAL:
         shooter = Shooter.Initialize(new ShooterIOReal());
@@ -46,6 +44,9 @@ public class RobotContainer {
         shooter = Shooter.Initialize(new ShooterIOSim());
         intake = Intake.Initialize(new IntakeIOSim());
     }
+
+    // Configure the trigger bindings
+    configureBindings();
   }
 
   /**
@@ -58,11 +59,20 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+    shooter.setDefaultCommand(Commands.run(() -> shooter.setIntakeVoltage(0), shooter));
+
     driverController
         .rightBumper()
         .onTrue(
             Commands.run(() -> shooter.setIntakeVoltage(ShooterConstants.shooterVoltage), shooter));
-    shooter.setDefaultCommand(Commands.run(() -> shooter.setIntakeVoltage(0), shooter));
+
+    // Set intake motor voltage to 5
+    operatorController
+        .leftBumper()
+        .onTrue(Commands.run(() -> intake.setIntakeVoltage(IntakeConstants.intakeVoltage), intake));
+
+    // Set intake motor voltage to 0 (stop motor)
+    operatorController.leftBumper().onFalse(Commands.run(() -> intake.setIntakeVoltage(0), intake));
   }
 
   /**
