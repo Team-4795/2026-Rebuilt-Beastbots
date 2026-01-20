@@ -66,5 +66,7 @@ public class IntakeIOReal implements IntakeIO {
     inputs.position = encoder.getPosition();
     inputs.voltage = currentVoltage;
     inputs.velocity = encoder.getVelocity();
+    inputs.setpointVelocity = setpoint.velocity;
+    inputs.goalVelocity = goal.velocity;
   }
 }
