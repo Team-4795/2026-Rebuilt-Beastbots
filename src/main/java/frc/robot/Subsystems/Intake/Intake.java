@@ -23,12 +23,18 @@ public class Intake extends SubsystemBase {
     io.setVoltage(volts);
   }
 
+  /** Sets velocity, in RPM */
+  public void setVelocity(double rpm) {
+    io.setGoal(rpm);
+  }
+
   public Intake(IntakeIO io) {
     this.io = io;
   }
 
   @Override
   public void periodic() {
+    io.updateMotionProfile();
     io.updateInputs(inputs);
     Logger.processInputs("Intake info:", inputs);
   }

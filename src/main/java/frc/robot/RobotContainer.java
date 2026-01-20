@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Subsystems.Intake.Intake;
-import frc.robot.Subsystems.Intake.IntakeConstants;
 import frc.robot.Subsystems.Intake.IntakeIOReal;
 import frc.robot.Subsystems.Intake.IntakeIOSim;
 import frc.robot.Subsystems.Shooter.Shooter;
@@ -66,13 +65,10 @@ public class RobotContainer {
         .onTrue(
             Commands.run(() -> shooter.setIntakeVoltage(ShooterConstants.shooterVoltage), shooter));
 
-    // Set intake motor voltage to 5
     operatorController
         .leftBumper()
-        .onTrue(Commands.run(() -> intake.setIntakeVoltage(IntakeConstants.intakeVoltage), intake));
-
-    // Set intake motor voltage to 0 (stop motor)
-    operatorController.leftBumper().onFalse(Commands.run(() -> intake.setIntakeVoltage(0), intake));
+        .onTrue(Commands.run(() -> intake.setVelocity(8), intake))
+        .onFalse(Commands.run(() -> intake.setVelocity(0), intake));
   }
 
   /**

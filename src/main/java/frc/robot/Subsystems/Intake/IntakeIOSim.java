@@ -56,5 +56,7 @@ public class IntakeIOSim implements IntakeIO {
     inputs.position = motor.getAngularPositionRotations();
     inputs.voltage = currentVoltage;
     inputs.velocity = motor.getAngularVelocityRPM();
+    inputs.setpointVelocity = setpoint.velocity;
+    inputs.goalVelocity = goal.velocity;
   }
 }
