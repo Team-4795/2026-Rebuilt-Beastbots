@@ -11,17 +11,17 @@ public class ShooterConstants {
 
   public class PID {
     // Proportion
-    public static int kP = 0;
+    public static int kP = 1;
     // Integral
     public static int kI = 0;
     // Derivative
     public static int kD = 0;
 
     // Overcome gravity
-    public static int kG = 0;
+    public static int kG = 1;
     // Volts for a singular unit
-    public static int kV = 0;
+    public static int kV = 1;
     // Overcome static friction
-    public static int kS = 0;
+    public static int kS = 1;
   }
 }

@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Subsystems.Shooter.Shooter;
-import frc.robot.Subsystems.Shooter.ShooterConstants;
 import frc.robot.Subsystems.Shooter.ShooterIOReal;
 import frc.robot.Subsystems.Shooter.ShooterIOSim;
 
@@ -25,19 +24,20 @@ public class RobotContainer {
   // Controllers
   private final CommandXboxController driverController = new CommandXboxController(0);
   private final CommandXboxController operatorController = new CommandXboxController(1);
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
-    configureBindings();
-
     switch (Constants.currentMode) {
       case REAL:
         shooter = Shooter.Initialize(new ShooterIOReal());
       case SIM:
-        Shooter.Initialize(new ShooterIOSim());
+        shooter = Shooter.Initialize(new ShooterIOSim());
       default:
         shooter = Shooter.Initialize(new ShooterIOSim());
     }
+
+    configureBindings();
   }
 
   /**
@@ -50,11 +50,9 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    driverController
-        .rightBumper()
-        .onTrue(
-            Commands.run(() -> shooter.setIntakeVoltage(ShooterConstants.shooterVoltage), shooter));
-    shooter.setDefaultCommand(Commands.run(() -> shooter.setIntakeVoltage(0), shooter));
+    driverController.leftBumper().whileTrue(Commands.run(() -> shooter.setGoal(100), shooter));
+
+    shooter.setDefaultCommand(Commands.run(() -> shooter.setGoal(0), shooter));
   }
 
   /**

@@ -7,12 +7,10 @@ import com.revrobotics.spark.SparkLowLevel;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import frc.robot.Subsystems.Shooter.ShooterIO.ShooterIOInputs;
-
 
 public class ShooterIOReal implements ShooterIO {
   // PID
@@ -25,41 +23,41 @@ public class ShooterIOReal implements ShooterIO {
   private final TrapezoidProfile profile = new TrapezoidProfile(constraints);
   private TrapezoidProfile.State setpoint = new TrapezoidProfile.State();
   private TrapezoidProfile.State goal = new TrapezoidProfile.State();
-  
-  private PIDController controller = new PIDController(ShooterConstants.PID.kP, ShooterConstants.PID.kI, ShooterConstants.PID.kD);
 
+  private PIDController controller =
+      new PIDController(ShooterConstants.PID.kP, ShooterConstants.PID.kI, ShooterConstants.PID.kD);
 
   private SparkMax outTakeMotor1 =
       new SparkMax(ShooterConstants.motorPort1, SparkLowLevel.MotorType.kBrushless);
   private SparkMax outTakeMotor2 =
       new SparkMax(ShooterConstants.motorPort2, SparkLowLevel.MotorType.kBrushless);
   private double currentVoltage = 0;
-  //Left Motor
+  // Left Motor
   private RelativeEncoder outTakeEncoder1 = outTakeMotor1.getEncoder();
-  //Right Motor
+  // Right Motor
   private RelativeEncoder outTakeEncoder2 = outTakeMotor2.getEncoder();
 
   private final SparkMaxConfig config = new SparkMaxConfig();
 
-
   @Override
   public void setGoal(double RPM) {
-        if(RPM != goal.velocity) {
-            setpoint = new TrapezoidProfile.State(outTakeEncoder1.getPosition(), outTakeEncoder2.getVelocity());
-            goal = new TrapezoidProfile.State(0, RPM);
-        }
+    if (RPM != goal.velocity) {
+      setpoint =
+          new TrapezoidProfile.State(outTakeEncoder1.getPosition(), outTakeEncoder2.getVelocity());
+      goal = new TrapezoidProfile.State(0, RPM);
     }
+  }
 
   @Override
   public void updateMotionProfile() {
-      // double prevVelocity = setpoint.velocity;
+    // double prevVelocity = setpoint.velocity;
 
-      setpoint = profile.calculate(0.02, setpoint, goal);
-      // double acceleration = (setpoint.velocity - prevVelocity) / 0.02;
-      double ffvolts = ffmodel.calculate(setpoint.velocity);
-      double pidvolts = controller.calculate(outTakeEncoder2.getPosition(), setpoint.position);
-      setVoltage(ffvolts + pidvolts);
-    }
+    setpoint = profile.calculate(0.02, setpoint, goal);
+    // double acceleration = (setpoint.velocity - prevVelocity) / 0.02;
+    double ffvolts = ffmodel.calculate(setpoint.velocity);
+    double pidvolts = controller.calculate(outTakeEncoder2.getPosition(), setpoint.position);
+    setVoltage(ffvolts + pidvolts);
+  }
 
   public ShooterIOReal() {
     config.idleMode(IdleMode.kCoast);

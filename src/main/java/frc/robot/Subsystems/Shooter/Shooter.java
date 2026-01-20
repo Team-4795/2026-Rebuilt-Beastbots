@@ -19,7 +19,11 @@ public class Shooter extends SubsystemBase {
     return instance;
   }
 
-  public void setIntakeVoltage(double volts) {
+  public void setGoal(double RPM) {
+    shooterIo.setGoal(RPM);
+  }
+
+  public void setShooterVoltage(double volts) {
     shooterIo.setVoltage(volts);
   }
 
@@ -31,5 +35,7 @@ public class Shooter extends SubsystemBase {
   public void periodic() {
     shooterIo.updateInputs(inputs);
     Logger.processInputs("Shooter/Shooter", inputs);
+
+    shooterIo.updateMotionProfile();
   }
 }

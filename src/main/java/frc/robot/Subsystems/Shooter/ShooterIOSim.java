@@ -1,6 +1,5 @@
 package frc.robot.Subsystems.Shooter;
 
-import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.system.plant.DCMotor;
@@ -10,15 +9,18 @@ import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import frc.robot.Subsystems.Shooter.ShooterIO.ShooterIOInputs;
 
 public class ShooterIOSim implements ShooterIO {
-  //PID
-  private SimpleMotorFeedforward ffmodel = new SimpleMotorFeedforward(ShooterConstants.PID.kS, ShooterConstants.PID.kG, ShooterConstants.PID.kG);
-  private final TrapezoidProfile.Constraints constraints = new TrapezoidProfile.Constraints(2, 4);
-  private final PIDController controller = new PIDController(50, 0, 1);
+  // PID
+  private SimpleMotorFeedforward ffmodel =
+      new SimpleMotorFeedforward(
+          ShooterConstants.PID.kS, ShooterConstants.PID.kV, 0);
+
+  private final TrapezoidProfile.Constraints constraints = new TrapezoidProfile.Constraints(500, 200);
+  private final PIDController controller = new PIDController(0.001, 0, 0);
+
   private final TrapezoidProfile profile = new TrapezoidProfile(constraints);
   private TrapezoidProfile.State setpoint = new TrapezoidProfile.State();
   private TrapezoidProfile.State goal = new TrapezoidProfile.State();
 
-  
   private DCMotorSim outTakeMotor1 =
       new DCMotorSim(
           LinearSystemId.createDCMotorSystem(DCMotor.getKrakenX60(1), 0.001, 2),
@@ -31,14 +33,15 @@ public class ShooterIOSim implements ShooterIO {
   private double currentVoltage = 0;
 
   @Override
-  public void setGoal(double RPM){
+  public void setGoal(double RPM) {
     goal = new TrapezoidProfile.State(0, RPM);
   }
-  
+
   @Override
   public void updateMotionProfile() {
-      setpoint = profile.calculate(0.02, setpoint, goal);
-      setVoltage(ffmodel.calculate(setpoint.velocity) + controller.calculate(outTakeMotor1.getAngularVelocityRadPerSec(), setpoint.velocity));
+    setpoint = profile.calculate(0.02, setpoint, goal);
+    setVoltage(
+      controller.calculate(outTakeMotor1.getAngularVelocityRadPerSec(), setpoint.velocity));
   }
 
   @Override
