@@ -13,7 +13,7 @@ public class Intake extends SubsystemBase {
    *
    * @return An instance of the {@link Intake} subsystem, or `null` if none exists
    */
-  private static Intake getInstance() {
+  public static Intake getInstance() {
     return instance;
   }
 
