@@ -50,7 +50,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    driverController.leftBumper().whileTrue(Commands.run(() -> shooter.setGoal(100), shooter));
+    driverController.a().whileTrue(Commands.run(() -> shooter.setGoal(3000), shooter));
 
     shooter.setDefaultCommand(Commands.run(() -> shooter.setGoal(0), shooter));
   }

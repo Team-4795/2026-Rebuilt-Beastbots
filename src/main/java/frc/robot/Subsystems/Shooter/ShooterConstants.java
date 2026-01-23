@@ -8,20 +8,27 @@ public class ShooterConstants {
   // RPM
   public static final double maxVeloxity = 10;
   public static final double maxAcceleration = 3;
+  public static final double kMaxOutput = 0.5;
+
+  public static final double allowedErr = 0.1;
+  public static final double voltsPerRPM = 2000 / 39;
 
   public class PID {
+
     // Proportion
-    public static int kP = 1;
+    public static double kP = 0.01;
     // Integral
-    public static int kI = 0;
+    public static double kI = 0.0;
     // Derivative
-    public static int kD = 0;
+    public static double kD = 0;
 
     // Overcome gravity
-    public static int kG = 1;
+    public static double kG = 0.00;
     // Volts for a singular unit
-    public static int kV = 1;
+    public static double kV = 0;
     // Overcome static friction
-    public static int kS = 1;
+    public static double kS = 0.01;
+
+    public static double kA = 0;
   }
 }

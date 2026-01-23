@@ -3,30 +3,15 @@ package frc.robot.Subsystems.Shooter;
 import com.revrobotics.PersistMode;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.ResetMode;
+import com.revrobotics.spark.ClosedLoopSlot;
+import com.revrobotics.spark.SparkBase.ControlType;
+import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import frc.robot.Subsystems.Shooter.ShooterIO.ShooterIOInputs;
 
 public class ShooterIOReal implements ShooterIO {
-  // PID
-  private SimpleMotorFeedforward ffmodel =
-      new SimpleMotorFeedforward(
-          ShooterConstants.PID.kS, ShooterConstants.PID.kG, ShooterConstants.PID.kG);
-  private final TrapezoidProfile.Constraints constraints =
-      new TrapezoidProfile.Constraints(
-          ShooterConstants.maxVeloxity, ShooterConstants.maxAcceleration);
-  private final TrapezoidProfile profile = new TrapezoidProfile(constraints);
-  private TrapezoidProfile.State setpoint = new TrapezoidProfile.State();
-  private TrapezoidProfile.State goal = new TrapezoidProfile.State();
-
-  private PIDController controller =
-      new PIDController(ShooterConstants.PID.kP, ShooterConstants.PID.kI, ShooterConstants.PID.kD);
-
   private SparkMax outTakeMotor1 =
       new SparkMax(ShooterConstants.motorPort1, SparkLowLevel.MotorType.kBrushless);
   private SparkMax outTakeMotor2 =
@@ -37,31 +22,50 @@ public class ShooterIOReal implements ShooterIO {
   // Right Motor
   private RelativeEncoder outTakeEncoder2 = outTakeMotor2.getEncoder();
 
+  // PID
+  SparkClosedLoopController m_controller = outTakeMotor1.getClosedLoopController();
+
   private final SparkMaxConfig config = new SparkMaxConfig();
+  private double RPMgoal = 0;
 
   @Override
   public void setGoal(double RPM) {
-    if (RPM != goal.velocity) {
-      setpoint =
-          new TrapezoidProfile.State(outTakeEncoder1.getPosition(), outTakeEncoder2.getVelocity());
-      goal = new TrapezoidProfile.State(0, RPM);
+    if (RPM != RPMgoal) {
+      RPMgoal = RPM;
     }
   }
 
   @Override
   public void updateMotionProfile() {
-    // double prevVelocity = setpoint.velocity;
-
-    setpoint = profile.calculate(0.02, setpoint, goal);
-    // double acceleration = (setpoint.velocity - prevVelocity) / 0.02;
-    double ffvolts = ffmodel.calculate(setpoint.velocity);
-    double pidvolts = controller.calculate(outTakeEncoder2.getPosition(), setpoint.position);
-    setVoltage(ffvolts + pidvolts);
+    m_controller.setSetpoint(RPMgoal, ControlType.kVelocity, ClosedLoopSlot.kSlot1);
   }
 
   public ShooterIOReal() {
+
     config.idleMode(IdleMode.kCoast);
     config.smartCurrentLimit(ShooterConstants.maxAmps);
+    config
+        .closedLoop
+        .p(ShooterConstants.PID.kP, ClosedLoopSlot.kSlot1)
+        .i(ShooterConstants.PID.kI, ClosedLoopSlot.kSlot1)
+        .d(ShooterConstants.PID.kD, ClosedLoopSlot.kSlot1)
+        .outputRange(0, ShooterConstants.kMaxOutput);
+    config
+        .closedLoop
+        .feedForward
+        .kS(ShooterConstants.PID.kS)
+        .kV(ShooterConstants.PID.kV)
+        .kG(ShooterConstants.PID.kG);
+
+    // .kG(g) // kG is a linear gravity feedforward, for an elevator
+    // .kCos(g) // kCos is a cosine gravity feedforward, for an arm
+    // .kCosRatio(cosRatio); // kCosRatio relates the encoder position to absolute position
+
+    config
+        .closedLoop
+        .maxMotion
+        .maxAcceleration(ShooterConstants.maxAcceleration)
+        .allowedProfileError(ShooterConstants.allowedErr);
     outTakeMotor1.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     outTakeMotor1.clearFaults();
     outTakeMotor2.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
