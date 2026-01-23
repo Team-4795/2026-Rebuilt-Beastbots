@@ -15,7 +15,7 @@ public class ShooterIOSim implements ShooterIO {
 
   private DCMotorSim simMotor =
       new DCMotorSim(
-          LinearSystemId.createDCMotorSystem(DCMotor.getKrakenX60(2), 0.1, 2),
+          LinearSystemId.createDCMotorSystem(DCMotor.getKrakenX60(2), 0.1, 1.5),
           DCMotor.getKrakenX60(2));
 
   private SimpleMotorFeedforward ffmodel =
