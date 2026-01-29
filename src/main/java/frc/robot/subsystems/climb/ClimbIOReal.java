@@ -1,5 +1,12 @@
 package frc.robot.subsystems.climb;
 
-public class ClimbIOReal {
-    
+import com.revrobotics.spark.SparkMax;
+ 
+
+
+
+
+public class ClimbIOReal implements ClimbIO {
+
+private SparkMax motor 
 }
