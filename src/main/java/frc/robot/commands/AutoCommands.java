@@ -10,8 +10,8 @@ public class AutoCommands {
   public static Command setGoalOuttake(double RPM) {
     return Commands.run(() -> shooter.setGoal(RPM), shooter);
   }
-  public static Command climbAuto()
-  {
-        return Commands.none();
+
+  public static Command climbAuto() {
+    return Commands.none();
   }
 }
