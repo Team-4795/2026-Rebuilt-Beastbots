@@ -4,15 +4,15 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Subsystems.Shooter.Shooter;
-import frc.robot.Subsystems.Shooter.ShooterIOReal;
-import frc.robot.Subsystems.Shooter.ShooterIOSim;
+import frc.robot.commands.AutoCommands;
 import frc.robot.commands.DriveCommands;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
@@ -30,13 +30,14 @@ import frc.robot.subsystems.drive.ModuleIOSpark;
 public class RobotContainer {
   // Subsystems
   private final Drive drive;
-  private Shooter shooter;
+
   // Controllers
   private final CommandXboxController driverController = new CommandXboxController(0);
   private final CommandXboxController operatorController = new CommandXboxController(1);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+
     switch (Constants.currentMode) {
       case REAL:
         // Real robot, instantiate hardware IO implementations
@@ -61,7 +62,6 @@ public class RobotContainer {
         break;
 
       default:
-        // Replayed robot, disable IO implementations
         drive =
             new Drive(
                 new GyroIO() {},
@@ -71,16 +71,8 @@ public class RobotContainer {
                 new ModuleIO() {});
         break;
     }
-
-    // Configure the trigger bindings
-    switch (Constants.currentMode) {
-      case REAL:
-        shooter = Shooter.Initialize(new ShooterIOReal());
-      case SIM:
-        shooter = Shooter.Initialize(new ShooterIOSim());
-      default:
-        shooter = Shooter.Initialize(new ShooterIOSim());
-    }
+    NamedCommands.registerCommand("startShooting", AutoCommands.setGoalOuttake(3000));
+        NamedCommands.registerCommand("stopShooting", AutoCommands.setGoalOuttake(0));
 
     configureBindings();
   }
@@ -95,11 +87,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    driverController.a().whileTrue(Commands.run(() -> shooter.setGoal(3000), shooter));
 
-    shooter.setDefaultCommand(Commands.run(() -> shooter.setGoal(0), shooter));
-  }
-  private void configureBindings() {
     // Default command, normal field-relative drive
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
@@ -140,6 +128,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return null;
+    return new PathPlannerAuto("Example Auto");
   }
 }

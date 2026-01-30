@@ -13,7 +13,7 @@
         {
           "type": "named",
           "data": {
-            "name": "setGoalOuttake"
+            "name": "startShooting"
           }
         },
         {
@@ -25,7 +25,7 @@
         {
           "type": "named",
           "data": {
-            "name": "setGoalOuttake"
+            "name": "stopShooting"
           }
         },
         {

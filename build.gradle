@@ -48,7 +48,9 @@ deploy {
                     directory = '/home/lvuser/deploy'
                     // Change to true to delete files on roboRIO that no
                     // longer exist in deploy directory on roboRIO
-                    deleteOldFiles = false
+
+                    //I added this if it doesnt work than thats mb
+                    deleteOldFiles = true
                 }
             }
         }
