@@ -1,12 +1,33 @@
 package frc.robot.subsystems.climb;
-
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkLowLevel;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkMaxConfig;
+
+import edu.wpi.first.math.trajectory.constraint.MaxVelocityConstraint;
  
-
-
-
-
 public class ClimbIOReal implements ClimbIO {
+    private SparkMax ClimbMotor = new SparkMax(ClimbConstants.motorPort, SparkLowLevel.MotorType.kBrushless);
+    private double currentVoltage = 0; 
+    private RelativeEncoder encoder = motor.getEncoder(); 
+    private final SparkMaxConfig config = new SparkMaxConfig();
 
-private SparkMax motor 
+public ClimbIOReal{
+config.smartCurrentLimit(ClimbConstants.CurrentLimit) 
+ config. idleMode(idleMode.KBreak);
+ClimbMotor.configure(config,);
+
 }
+
+    
+
+    @Override
+    public void setVoltage(double voltage){
+        ClimbMotor.setVoltage(voltage);
+    }
+
+}
+
+
