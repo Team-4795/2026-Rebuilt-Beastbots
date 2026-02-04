@@ -1,7 +1,10 @@
 package frc.robot.subsystems.climb;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.PersistMode;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.ResetMode;
+import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.SparkLowLevel;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
@@ -11,17 +14,14 @@ import edu.wpi.first.math.trajectory.constraint.MaxVelocityConstraint;
 public class ClimbIOReal implements ClimbIO {
     private SparkMax ClimbMotor = new SparkMax(ClimbConstants.motorPort, SparkLowLevel.MotorType.kBrushless);
     private double currentVoltage = 0; 
-    private RelativeEncoder encoder = motor.getEncoder(); 
+    private RelativeEncoder encoder = ClimbMotor.getEncoder(); 
     private final SparkMaxConfig config = new SparkMaxConfig();
 
-public ClimbIOReal{
-config.smartCurrentLimit(ClimbConstants.CurrentLimit) 
- config. idleMode(idleMode.KBreak);
-ClimbMotor.configure(config,);
-
-}
-
-    
+    public ClimbIOReal(){
+        config.smartCurrentLimit(ClimbConstants.CurrentLimit);
+        config.idleMode(IdleMode.kBrake);
+        ClimbMotor.configure(config, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+    }
 
     @Override
     public void setVoltage(double voltage){
