@@ -39,22 +39,12 @@ public class Intake extends SubsystemBase {
     io.setVoltage(volts);
   }
 
-  /**
-   * Sets velocity of the intake, in RPM using Feedforward and PID
-   *
-   * @param rpm Desired velocity in RPM
-   */
-  public void setVelocity(double rpm) {
-    io.setGoal(rpm);
-  }
-
   private Intake(IntakeIO io) {
     this.io = io;
   }
 
   @Override
   public void periodic() {
-    io.updateMotionProfile();
     io.updateInputs(inputs);
     Logger.processInputs("Intake info:", inputs);
   }
