@@ -67,8 +67,8 @@ public class RobotContainer {
 
     operatorController
         .leftBumper()
-        .onTrue(Commands.run(() -> intake.setVelocity(8), intake))
-        .onFalse(Commands.run(() -> intake.setVelocity(0), intake));
+        .onTrue(Commands.run(() -> intake.setVoltage(10), intake))
+        .onFalse(Commands.run(() -> intake.setVoltage(0), intake));
   }
 
   /**

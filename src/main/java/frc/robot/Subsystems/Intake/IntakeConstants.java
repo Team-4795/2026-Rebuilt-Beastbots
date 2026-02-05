@@ -29,6 +29,6 @@ public class IntakeConstants {
     public static final double KD = 2;
 
     public static final double MAX_ACCELERATION = 10;
-    public static final double MAX_VELOCITY = 10;
+    public static final double MAX_VELOCITY = 9000;
   }
 }
