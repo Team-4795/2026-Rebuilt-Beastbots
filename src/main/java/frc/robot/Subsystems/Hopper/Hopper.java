@@ -1,5 +1,7 @@
 package frc.robot.Subsystems.Hopper;
 
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
 
@@ -7,6 +9,7 @@ public class Hopper extends SubsystemBase {
   public static Hopper instance;
   public HopperIOInputsAutoLogged inputs = new HopperIOInputsAutoLogged();
   public HopperIO io;
+  private boolean extended = false;
 
   /**
    * Gets an instance of the {@link Hopper} subsystem
@@ -32,7 +35,7 @@ public class Hopper extends SubsystemBase {
   }
 
   /**
-   * Sets the voltage of the hopper 
+   * Sets the voltage of the hopper
    *
    * @param volts
    */
@@ -42,6 +45,39 @@ public class Hopper extends SubsystemBase {
 
   private Hopper(HopperIO io) {
     this.io = io;
+  }
+
+  /**
+   * Toggles the extension state of the hopper
+   *
+   * @return Returns a command to toggle hopper state
+   */
+  public Command toggle() {
+    return this.setExtended(!this.extended);
+  }
+
+  /**
+   * Sets hoppper to be extended or not extended
+   *
+   * @param extended A boolean stating whether the hopper should be extended or not
+   * @return Returns a command to set the extension state
+   */
+  public Command setExtended(boolean extended) {
+    if (this.extended != extended) {
+      if (extended) {
+        return Commands.sequence(
+            Commands.runOnce(() -> this.setVoltage(HopperConstants.EXTENSION_VOLTAGE), this),
+            Commands.waitSeconds(HopperConstants.EXTENSION_WAIT),
+            Commands.runOnce(() -> this.setVoltage(0), this));
+      } else {
+        return Commands.sequence(
+            Commands.runOnce(() -> this.setVoltage(-HopperConstants.EXTENSION_VOLTAGE), this),
+            Commands.waitSeconds(HopperConstants.EXTENSION_WAIT),
+            Commands.runOnce(() -> this.setVoltage(0), this));
+      }
+    } else {
+      return Commands.none();
+    }
   }
 
   @Override
