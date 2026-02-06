@@ -4,29 +4,15 @@
 
 package frc.robot;
 
-import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Subsystems.Intake.Intake;
-import frc.robot.Subsystems.Intake.IntakeIOReal;
-import frc.robot.Subsystems.Intake.IntakeIOSim;
 import frc.robot.Subsystems.Shooter.Shooter;
 import frc.robot.Subsystems.Shooter.ShooterConstants;
 import frc.robot.Subsystems.Shooter.ShooterIOReal;
 import frc.robot.Subsystems.Shooter.ShooterIOSim;
-import frc.robot.Subsystems.drive.Drive;
-import frc.robot.Subsystems.drive.GyroIO;
-import frc.robot.Subsystems.drive.GyroIOPigeon2;
-import frc.robot.Subsystems.drive.ModuleIO;
-import frc.robot.Subsystems.drive.ModuleIOSim;
-import frc.robot.Subsystems.drive.ModuleIOSpark;
-import frc.robot.commands.AutoCommands;
-import frc.robot.commands.DriveCommands;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -46,7 +32,7 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureBindings();
 
-    switch (Constants.currentMode){
+    switch (Constants.currentMode) {
       case REAL:
         shooter = Shooter.Initialize(new ShooterIOReal());
       case SIM:
@@ -54,8 +40,6 @@ public class RobotContainer {
       default:
         shooter = Shooter.Initialize(new ShooterIOSim());
     }
-
-
   }
 
   /**
@@ -68,7 +52,10 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    driverController.rightBumper().onTrue(Commands.run(() -> shooter.setIntakeVoltage(ShooterConstants.shooterVoltage),shooter));
+    driverController
+        .rightBumper()
+        .onTrue(
+            Commands.run(() -> shooter.setIntakeVoltage(ShooterConstants.shooterVoltage), shooter));
     shooter.setDefaultCommand(Commands.run(() -> shooter.setIntakeVoltage(0), shooter));
   }
 
