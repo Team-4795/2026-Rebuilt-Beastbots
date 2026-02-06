@@ -8,13 +8,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Subsystems.Intake.Intake;
-import frc.robot.Subsystems.Intake.IntakeIOReal;
-import frc.robot.Subsystems.Intake.IntakeIOSim;
-import frc.robot.Subsystems.Shooter.Shooter;
-import frc.robot.Subsystems.Shooter.ShooterConstants;
-import frc.robot.Subsystems.Shooter.ShooterIOReal;
-import frc.robot.Subsystems.Shooter.ShooterIOSim;
+import frc.robot.Subsystems.Hopper.*;
+import frc.robot.Subsystems.Intake.*;
+import frc.robot.Subsystems.Shooter.*;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -26,6 +22,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private Shooter shooter;
   private Intake intake;
+  private Hopper hopper;
 
   // Controllers
   private final CommandXboxController driverController = new CommandXboxController(0);
@@ -36,12 +33,15 @@ public class RobotContainer {
       case REAL:
         shooter = Shooter.Initialize(new ShooterIOReal());
         intake = Intake.Initialize(new IntakeIOReal());
+        hopper = Hopper.Initialize(new HopperIOReal());
       case SIM:
         shooter = Shooter.Initialize(new ShooterIOSim());
         intake = Intake.Initialize(new IntakeIOSim());
+        hopper = Hopper.Initialize(new HopperIOSim());
       default:
         shooter = Shooter.Initialize(new ShooterIOSim());
         intake = Intake.Initialize(new IntakeIOSim());
+        hopper = Hopper.Initialize(new HopperIOSim());
     }
 
     // Configure the trigger bindings
@@ -78,6 +78,10 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return null;
+    return this.extendHopper();
+  }
+
+  public Command extendHopper() {
+    return this.hopper.setExtended(true);
   }
 }

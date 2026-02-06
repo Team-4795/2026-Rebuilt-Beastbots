@@ -16,6 +16,9 @@ public class HopperConstants {
 
   public static final double MAX_ACCELERATION = 0.5;
   public static final double MAX_VELOCITY = 0.5;
+  public static final double EXTENSION_VOLTAGE = 0.5;
+  public static final double EXTENSION_WAIT =
+      0.67; // Time to wait for motor to extend the hopper during hopper extensions
 
   public static class SIM {
     // Simulation FF
