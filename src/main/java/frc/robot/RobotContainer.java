@@ -55,8 +55,9 @@ public class RobotContainer {
     driverController
         .rightBumper()
         .onTrue(
-            Commands.run(() -> shooter.setIntakeVoltage(ShooterConstants.shooterVoltage), shooter));
-    shooter.setDefaultCommand(Commands.run(() -> shooter.setIntakeVoltage(0), shooter));
+            Commands.run(
+                () -> shooter.setShooterVoltage(ShooterConstants.shooterVoltage), shooter));
+    shooter.setDefaultCommand(Commands.run(() -> shooter.setShooterVoltage(0), shooter));
   }
 
   /**

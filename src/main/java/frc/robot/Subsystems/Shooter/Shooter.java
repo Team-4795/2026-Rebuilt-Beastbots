@@ -19,7 +19,7 @@ public class Shooter extends SubsystemBase {
     return instance;
   }
 
-  public void setIntakeVoltage(double volts) {
+  public void setShooterVoltage(double volts) {
     shooterIo.setVoltage(volts);
   }
 
