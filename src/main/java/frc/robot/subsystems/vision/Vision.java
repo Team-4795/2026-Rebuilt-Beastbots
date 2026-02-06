@@ -1,8 +1,14 @@
 package frc.robot.subsystems.vision;
 
+import java.lang.System.Logger;
+
+import frc.robot.subsystems.vision.VisionIo.VisionIoInputs;
+
 public class Vision {
     private static Vision instance;
     private VisionIo currentIo;
+    private VisionIoInputs inputs;
+
     public static Vision getInstance()
     {
         return instance;
@@ -21,7 +27,9 @@ public class Vision {
         currentIo = io;
     }
     public void periodic(){
-        io[i].updateInputs(inputs[i]);
-        Logger.processInputs("Vision/" + VisionConstants.cameraIds[i], inputs[i]);
+        currentIo.updateInputs(inputs);
+        Logger.processInputs(inputs);
+
+        
     }
 }
