@@ -14,6 +14,7 @@ public class ClimbIOReal implements ClimbIO {
   private double currentVoltage = 0;
   private RelativeEncoder encoder = ClimbMotor.getEncoder();
   private final SparkMaxConfig config = new SparkMaxConfig();
+  double volts = 0;
 
   public ClimbIOReal() {
     config.smartCurrentLimit(ClimbConstants.CurrentLimit);
@@ -24,6 +25,14 @@ public class ClimbIOReal implements ClimbIO {
 
   @Override
   public void setVoltage(double voltage) {
+    volts = voltage;
     ClimbMotor.setVoltage(voltage);
+  }
+
+  @Override
+  public void updateInputs(ClimbIOInputs inputs) {
+    inputs.voltage = volts;
+    inputs.current = ClimbMotor.getOutputCurrent();
+    inputs.velocity = ClimbMotor.getEncoder().getVelocity();
   }
 }
