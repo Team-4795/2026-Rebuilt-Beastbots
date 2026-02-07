@@ -15,8 +15,8 @@ public class ShooterConstants {
 
   public class PID {
 
-    // Proportion
-    public static double kP = 0.01;
+    // Proportion if it ollicilates decrease it if it doesnt give it enough volts incresa
+    public static double kP = 0.02;
     // Integral
     public static double kI = 0.0;
     // Derivative
@@ -24,10 +24,11 @@ public class ShooterConstants {
 
     // Overcome gravity
     public static double kG = 0.00;
-    // Volts for a singular unit
-    public static double kV = 0;
+    // Volts for a singular unit increase if undershoot
+    public static double kV = 0.0016;
+
     // Overcome static friction
-    public static double kS = 0.01;
+    public static double kS = 0.012;
 
     public static double kA = 0;
   }

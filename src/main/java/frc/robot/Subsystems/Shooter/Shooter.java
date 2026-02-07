@@ -35,7 +35,5 @@ public class Shooter extends SubsystemBase {
   public void periodic() {
     shooterIo.updateInputs(inputs);
     Logger.processInputs("Shooter/Shooter", inputs);
-
-    shooterIo.updateMotionProfile();
   }
 }
