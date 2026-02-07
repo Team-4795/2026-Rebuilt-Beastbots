@@ -4,9 +4,9 @@
 
 package frc.robot;
 
-import java.io.IOException;
-
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFieldLayout.OriginPosition;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -21,6 +21,7 @@ import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOSpark;
 import frc.robot.subsystems.vision.VisionConstants;
+import java.io.IOException;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -35,8 +36,8 @@ public class RobotContainer {
   // Controllers
   private final CommandXboxController driverController = new CommandXboxController(0);
   private final CommandXboxController operatorController = new CommandXboxController(1);
-  
-  /** The container for the robot. Contains subsystems, OI devices, and commands. **/
+
+  /** The container for the robot. Contains subsystems, OI devices, and commands. * */
   public RobotContainer() throws IOException {
     switch (Constants.currentMode) {
       case REAL:
@@ -75,9 +76,12 @@ public class RobotContainer {
 
     // Configure the trigger bindings
     try {
-      VisionConstants.aprilTagFieldLayout = AprilTagFieldLayout.loadFromResource(null);
-    }
-    catch(IOException e){
+      VisionConstants.aprilTagFieldLayout2 =
+          AprilTagFieldLayout.loadFromResource(
+              AprilTagFields.k2026RebuiltAndymark.m_resourceFile); // Placefolder
+      VisionConstants.aprilTagFieldLayout2.setOrigin(OriginPosition.kBlueAllianceWallRightSide);
+
+    } catch (IOException e) {
       e.printStackTrace();
     }
     configureBindings();
