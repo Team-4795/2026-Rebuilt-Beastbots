@@ -20,7 +20,7 @@ public class VisionConstants {
             )
       };
 
-  public static final String[] cameraIds =
+  public static final String[] cameraNames =
       new String[] {
         "Why did last year call one of their cameras Jermaine Coral?",
         // "Camera ids are not that special",

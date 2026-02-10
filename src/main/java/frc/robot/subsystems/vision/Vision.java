@@ -6,9 +6,11 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import frc.robot.Constants.FieldConstants;
+import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.vision.VisionConstants.robotInfo;
 import java.util.ArrayList;
 import java.util.List;
+import org.littletonrobotics.junction.Logger;
 
 public class Vision {
   private static Vision instance;
@@ -35,7 +37,7 @@ public class Vision {
   public void periodic() {
     for (int i = 0; i < currentIo.length; i++) {
       currentIo[i].updateInputs(inputs[i]);
-      //   Logger.processInputs("VisionCamera " + i + ":", inputs);
+      Logger.processInputs("VisionCamera " + i + ":", inputs[i]);
     }
     for (int i = 0; i < currentIo.length; i++) {
       for (int p = 0; p < inputs[i].pose.length; p++) {
@@ -71,14 +73,13 @@ public class Vision {
                 * Math.pow(distance, 2);
         Vector<N3> stddevs = VecBuilder.fill(xyStdDev, xyStdDev, Units.degreesToRadians(40));
 
-        // Logger.recordOutput("Vision/" + VisionConstants.cameraIds[i] + "/Avg distance",
-        // distance);
-        // Logger.recordOutput("Vision/" + VisionConstants.cameraIds[i] + "/xy std dev", xyStdDev);
+        Logger.recordOutput("Vision/" + VisionConstants.cameraIds[i] + "/Avg distance", distance);
+        Logger.recordOutput("Vision/" + VisionConstants.cameraIds[i] + "/xy std dev", xyStdDev);
 
         if (shouldUpdate[i]) {
           // Bro idk what to do here
-          // RobotContainer.drivetrain.addVisionMeasurement(robotPose.toPose2d(),
-          // inputs[i].timestamp[p], stddevs);
+          Drive.getInstance()
+              .addVisionMeasurement(robotPose.toPose2d(), inputs[i].timestamp[p], stddevs);
           // info.pos = robotPose;
           // int number = 0;
           // for (int x = 0; x < stddevs.; x++)

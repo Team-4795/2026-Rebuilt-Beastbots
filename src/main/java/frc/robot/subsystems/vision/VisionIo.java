@@ -10,6 +10,11 @@ public interface VisionIo {
     Pose3d[] pose = new Pose3d[] {};
     double[] timestamp = new double[] {};
     int[] tags = new int[] {};
+
+    double poseAmbiguity = 0.0;
+
+    int pipelineIndex = 10;
+    String sortMode = "";
   }
 
   public default void updateInputs(VisionIoInputs inputs) {}
