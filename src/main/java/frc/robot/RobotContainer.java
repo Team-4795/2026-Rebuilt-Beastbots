@@ -48,7 +48,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    climb.setDefaultCommand(Commands.run(() -> climb.setVoltage(0)));
+    climb.setDefaultCommand(Commands.run(() -> climb.setVoltage(0), climb));
 
     operatorController.leftTrigger().whileTrue(Commands.run(() -> climb.setVoltage(10)));
     operatorController.rightTrigger().whileTrue(Commands.run(() -> climb.setVoltage(-10)));
