@@ -21,12 +21,12 @@ import frc.robot.Subsystems.climb.Climb;
 import frc.robot.Subsystems.climb.ClimbIOReal;
 import frc.robot.Subsystems.climb.ClimbIOSim;
 import frc.robot.commands.DriveCommands;
-import frc.robot.subsystems.drive.Drive;
-import frc.robot.subsystems.drive.GyroIO;
-import frc.robot.subsystems.drive.GyroIOPigeon2;
-import frc.robot.subsystems.drive.ModuleIO;
-import frc.robot.subsystems.drive.ModuleIOSim;
-import frc.robot.subsystems.drive.ModuleIOSpark;
+import frc.robot.Subsystems.drive.Drive;
+import frc.robot.Subsystems.drive.GyroIO;
+import frc.robot.Subsystems.drive.GyroIOPigeon2;
+import frc.robot.Subsystems.drive.ModuleIO;
+import frc.robot.Subsystems.drive.ModuleIOSim;
+import frc.robot.Subsystems.drive.ModuleIOSpark;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -51,19 +51,6 @@ public class RobotContainer {
         shooter = Shooter.Initialize(new ShooterIOReal());
         intake = Intake.Initialize(new IntakeIOReal());
         climb = Climb.Initialize(new ClimbIOReal());
-      case SIM:
-        shooter = Shooter.Initialize(new ShooterIOSim());
-        intake = Intake.Initialize(new IntakeIOSim());
-        climb = Climb.Initialize(new ClimbIOSim());
-      default:
-        shooter = Shooter.Initialize(new ShooterIOSim());
-        intake = Intake.Initialize(new IntakeIOSim());
-        climb = Climb.Initialize(new ClimbIOSim());
-    }
-
-    switch (Constants.currentMode) {
-      case REAL:
-        // Real robot, instantiate hardware IO implementations
         drive =
             new Drive(
                 new GyroIOPigeon2(),
@@ -72,9 +59,10 @@ public class RobotContainer {
                 new ModuleIOSpark(2),
                 new ModuleIOSpark(3));
         break;
-
       case SIM:
-        // Sim robot, instantiate physics sim IO implementations
+        shooter = Shooter.Initialize(new ShooterIOSim());
+        intake = Intake.Initialize(new IntakeIOSim());
+        climb = Climb.Initialize(new ClimbIOSim());
         drive =
             new Drive(
                 new GyroIO() {},
@@ -83,9 +71,10 @@ public class RobotContainer {
                 new ModuleIOSim(),
                 new ModuleIOSim());
         break;
-
       default:
-        // Replayed robot, disable IO implementations
+        shooter = Shooter.Initialize(new ShooterIOSim());
+        intake = Intake.Initialize(new IntakeIOSim());
+        climb = Climb.Initialize(new ClimbIOSim());
         drive =
             new Drive(
                 new GyroIO() {},
@@ -95,6 +84,8 @@ public class RobotContainer {
                 new ModuleIO() {});
         break;
     }
+
+   
 
     // Configure the trigger bindings
     configureBindings();
