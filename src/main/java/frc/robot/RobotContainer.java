@@ -16,9 +16,9 @@ import frc.robot.Subsystems.Shooter.Shooter;
 import frc.robot.Subsystems.Shooter.ShooterConstants;
 import frc.robot.Subsystems.Shooter.ShooterIOReal;
 import frc.robot.Subsystems.Shooter.ShooterIOSim;
-import frc.robot.subsystems.climb.Climb;
-import frc.robot.subsystems.climb.ClimbIOReal;
-import frc.robot.subsystems.climb.ClimbIOSim;
+import frc.robot.Subsystems.climb.Climb;
+import frc.robot.Subsystems.climb.ClimbIOReal;
+import frc.robot.Subsystems.climb.ClimbIOSim;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -34,8 +34,7 @@ public class RobotContainer {
   // Controllers
   private final CommandXboxController driverController = new CommandXboxController(0);
   private final CommandXboxController operatorController = new CommandXboxController(1);
-  private final CommandXboxController driverController = new CommandXboxController(0);
-  private final CommandXboxController operatorController = new CommandXboxController(1);
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     switch (Constants.currentMode) {
@@ -71,7 +70,25 @@ public class RobotContainer {
    * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
-  private void configureBindings() {}
+  private void configureBindings() {
+    climb.setDefaultCommand(Commands.run(() -> climb.setVoltage(0), climb));
+
+    operatorController.leftTrigger().whileTrue(Commands.run(() -> climb.setVoltage(10)));
+    operatorController.rightTrigger().whileTrue(Commands.run(() -> climb.setVoltage(-10)));
+
+      shooter.setDefaultCommand(Commands.run(() -> shooter.setIntakeVoltage(0), shooter));
+
+    driverController
+        .rightBumper()
+        .onTrue(
+            Commands.run(() -> shooter.setIntakeVoltage(ShooterConstants.shooterVoltage), shooter));
+
+    operatorController
+        .leftBumper()
+        .onTrue(Commands.run(() -> intake.setVoltage(10), intake))
+        .onFalse(Commands.run(() -> intake.setVoltage(0), intake));
+  }
+
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
