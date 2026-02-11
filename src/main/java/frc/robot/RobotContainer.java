@@ -6,7 +6,6 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Subsystems.Intake.Intake;
@@ -41,22 +40,17 @@ public class RobotContainer {
       case REAL:
         shooter = Shooter.Initialize(new ShooterIOReal());
         intake = Intake.Initialize(new IntakeIOReal());
-      case SIM:
-        shooter = Shooter.Initialize(new ShooterIOSim());
-        intake = Intake.Initialize(new IntakeIOSim());
-      default:
-        shooter = Shooter.Initialize(new ShooterIOSim());
-        intake = Intake.Initialize(new IntakeIOSim());
-    }
-
-    switch (Constants.currentMode) {
-      case REAL:
         climb = Climb.Initialize(new ClimbIOReal());
       case SIM:
+        shooter = Shooter.Initialize(new ShooterIOSim());
+        intake = Intake.Initialize(new IntakeIOSim());
         climb = Climb.Initialize(new ClimbIOSim());
       default:
+        shooter = Shooter.Initialize(new ShooterIOSim());
+        intake = Intake.Initialize(new IntakeIOSim());
         climb = Climb.Initialize(new ClimbIOSim());
     }
+
     // Configure the trigger bindings
     configureBindings();
   }
@@ -73,12 +67,12 @@ public class RobotContainer {
   private void configureBindings() {
     climb.setDefaultCommand(Commands.run(() -> climb.setVoltage(0), climb));
 
-    operatorController.leftTrigger().whileTrue(Commands.run(() -> climb.setVoltage(10)));
-    operatorController.rightTrigger().whileTrue(Commands.run(() -> climb.setVoltage(-10)));
+    operatorController.leftTrigger().whileTrue(Commands.run(() -> climb.setVoltage(-10)));
+    operatorController.rightTrigger().whileTrue(Commands.run(() -> climb.setVoltage(10)));
 
-      shooter.setDefaultCommand(Commands.run(() -> shooter.setIntakeVoltage(0), shooter));
+    shooter.setDefaultCommand(Commands.run(() -> shooter.setIntakeVoltage(0), shooter));
 
-    driverController
+    operatorController
         .rightBumper()
         .onTrue(
             Commands.run(() -> shooter.setIntakeVoltage(ShooterConstants.shooterVoltage), shooter));
@@ -88,7 +82,6 @@ public class RobotContainer {
         .onTrue(Commands.run(() -> intake.setVoltage(10), intake))
         .onFalse(Commands.run(() -> intake.setVoltage(0), intake));
   }
-
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
