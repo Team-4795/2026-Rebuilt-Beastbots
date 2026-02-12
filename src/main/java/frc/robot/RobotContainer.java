@@ -20,7 +20,10 @@ import frc.robot.subsystems.drive.GyroIOPigeon2;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOSpark;
+import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionConstants;
+import frc.robot.subsystems.vision.VisionIoReal;
+import frc.robot.subsystems.vision.VisionIoSim;
 import java.io.IOException;
 
 /**
@@ -32,7 +35,7 @@ import java.io.IOException;
 public class RobotContainer {
   // Subsystems
   private final Drive drive;
-
+  private Vision vision;
   // Controllers
   private final CommandXboxController driverController = new CommandXboxController(0);
   private final CommandXboxController operatorController = new CommandXboxController(1);
@@ -49,6 +52,7 @@ public class RobotContainer {
                 new ModuleIOSpark(1),
                 new ModuleIOSpark(2),
                 new ModuleIOSpark(3));
+        vision = Vision.createInstance(new VisionIoReal(0));
         break;
 
       case SIM:
@@ -60,6 +64,7 @@ public class RobotContainer {
                 new ModuleIOSim(),
                 new ModuleIOSim(),
                 new ModuleIOSim());
+        vision = Vision.createInstance(new VisionIoSim());
         break;
 
       default:
@@ -71,6 +76,7 @@ public class RobotContainer {
                 new ModuleIO() {},
                 new ModuleIO() {},
                 new ModuleIO() {});
+        vision = Vision.createInstance(new VisionIoSim());
         break;
     }
 

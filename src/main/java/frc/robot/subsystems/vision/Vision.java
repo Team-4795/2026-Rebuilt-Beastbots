@@ -17,7 +17,6 @@ public class Vision {
   private VisionIo currentIo[];
   private VisionIoInputsAutoLogged inputs[];
   private boolean[] shouldUpdate = new boolean[] {true};
-  private robotInfo robotInfos[];
 
   public static Vision getInstance() {
     return instance;
@@ -73,8 +72,8 @@ public class Vision {
                 * Math.pow(distance, 2);
         Vector<N3> stddevs = VecBuilder.fill(xyStdDev, xyStdDev, Units.degreesToRadians(40));
 
-        Logger.recordOutput("Vision/" + VisionConstants.cameraIds[i] + "/Avg distance", distance);
-        Logger.recordOutput("Vision/" + VisionConstants.cameraIds[i] + "/xy std dev", xyStdDev);
+        Logger.recordOutput("Vision/" + VisionConstants.cameraNames[i] + "/Avg distance", distance);
+        Logger.recordOutput("Vision/" + VisionConstants.cameraNames[i] + "/xy std dev", xyStdDev);
 
         if (shouldUpdate[i]) {
           // Bro idk what to do here
