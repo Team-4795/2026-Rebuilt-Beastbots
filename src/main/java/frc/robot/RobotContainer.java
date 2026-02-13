@@ -4,11 +4,13 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.AutoCommands;
 import frc.robot.Subsystems.Shooter.Shooter;
 import frc.robot.Subsystems.Shooter.ShooterConstants;
 import frc.robot.Subsystems.Shooter.ShooterIOReal;
@@ -40,6 +42,12 @@ public class RobotContainer {
       default:
         shooter = Shooter.Initialize(new ShooterIOSim());
     }
+    // Register commands
+    NamedCommands.registerCommand("startShooter", AutoCommands.startShooter());
+    NamedCommands.registerCommand("stopShooter", AutoCommands.stopShooter());
+    NamedCommands.registerCommand("startIntake", AutoCommands.startIntake());
+    NamedCommands.registerCommand("stopShooter", AutoCommands.stopIntake());
+    NamedCommands.registerCommand("climb", AutoCommands.climb());
   }
 
   /**
@@ -59,6 +67,7 @@ public class RobotContainer {
                 () -> shooter.setShooterVoltage(ShooterConstants.shooterVoltage), shooter));
     shooter.setDefaultCommand(Commands.run(() -> shooter.setShooterVoltage(0), shooter));
   }
+
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

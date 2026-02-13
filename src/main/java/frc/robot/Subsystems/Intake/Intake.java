@@ -35,7 +35,7 @@ public class Intake extends SubsystemBase {
    *
    * @param volts
    */
-  public void setVoltage(double volts) {
+  public void setIntakeVoltage(double volts) {
     io.setVoltage(volts);
   }
 
