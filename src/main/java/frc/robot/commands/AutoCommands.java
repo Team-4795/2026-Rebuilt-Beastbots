@@ -2,7 +2,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-
 import frc.robot.Subsystems.Shooter.Shooter;
 
 public class AutoCommands {
@@ -20,6 +19,7 @@ public class AutoCommands {
   public static Command startIntake() {
     return Commands.none();
   }
+
   public static Command climb() {
     return Commands.none();
   }
