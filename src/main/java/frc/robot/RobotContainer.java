@@ -42,11 +42,21 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. * */
   public RobotContainer() throws IOException {
+    try {
+      VisionConstants.aprilTagFieldLayout2 =
+          AprilTagFieldLayout.loadFromResource(
+              AprilTagFields.k2026RebuiltAndymark.m_resourceFile); // Placefolder
+      VisionConstants.aprilTagFieldLayout2.setOrigin(OriginPosition.kBlueAllianceWallRightSide);
+
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
     switch (Constants.currentMode) {
       case REAL:
         // Real robot, instantiate hardware IO implementations
         drive =
-            new Drive(
+            Drive.createInstance(
                 new GyroIOPigeon2(),
                 new ModuleIOSpark(0),
                 new ModuleIOSpark(1),
@@ -58,7 +68,7 @@ public class RobotContainer {
       case SIM:
         // Sim robot, instantiate physics sim IO implementations
         drive =
-            new Drive(
+            Drive.createInstance(
                 new GyroIO() {},
                 new ModuleIOSim(),
                 new ModuleIOSim(),
@@ -70,7 +80,7 @@ public class RobotContainer {
       default:
         // Replayed robot, disable IO implementations
         drive =
-            new Drive(
+            Drive.createInstance(
                 new GyroIO() {},
                 new ModuleIO() {},
                 new ModuleIO() {},
@@ -78,17 +88,6 @@ public class RobotContainer {
                 new ModuleIO() {});
         vision = Vision.createInstance(new VisionIoSim());
         break;
-    }
-
-    // Configure the trigger bindings
-    try {
-      VisionConstants.aprilTagFieldLayout2 =
-          AprilTagFieldLayout.loadFromResource(
-              AprilTagFields.k2026RebuiltAndymark.m_resourceFile); // Placefolder
-      VisionConstants.aprilTagFieldLayout2.setOrigin(OriginPosition.kBlueAllianceWallRightSide);
-
-    } catch (IOException e) {
-      e.printStackTrace();
     }
     configureBindings();
   }

@@ -5,14 +5,14 @@ import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.subsystems.drive.Drive;
-import frc.robot.subsystems.vision.VisionConstants.robotInfo;
 import java.util.ArrayList;
 import java.util.List;
 import org.littletonrobotics.junction.Logger;
 
-public class Vision {
+public class Vision extends SubsystemBase {
   private static Vision instance;
   private VisionIo currentIo[];
   private VisionIoInputsAutoLogged inputs[];
@@ -24,15 +24,20 @@ public class Vision {
 
   public static Vision createInstance(VisionIo... io) {
     if (instance == null) {
-      return new Vision(io);
+      instance = new Vision(io);
     }
     return instance;
   }
 
-  public Vision(VisionIo... io) {
-    currentIo = io;
+  public Vision(VisionIo visionIO[]) {
+    currentIo = visionIO;
+    inputs = new VisionIoInputsAutoLogged[visionIO.length];
+    for (int i = 0; i < visionIO.length; i++) {
+      inputs[i] = new VisionIoInputsAutoLogged();
+    }
   }
 
+  @Override
   public void periodic() {
     for (int i = 0; i < currentIo.length; i++) {
       currentIo[i].updateInputs(inputs[i]);
@@ -40,7 +45,6 @@ public class Vision {
     }
     for (int i = 0; i < currentIo.length; i++) {
       for (int p = 0; p < inputs[i].pose.length; p++) {
-        robotInfo info = new robotInfo();
         Pose3d robotPose = inputs[i].pose[p];
 
         if (robotPose.getX() < -VisionConstants.fieldBorderMargin

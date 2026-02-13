@@ -39,8 +39,14 @@ public class VisionIoSim implements VisionIo {
   @Override
   public void updateInputs(VisionIoInputs inputs) {
     visionSim.update(Drive.getInstance().getPose());
-    Logger.recordOutput("robotPose2d", visionSim.getDebugField().getRobotPose());
+    cameraSimOne.enableRawStream(true);
+    cameraSimOne.enableProcessedStream(true);
+
+    // Enable drawing a wireframe visualization of the field to the camera streams.
+    // This is extremely resource-intensive and is disabled by default.
+    cameraSimOne.enableDrawWireframe(true);
     Logger.recordOutput(
         "Vision/Camera Poses/Front Cam Pose", visionSim.getCameraPose(cameraSimOne).get());
+    Logger.recordOutput("number", 5);
   }
 }

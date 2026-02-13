@@ -30,7 +30,7 @@ public final class Constants {
   }
 
   public static final class FieldConstants {
-    public static final double fieldLength = 0;
-    public static final double fieldWidth = 0;
+    public static final double fieldLength = 30;
+    public static final double fieldWidth = 30;
   }
 }

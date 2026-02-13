@@ -15,14 +15,14 @@ public class VisionConstants {
   public static Transform3d positionOfCameras[] =
       new Transform3d[] {
         new Transform3d(
-            new Translation3d(5, 5, 5), // in meters
-            new Rotation3d(5, 5, 5) // in radians
+            new Translation3d(0, 0, 1), // in meters
+            new Rotation3d(0, 0, 0) // in radians
             )
       };
 
   public static final String[] cameraNames =
       new String[] {
-        "Why did last year call one of their cameras Jermaine Coral?",
+        "camera1",
         // "Camera ids are not that special",
         // "Kendrick LaBarge was another one from last year",
         // "and who came up with Cod Wave?"
