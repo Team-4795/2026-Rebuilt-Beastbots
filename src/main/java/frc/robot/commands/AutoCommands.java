@@ -27,7 +27,7 @@ public class AutoCommands {
     return Commands.run(() -> intake.setIntakeVoltage(0), intake);
   }
 
-  public static Command climb() {
+  public static Command startClimb() {
     return Commands.none();
   }
 }

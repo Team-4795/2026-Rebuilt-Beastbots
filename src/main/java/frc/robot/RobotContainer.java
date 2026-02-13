@@ -47,7 +47,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("stopShooter", AutoCommands.stopShooter());
     NamedCommands.registerCommand("startIntake", AutoCommands.startIntake());
     NamedCommands.registerCommand("stopShooter", AutoCommands.stopIntake());
-    NamedCommands.registerCommand("climb", AutoCommands.climb());
+    NamedCommands.registerCommand("startClimb", AutoCommands.climb());
   }
 
   /**
