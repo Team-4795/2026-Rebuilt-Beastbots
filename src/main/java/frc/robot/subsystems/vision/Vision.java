@@ -50,7 +50,7 @@ public class Vision extends SubsystemBase {
         if (robotPose.getX() < -VisionConstants.fieldBorderMargin
             || robotPose.getX() > FieldConstants.fieldLength + VisionConstants.fieldBorderMargin
             || robotPose.getY() < -VisionConstants.fieldBorderMargin
-            || robotPose.getY() > FieldConstants.fieldWidth + VisionConstants.fieldBorderMargin
+            || robotPose.getY() > FieldConstants.fieldlWidth + VisionConstants.fieldBorderMargin
             || robotPose.getZ() < -VisionConstants.zMargin
             || robotPose.getZ() > VisionConstants.zMargin) {
           continue;

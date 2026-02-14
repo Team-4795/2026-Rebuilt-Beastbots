@@ -7,7 +7,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.RobotBase;
+import frc.robot.subsystems.vision.VisionConstants;
 
 /**
  * This class defines the runtime mode used by AdvantageKit. The mode is always "real" when running
@@ -29,8 +31,32 @@ public final class Constants {
     REPLAY
   }
 
-  public static final class FieldConstants {
-    public static final double fieldLength = 30;
-    public static final double fieldWidth = 30;
+  public static class FieldConstants {
+    public static double fieldLength = VisionConstants.aprilTagFieldLayout2.getFieldLength();
+    public static double fieldlWidth = VisionConstants.aprilTagFieldLayout2.getFieldWidth();
+
+    public static Translation2d redHub = new Translation2d(11.910, 4.060);
+    public static Translation2d redLeftTrench =
+        VisionConstants.aprilTagFieldLayout2.getTagPose(7).get().getTranslation().toTranslation2d();
+    public static Translation2d redRightTrench =
+        VisionConstants.aprilTagFieldLayout2
+            .getTagPose(12)
+            .get()
+            .getTranslation()
+            .toTranslation2d();
+
+    public static Translation2d blueHub = new Translation2d(fieldLength - 11.910, 4.060);
+    public static Translation2d blueLeftTrench =
+        VisionConstants.aprilTagFieldLayout2
+            .getTagPose(23)
+            .get()
+            .getTranslation()
+            .toTranslation2d();
+    public static Translation2d blueRightTrench =
+        VisionConstants.aprilTagFieldLayout2
+            .getTagPose(28)
+            .get()
+            .getTranslation()
+            .toTranslation2d();
   }
 }

@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.DriveCommands;
+import frc.robot.commands.autoAlign;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIOPigeon2;
@@ -25,7 +26,6 @@ import frc.robot.subsystems.vision.VisionConstants;
 import frc.robot.subsystems.vision.VisionIoReal;
 import frc.robot.subsystems.vision.VisionIoSim;
 import java.io.IOException;
-import org.littletonrobotics.junction.Logger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -111,7 +111,6 @@ public class RobotContainer {
             () -> -driverController.getLeftX(),
             () -> -driverController.getRightX()));
 
-
     // Lock to 0° when A button is held
     driverController
         .a()
@@ -121,6 +120,16 @@ public class RobotContainer {
                 () -> -driverController.getLeftY(),
                 () -> -driverController.getLeftX(),
                 () -> Rotation2d.kZero));
+    driverController
+        .y()
+        .whileTrue(
+            Commands.parallel(
+                DriveCommands.setRotationGoal(
+                    drive,
+                    () -> driverController.getLeftY(),
+                    () -> driverController.getLeftX(),
+                    () -> autoAlign.goalAngle),
+                new autoAlign()));
 
     // Switch to X pattern when X button is pressed
     driverController.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
