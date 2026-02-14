@@ -1,5 +1,6 @@
 package frc.robot.Subsystems.Shooter;
 
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
 
@@ -25,6 +26,7 @@ public class Shooter extends SubsystemBase {
 
   public Shooter(ShooterIO io) {
     shooterIo = io;
+    this.setDefaultCommand(Commands.run(() -> this.setShooterVoltage(0), this));
   }
 
   @Override

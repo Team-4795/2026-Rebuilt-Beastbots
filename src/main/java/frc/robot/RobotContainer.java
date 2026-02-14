@@ -10,11 +10,14 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.AutoCommands;
+import frc.robot.Subsystems.Intake.Intake;
+import frc.robot.Subsystems.Intake.IntakeIOReal;
+import frc.robot.Subsystems.Intake.IntakeIOSim;
 import frc.robot.Subsystems.Shooter.Shooter;
 import frc.robot.Subsystems.Shooter.ShooterConstants;
 import frc.robot.Subsystems.Shooter.ShooterIOReal;
 import frc.robot.Subsystems.Shooter.ShooterIOSim;
+import frc.robot.commands.AutoCommands;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -25,23 +28,28 @@ import frc.robot.Subsystems.Shooter.ShooterIOSim;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private Shooter shooter;
+  private Intake intake;
   // Controllers
   private final CommandXboxController driverController = new CommandXboxController(0);
   private final CommandXboxController operatorController = new CommandXboxController(1);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    // Configure the trigger bindings
-    configureBindings();
-
     switch (Constants.currentMode) {
       case REAL:
         shooter = Shooter.Initialize(new ShooterIOReal());
+        intake = Intake.Initialize(new IntakeIOReal());
       case SIM:
         shooter = Shooter.Initialize(new ShooterIOSim());
+        intake = Intake.Initialize(new IntakeIOSim());
       default:
         shooter = Shooter.Initialize(new ShooterIOSim());
+        intake = Intake.Initialize(new IntakeIOSim());
     }
+
+    // Configure the trigger bindings
+    configureBindings();
+
     // Register commands
     NamedCommands.registerCommand("startShooter", AutoCommands.startShooter());
     NamedCommands.registerCommand("stopShooter", AutoCommands.stopShooter());
@@ -62,12 +70,10 @@ public class RobotContainer {
   private void configureBindings() {
     driverController
         .rightBumper()
-        .onTrue(
+        .whileTrue(
             Commands.run(
                 () -> shooter.setShooterVoltage(ShooterConstants.shooterVoltage), shooter));
-    shooter.setDefaultCommand(Commands.run(() -> shooter.setShooterVoltage(0), shooter));
   }
-
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
