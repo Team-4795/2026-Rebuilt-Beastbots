@@ -25,6 +25,7 @@ import frc.robot.subsystems.vision.VisionConstants;
 import frc.robot.subsystems.vision.VisionIoReal;
 import frc.robot.subsystems.vision.VisionIoSim;
 import java.io.IOException;
+import org.littletonrobotics.junction.Logger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -109,6 +110,7 @@ public class RobotContainer {
             () -> -driverController.getLeftY(),
             () -> -driverController.getLeftX(),
             () -> -driverController.getRightX()));
+
 
     // Lock to 0° when A button is held
     driverController
