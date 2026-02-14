@@ -17,6 +17,12 @@ import frc.robot.Subsystems.Shooter.Shooter;
 import frc.robot.Subsystems.Shooter.ShooterConstants;
 import frc.robot.Subsystems.Shooter.ShooterIOReal;
 import frc.robot.Subsystems.Shooter.ShooterIOSim;
+import frc.robot.Subsystems.drive.Drive;
+import frc.robot.Subsystems.drive.GyroIO;
+import frc.robot.Subsystems.drive.GyroIOPigeon2;
+import frc.robot.Subsystems.drive.ModuleIO;
+import frc.robot.Subsystems.drive.ModuleIOSim;
+import frc.robot.Subsystems.drive.ModuleIOSpark;
 import frc.robot.commands.AutoCommands;
 
 /**
@@ -29,6 +35,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private Shooter shooter;
   private Intake intake;
+  private Drive drive;
   // Controllers
   private final CommandXboxController driverController = new CommandXboxController(0);
   private final CommandXboxController operatorController = new CommandXboxController(1);
@@ -39,12 +46,32 @@ public class RobotContainer {
       case REAL:
         shooter = Shooter.Initialize(new ShooterIOReal());
         intake = Intake.Initialize(new IntakeIOReal());
+        new Drive(
+            new GyroIOPigeon2(),
+            new ModuleIOSpark(0),
+            new ModuleIOSpark(1),
+            new ModuleIOSpark(2),
+            new ModuleIOSpark(3));
       case SIM:
         shooter = Shooter.Initialize(new ShooterIOSim());
         intake = Intake.Initialize(new IntakeIOSim());
+        drive =
+        new Drive(
+            new GyroIO() {},
+            new ModuleIOSim(),
+            new ModuleIOSim(),
+            new ModuleIOSim(),
+            new ModuleIOSim());
       default:
         shooter = Shooter.Initialize(new ShooterIOSim());
         intake = Intake.Initialize(new IntakeIOSim());
+        drive =
+        new Drive(
+            new GyroIO() {},
+            new ModuleIO() {},
+            new ModuleIO() {},
+            new ModuleIO() {},
+            new ModuleIO() {});
     }
 
     // Configure the trigger bindings
@@ -57,7 +84,6 @@ public class RobotContainer {
     NamedCommands.registerCommand("stopShooter", AutoCommands.stopIntake());
     NamedCommands.registerCommand("startClimb", AutoCommands.startClimb());
   }
-
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the
    * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
@@ -82,6 +108,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return new PathPlannerAuto("Example Auto");
+    return new PathPlannerAuto("Left Depot Climb");
   }
 }
