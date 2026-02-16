@@ -3,8 +3,10 @@ package frc.robot.Subsystems.Led;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class Led {
+public class Led extends SubsystemBase {
 
   private enum BlinkState {
     RAPID,
@@ -12,6 +14,7 @@ public class Led {
     SOLID
   }
 
+  private Led LED; 
   private AddressableLED led;
   private AddressableLEDBuffer buffer;
   private BlinkState blink;
@@ -34,6 +37,11 @@ public class Led {
     led = new AddressableLED(LedConstants.ledPort);
     buffer = new AddressableLEDBuffer(LedConstants.ledLength);
     led.setLength(buffer.getLength());
+
+    setDefaultCommand(Commands.either(
+    Commands.runOnce(()-> setTeamColors(), LED), 
+    null,
+    null));
   }
 
   /**
@@ -70,9 +78,9 @@ public class Led {
   }
 
   /** Sets the led strip to the team color */
-  public void setTeamColor() {
-    setColorNoOutput(176, 95, 85, 0, (LedConstants.ledLength / 2));
-    setColorNoOutput(83, 97, 99, (LedConstants.ledLength / 2 + 1), LedConstants.ledLength);
+  public void setTeamColors() {
+    setColorNoOutput(180, 80, 80, 0, (LedConstants.ledLength / 2));
+    setColorNoOutput(90, 100, 100, (LedConstants.ledLength / 2 + 1), LedConstants.ledLength);
 
     setOutput();
   }
