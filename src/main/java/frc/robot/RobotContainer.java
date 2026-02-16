@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Subsystems.Hopper.*;
 import frc.robot.Subsystems.Intake.*;
+import frc.robot.Subsystems.Led.*;
 import frc.robot.Subsystems.Shooter.*;
 
 /**
@@ -23,6 +24,7 @@ public class RobotContainer {
   private Shooter shooter;
   private Intake intake;
   private Hopper hopper;
+  private Led led;
 
   // Controllers
   private final CommandXboxController driverController = new CommandXboxController(0);
@@ -43,6 +45,7 @@ public class RobotContainer {
         intake = Intake.Initialize(new IntakeIOSim());
         hopper = Hopper.Initialize(new HopperIOSim());
     }
+    led = Led.getInstance();
 
     // Configure the trigger bindings
     configureBindings();
@@ -77,11 +80,10 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    return this.extendHopper();
+    return Commands.sequence(autoTelopInitialCommand());
   }
 
-  public Command extendHopper() {
-    return this.hopper.setExtended(true);
+  public Command autoTelopInitialCommand() {
+    return Commands.parallel(this.hopper.setExtended(true), this.led.setTeamColor());
   }
 }
