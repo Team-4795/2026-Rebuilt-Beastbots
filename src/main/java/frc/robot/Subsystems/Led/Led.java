@@ -68,6 +68,16 @@ public class Led {
     }
   }
 
+  /**
+   * Sets the led strip to the team color
+   *
+   * @return A command to set the color
+   */
+  public Command setTeamColor() {
+    return Commands.runOnce(
+        () -> this.setColor(LedConstants.teamColor, LedConstants.ledStart, LedConstants.ledLength));
+  }
+
   /** Flushes the LED buffer to the physical LED */
   public void setOutput() {
     led.setData(buffer);
