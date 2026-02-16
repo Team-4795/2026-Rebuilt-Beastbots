@@ -12,18 +12,23 @@ import edu.wpi.first.wpilibj2.command.Commands;
 
 public class Led {
 
-    private enum blinkState {
-        rapid, 
-        slow,
-        solid
+    private enum BlinkState {
+        RAPID, 
+        SLOW,
+        SOLID
     }
 
     private AddressableLED led;
     private AddressableLEDBuffer buffer;
-    private blinkState blink;
+    private BlinkState blink;
 
     private static Led instance;
-    private static Led getInstance() {
+
+    /**
+     * Gets the current instance of {@link Led}. If none exists, it it created
+     * @return
+     */
+    public static Led getInstance() {
         if (instance == null) {
             instance = new Led();
         }
@@ -36,15 +41,31 @@ public class Led {
         led.setLength(buffer.getLength());
     }
     
-    // h = Hue, s = Saturation, v = Value, start = Starting Point, end = Ending Point
-    private void setColor(int h, int s, int v, int start, int end) {
+    /**
+     * Sets the color of the LED for a specified range
+     * @param h Hue of color
+     * @param s Saturation of color
+     * @param v Value of color
+     * @param start Start of the range
+     * @param end End of the range
+     * @see setColor 
+     */
+    public void setColor(int h, int s, int v, int start, int end) {
         setColorNoOutput(h, s, v, start, end);
         setOutput();
     }
 
-    /*  Sets the HSV value of the color, where the color starts,
-        and where the color ends */
-    private void setColorNoOutput(int h, int s, int v, int start, int end) {
+    /**
+     * Sets the color of the LED *buffer* for a specified range. This does not flush the LED buffer to the physical LED; make sure to call {@link #setOutput()}.
+     * @param h Hue of color
+     * @param s Saturation of color
+     * @param v Value of color
+     * @param start Start of the range
+     * @param end End of the range
+     * @see setColor 
+     */
+
+    public void setColorNoOutput(int h, int s, int v, int start, int end) {
         start = MathUtil.clamp(start, 0, LedConstants.ledLength);
         end = MathUtil.clamp(end, start, LedConstants.ledLength);
 
@@ -53,8 +74,10 @@ public class Led {
         }
     }
 
-    // Sets the settings of the LEDS to the buffer settings, then starts it
-    private void setOutput() {
+    /**
+     * Flushes the LED buffer to the physical LED
+     */
+    public void setOutput() {
         led.setData(buffer);
         led.start();
     }
