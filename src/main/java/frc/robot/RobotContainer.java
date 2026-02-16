@@ -4,8 +4,8 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -24,6 +24,7 @@ import frc.robot.Subsystems.drive.ModuleIO;
 import frc.robot.Subsystems.drive.ModuleIOSim;
 import frc.robot.Subsystems.drive.ModuleIOSpark;
 import frc.robot.commands.AutoCommands;
+import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -36,6 +37,7 @@ public class RobotContainer {
   private Shooter shooter;
   private Intake intake;
   private Drive drive;
+  LoggedDashboardChooser<Command> autoChooser;
   // Controllers
   private final CommandXboxController driverController = new CommandXboxController(0);
   private final CommandXboxController operatorController = new CommandXboxController(1);
@@ -56,22 +58,22 @@ public class RobotContainer {
         shooter = Shooter.Initialize(new ShooterIOSim());
         intake = Intake.Initialize(new IntakeIOSim());
         drive =
-        new Drive(
-            new GyroIO() {},
-            new ModuleIOSim(),
-            new ModuleIOSim(),
-            new ModuleIOSim(),
-            new ModuleIOSim());
+            new Drive(
+                new GyroIO() {},
+                new ModuleIOSim(),
+                new ModuleIOSim(),
+                new ModuleIOSim(),
+                new ModuleIOSim());
       default:
         shooter = Shooter.Initialize(new ShooterIOSim());
         intake = Intake.Initialize(new IntakeIOSim());
         drive =
-        new Drive(
-            new GyroIO() {},
-            new ModuleIO() {},
-            new ModuleIO() {},
-            new ModuleIO() {},
-            new ModuleIO() {});
+            new Drive(
+                new GyroIO() {},
+                new ModuleIO() {},
+                new ModuleIO() {},
+                new ModuleIO() {},
+                new ModuleIO() {});
     }
 
     // Configure the trigger bindings
@@ -83,6 +85,10 @@ public class RobotContainer {
     NamedCommands.registerCommand("startIntake", AutoCommands.startIntake());
     NamedCommands.registerCommand("stopShooter", AutoCommands.stopIntake());
     NamedCommands.registerCommand("startClimb", AutoCommands.startClimb());
+
+    autoChooser =
+        new LoggedDashboardChooser<>(
+            "Auto Chooser", AutoBuilder.buildAutoChooser("Left Depot Climb"));
   }
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the
@@ -108,6 +114,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return new PathPlannerAuto("Left Depot Climb");
+    return autoChooser.get();
   }
 }
