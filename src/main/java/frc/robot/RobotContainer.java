@@ -84,6 +84,6 @@ public class RobotContainer {
   }
 
   public Command autoTelopInitialCommand() {
-    return Commands.parallel(this.hopper.setExtended(true), this.led.setTeamColor());
+    return Commands.sequence(this.hopper.setExtended(true));
   }
 }
