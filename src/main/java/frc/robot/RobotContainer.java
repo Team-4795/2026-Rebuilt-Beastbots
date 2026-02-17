@@ -11,13 +11,8 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.DriveCommands;
-import frc.robot.subsystems.Intake.Intake;
-import frc.robot.subsystems.Intake.IntakeIOReal;
-import frc.robot.subsystems.Intake.IntakeIOSim;
-import frc.robot.subsystems.Shooter.Shooter;
-import frc.robot.subsystems.Shooter.ShooterConstants;
-import frc.robot.subsystems.Shooter.ShooterIOReal;
-import frc.robot.subsystems.Shooter.ShooterIOSim;
+import frc.robot.subsystems.Intake.*;
+import frc.robot.subsystems.Shooter.*;
 import frc.robot.subsystems.climb.Climb;
 import frc.robot.subsystems.climb.ClimbIOReal;
 import frc.robot.subsystems.climb.ClimbIOSim;
@@ -27,6 +22,7 @@ import frc.robot.subsystems.drive.GyroIOPigeon2;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOSpark;
+import frc.robot.subsystems.hopper.*;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -40,6 +36,8 @@ public class RobotContainer {
   private Shooter shooter;
   private Intake intake;
   private Climb climb;
+  private Hopper hopper;
+
   // Controllers
   private final CommandXboxController driverController = new CommandXboxController(0);
   private final CommandXboxController operatorController = new CommandXboxController(1);
@@ -51,6 +49,7 @@ public class RobotContainer {
         shooter = Shooter.Initialize(new ShooterIOReal());
         intake = Intake.Initialize(new IntakeIOReal());
         climb = Climb.Initialize(new ClimbIOReal());
+        hopper = Hopper.Initialize(new HopperIOReal());
         drive =
             new Drive(
                 new GyroIOPigeon2(),
@@ -70,6 +69,7 @@ public class RobotContainer {
                 new ModuleIOSim(),
                 new ModuleIOSim(),
                 new ModuleIOSim());
+        hopper = Hopper.Initialize(new HopperIOSim());
         break;
       default:
         shooter = Shooter.Initialize(new ShooterIOSim());
@@ -82,6 +82,7 @@ public class RobotContainer {
                 new ModuleIO() {},
                 new ModuleIO() {},
                 new ModuleIO() {});
+        hopper = Hopper.Initialize(new HopperIOSim());
         break;
     }
 
@@ -156,6 +157,10 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return null;
+    return this.extendHopper();
+  }
+
+  public Command extendHopper() {
+    return this.hopper.setExtended(true);
   }
 }
