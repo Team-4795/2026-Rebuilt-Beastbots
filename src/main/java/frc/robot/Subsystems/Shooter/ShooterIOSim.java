@@ -1,9 +1,9 @@
-package frc.robot.subsystems.Shooter;
+package frc.robot.subsystems.shooter;
 
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
-import frc.robot.subsystems.Shooter.ShooterIO.ShooterIOInputs;
+import frc.robot.subsystems.shooter.ShooterIO.ShooterIOInputs;
 
 public class ShooterIOSim implements ShooterIO {
   private DCMotorSim outTakeMotor =
