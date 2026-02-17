@@ -1,4 +1,4 @@
-package frc.robot.Subsystems.climb;
+package frc.robot.subsystems.climb;
 
 public class ClimbConstants {
   // CHANGE LATER

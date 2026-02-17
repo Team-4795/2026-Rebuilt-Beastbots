@@ -1,4 +1,4 @@
-package frc.robot.Subsystems.climb;
+package frc.robot.subsystems.climb;
 
 import com.revrobotics.PersistMode;
 import com.revrobotics.RelativeEncoder;

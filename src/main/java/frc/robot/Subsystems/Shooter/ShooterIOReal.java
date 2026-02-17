@@ -1,4 +1,4 @@
-package frc.robot.Subsystems.Shooter;
+package frc.robot.subsystems.Shooter;
 
 import com.revrobotics.PersistMode;
 import com.revrobotics.RelativeEncoder;
@@ -7,7 +7,7 @@ import com.revrobotics.spark.SparkLowLevel;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
-import frc.robot.Subsystems.Shooter.ShooterIO.ShooterIOInputs;
+import frc.robot.subsystems.Shooter.ShooterIO.ShooterIOInputs;
 
 public class ShooterIOReal implements ShooterIO {
   private SparkMax outTakeMotor =

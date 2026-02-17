@@ -1,4 +1,4 @@
-package frc.robot.Subsystems.Shooter;
+package frc.robot.subsystems.Shooter;
 
 import org.littletonrobotics.junction.AutoLog;
 

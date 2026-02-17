@@ -10,23 +10,23 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Subsystems.Intake.Intake;
-import frc.robot.Subsystems.Intake.IntakeIOReal;
-import frc.robot.Subsystems.Intake.IntakeIOSim;
-import frc.robot.Subsystems.Shooter.Shooter;
-import frc.robot.Subsystems.Shooter.ShooterConstants;
-import frc.robot.Subsystems.Shooter.ShooterIOReal;
-import frc.robot.Subsystems.Shooter.ShooterIOSim;
-import frc.robot.Subsystems.climb.Climb;
-import frc.robot.Subsystems.climb.ClimbIOReal;
-import frc.robot.Subsystems.climb.ClimbIOSim;
 import frc.robot.commands.DriveCommands;
-import frc.robot.Subsystems.drive.Drive;
-import frc.robot.Subsystems.drive.GyroIO;
-import frc.robot.Subsystems.drive.GyroIOPigeon2;
-import frc.robot.Subsystems.drive.ModuleIO;
-import frc.robot.Subsystems.drive.ModuleIOSim;
-import frc.robot.Subsystems.drive.ModuleIOSpark;
+import frc.robot.subsystems.Intake.Intake;
+import frc.robot.subsystems.Intake.IntakeIOReal;
+import frc.robot.subsystems.Intake.IntakeIOSim;
+import frc.robot.subsystems.Shooter.Shooter;
+import frc.robot.subsystems.Shooter.ShooterConstants;
+import frc.robot.subsystems.Shooter.ShooterIOReal;
+import frc.robot.subsystems.Shooter.ShooterIOSim;
+import frc.robot.subsystems.climb.Climb;
+import frc.robot.subsystems.climb.ClimbIOReal;
+import frc.robot.subsystems.climb.ClimbIOSim;
+import frc.robot.subsystems.drive.Drive;
+import frc.robot.subsystems.drive.GyroIO;
+import frc.robot.subsystems.drive.GyroIOPigeon2;
+import frc.robot.subsystems.drive.ModuleIO;
+import frc.robot.subsystems.drive.ModuleIOSim;
+import frc.robot.subsystems.drive.ModuleIOSpark;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -85,8 +85,6 @@ public class RobotContainer {
         break;
     }
 
-   
-
     // Configure the trigger bindings
     configureBindings();
   }
@@ -117,8 +115,7 @@ public class RobotContainer {
         .leftBumper()
         .onTrue(Commands.run(() -> intake.setVoltage(10), intake))
         .onFalse(Commands.run(() -> intake.setVoltage(0), intake));
-  }
-  private void configureBindings() {
+
     // Default command, normal field-relative drive
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(

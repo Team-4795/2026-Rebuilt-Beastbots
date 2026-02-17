@@ -1,4 +1,4 @@
-package frc.robot.Subsystems.Shooter;
+package frc.robot.subsystems.Shooter;
 
 public class ShooterConstants {
   public static final int motorPort = 0;
