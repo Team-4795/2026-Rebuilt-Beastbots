@@ -1,4 +1,4 @@
-package frc.robot.subsystems.hopper;
+package frc.robot.subsystems.Hopper;
 
 import com.revrobotics.PersistMode;
 import com.revrobotics.RelativeEncoder;

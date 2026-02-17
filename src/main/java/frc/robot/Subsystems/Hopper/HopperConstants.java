@@ -1,4 +1,4 @@
-package frc.robot.subsystems.hopper;
+package frc.robot.subsystems.Hopper;
 
 public class HopperConstants {
   public static final int motorPort = 0;

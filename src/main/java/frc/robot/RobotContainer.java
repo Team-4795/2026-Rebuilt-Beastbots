@@ -11,6 +11,9 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.DriveCommands;
+import frc.robot.subsystems.Hopper.*;
+import frc.robot.subsystems.Intake.*;
+import frc.robot.subsystems.Shooter.*;
 import frc.robot.subsystems.climb.Climb;
 import frc.robot.subsystems.climb.ClimbIOReal;
 import frc.robot.subsystems.climb.ClimbIOSim;
@@ -20,9 +23,6 @@ import frc.robot.subsystems.drive.GyroIOPigeon2;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOSpark;
-import frc.robot.subsystems.hopper.*;
-import frc.robot.subsystems.intake.*;
-import frc.robot.subsystems.shooter.*;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
