@@ -97,7 +97,9 @@ public class Robot extends LoggedRobot {
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
-  public void autonomousInit() {}
+  public void autonomousInit() {
+    robotContainer.getAutonomousCommand();
+  }
 
   /** This function is called periodically during autonomous. */
   @Override
@@ -107,6 +109,7 @@ public class Robot extends LoggedRobot {
   @Override
   public void teleopInit() {
     robotContainer.extendHopper();
+    robotContainer.autoTelopInitialCommand();
   }
 
   /** This function is called periodically during operator control. */

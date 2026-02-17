@@ -14,6 +14,7 @@ import frc.robot.commands.DriveCommands;
 import frc.robot.subsystems.Hopper.*;
 import frc.robot.subsystems.Intake.*;
 import frc.robot.subsystems.Shooter.*;
+import frc.robot.subsystems.Led.*;
 import frc.robot.subsystems.climb.Climb;
 import frc.robot.subsystems.climb.ClimbIOReal;
 import frc.robot.subsystems.climb.ClimbIOSim;
@@ -37,6 +38,7 @@ public class RobotContainer {
   private Intake intake;
   private Climb climb;
   private Hopper hopper;
+  private Led led;
 
   // Controllers
   private final CommandXboxController driverController = new CommandXboxController(0);
@@ -85,7 +87,7 @@ public class RobotContainer {
         hopper = Hopper.Initialize(new HopperIOSim());
         break;
     }
-
+    led = Led.getInstance();
     // Configure the trigger bindings
     configureBindings();
   }
@@ -157,10 +159,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return this.extendHopper();
-  }
-
-  public Command extendHopper() {
-    return this.hopper.setExtended(true);
+    return null;
   }
 }
