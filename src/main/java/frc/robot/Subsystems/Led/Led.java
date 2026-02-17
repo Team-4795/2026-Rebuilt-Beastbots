@@ -38,7 +38,7 @@ public class Led extends SubsystemBase {
     buffer = new AddressableLEDBuffer(LedConstants.ledLength);
     led.setLength(buffer.getLength());
 
-    setDefaultCommand(Commands.either(Commands.runOnce(() -> setTeamColors(), LED), null, null));
+    setDefaultCommand(Commands.runOnce(() -> setTeamColors(), this));
   }
 
   /**
