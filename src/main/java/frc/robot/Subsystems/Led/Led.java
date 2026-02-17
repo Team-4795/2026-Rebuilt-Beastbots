@@ -1,4 +1,4 @@
-package frc.robot.Subsystems.Led;
+package frc.robot.subsystems.Led;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.AddressableLED;
@@ -14,7 +14,7 @@ public class Led extends SubsystemBase {
     SOLID
   }
 
-  private Led LED; 
+  private Led LED;
   private AddressableLED led;
   private AddressableLEDBuffer buffer;
   private BlinkState blink;
@@ -38,10 +38,7 @@ public class Led extends SubsystemBase {
     buffer = new AddressableLEDBuffer(LedConstants.ledLength);
     led.setLength(buffer.getLength());
 
-    setDefaultCommand(Commands.either(
-    Commands.runOnce(()-> setTeamColors(), LED), 
-    null,
-    null));
+    setDefaultCommand(Commands.either(Commands.runOnce(() -> setTeamColors(), LED), null, null));
   }
 
   /**
