@@ -57,13 +57,12 @@ public class RobotContainer {
       case SIM:
         shooter = Shooter.Initialize(new ShooterIOSim());
         intake = Intake.Initialize(new IntakeIOSim());
-        drive =
-            new Drive(
-                new GyroIO() {},
-                new ModuleIOSim(),
-                new ModuleIOSim(),
-                new ModuleIOSim(),
-                new ModuleIOSim());
+        new Drive(
+            new GyroIO() {},
+            new ModuleIOSim(),
+            new ModuleIOSim(),
+            new ModuleIOSim(),
+            new ModuleIOSim());
       default:
         shooter = Shooter.Initialize(new ShooterIOSim());
         intake = Intake.Initialize(new IntakeIOSim());

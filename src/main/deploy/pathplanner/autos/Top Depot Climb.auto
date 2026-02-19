@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Left To Depot"
+            "pathName": "Top To Depot"
           }
         },
         {
@@ -61,7 +61,7 @@
       ]
     }
   },
-  "resetOdom": true,
+  "resetOdom": false,
   "folder": null,
   "choreoAuto": false
 }
