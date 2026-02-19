@@ -9,7 +9,7 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.RobotBase;
-import frc.robot.subsystems.vision.VisionConstants;
+import frc.robot.Subsystems.vision.VisionConstants;
 
 /**
  * This class defines the runtime mode used by AdvantageKit. The mode is always "real" when running

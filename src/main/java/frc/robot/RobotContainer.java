@@ -13,18 +13,18 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Subsystems.drive.Drive;
+import frc.robot.Subsystems.drive.GyroIO;
+import frc.robot.Subsystems.drive.GyroIOPigeon2;
+import frc.robot.Subsystems.drive.ModuleIO;
+import frc.robot.Subsystems.drive.ModuleIOSim;
+import frc.robot.Subsystems.drive.ModuleIOSpark;
+import frc.robot.Subsystems.vision.Vision;
+import frc.robot.Subsystems.vision.VisionConstants;
+import frc.robot.Subsystems.vision.VisionIoReal;
+import frc.robot.Subsystems.vision.VisionIoSim;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.autoAlign;
-import frc.robot.subsystems.drive.Drive;
-import frc.robot.subsystems.drive.GyroIO;
-import frc.robot.subsystems.drive.GyroIOPigeon2;
-import frc.robot.subsystems.drive.ModuleIO;
-import frc.robot.subsystems.drive.ModuleIOSim;
-import frc.robot.subsystems.drive.ModuleIOSpark;
-import frc.robot.subsystems.vision.Vision;
-import frc.robot.subsystems.vision.VisionConstants;
-import frc.robot.subsystems.vision.VisionIoReal;
-import frc.robot.subsystems.vision.VisionIoSim;
 import java.io.IOException;
 
 /**
@@ -37,6 +37,7 @@ public class RobotContainer {
   // Subsystems
   private final Drive drive;
   private Vision vision;
+
   // Controllers
   private final CommandXboxController driverController = new CommandXboxController(0);
   private final CommandXboxController operatorController = new CommandXboxController(1);
@@ -90,6 +91,7 @@ public class RobotContainer {
         vision = Vision.createInstance(new VisionIoSim());
         break;
     }
+
     configureBindings();
   }
 
@@ -126,8 +128,8 @@ public class RobotContainer {
             Commands.parallel(
                 DriveCommands.setRotationGoal(
                     drive,
-                    () -> driverController.getLeftY(),
-                    () -> driverController.getLeftX(),
+                    () -> -driverController.getLeftY(),
+                    () -> -driverController.getLeftX(),
                     () -> autoAlign.goalAngle),
                 new autoAlign()));
 

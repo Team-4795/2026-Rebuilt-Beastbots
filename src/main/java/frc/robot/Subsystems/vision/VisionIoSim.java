@@ -1,8 +1,8 @@
-package frc.robot.subsystems.vision;
+package frc.robot.Subsystems.vision;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.Constants;
-import frc.robot.subsystems.drive.Drive;
+import frc.robot.Subsystems.drive.Drive;
 import org.littletonrobotics.junction.Logger;
 import org.photonvision.PhotonCamera;
 import org.photonvision.simulation.PhotonCameraSim;

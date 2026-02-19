@@ -1,4 +1,4 @@
-package frc.robot.subsystems.vision;
+package frc.robot.Subsystems.vision;
 
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.Vector;
@@ -7,7 +7,7 @@ import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.FieldConstants;
-import frc.robot.subsystems.drive.Drive;
+import frc.robot.Subsystems.drive.Drive;
 import java.util.ArrayList;
 import java.util.List;
 import org.littletonrobotics.junction.Logger;
