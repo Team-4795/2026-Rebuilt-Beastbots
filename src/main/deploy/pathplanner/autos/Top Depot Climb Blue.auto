@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Center To Depot"
+            "pathName": "Top To Depot Blue"
           }
         },
         {
@@ -31,7 +31,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Depot to Climb"
+            "pathName": "Depot to Climb Blue"
           }
         },
         {

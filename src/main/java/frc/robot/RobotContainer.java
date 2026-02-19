@@ -48,12 +48,13 @@ public class RobotContainer {
       case REAL:
         shooter = Shooter.Initialize(new ShooterIOReal());
         intake = Intake.Initialize(new IntakeIOReal());
-        new Drive(
-            new GyroIOPigeon2(),
-            new ModuleIOSpark(0),
-            new ModuleIOSpark(1),
-            new ModuleIOSpark(2),
-            new ModuleIOSpark(3));
+        drive =
+            new Drive(
+                new GyroIOPigeon2(),
+                new ModuleIOSpark(0),
+                new ModuleIOSpark(1),
+                new ModuleIOSpark(2),
+                new ModuleIOSpark(3));
       case SIM:
         shooter = Shooter.Initialize(new ShooterIOSim());
         intake = Intake.Initialize(new IntakeIOSim());
@@ -87,7 +88,7 @@ public class RobotContainer {
 
     autoChooser =
         new LoggedDashboardChooser<>(
-            "Auto Chooser", AutoBuilder.buildAutoChooser("Left Depot Climb"));
+            "Auto Chooser", AutoBuilder.buildAutoChooser("Top Depot Climb Red"));
   }
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the
