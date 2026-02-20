@@ -37,9 +37,7 @@ public class ShooterIOSim implements ShooterIO {
 
     setVoltage(
         MathUtil.clamp(
-            ffVoltage + controller.calculate(simMotor.getAngularVelocityRPM(), setRPM),
-            -12,
-            12));
+            ffVoltage + controller.calculate(simMotor.getAngularVelocityRPM(), setRPM), -12, 12));
   }
 
   @Override
