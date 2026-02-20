@@ -11,6 +11,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Subsystems.drive.Drive;
@@ -26,6 +27,9 @@ import frc.robot.Subsystems.vision.VisionIoSim;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.autoAlign;
 import java.io.IOException;
+import frc.robot.Subsystems.Shooter.Shooter;
+import frc.robot.Subsystems.Shooter.ShooterIOReal;
+import frc.robot.Subsystems.Shooter.ShooterIOSim;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -37,7 +41,7 @@ public class RobotContainer {
   // Subsystems
   private final Drive drive;
   private Vision vision;
-
+  private Shooter shooter;
   // Controllers
   private final CommandXboxController driverController = new CommandXboxController(0);
   private final CommandXboxController operatorController = new CommandXboxController(1);
@@ -90,6 +94,15 @@ public class RobotContainer {
                 new ModuleIO() {});
         vision = Vision.createInstance(new VisionIoSim());
         break;
+    }
+
+    switch (Constants.currentMode) {
+      case REAL:
+        shooter = Shooter.Initialize(new ShooterIOReal());
+      case SIM:
+        shooter = Shooter.Initialize(new ShooterIOSim());
+      default:
+        shooter = Shooter.Initialize(new ShooterIOSim());
     }
 
     configureBindings();
@@ -146,6 +159,10 @@ public class RobotContainer {
                             new Pose2d(drive.getPose().getTranslation(), Rotation2d.kZero)),
                     drive)
                 .ignoringDisable(true));
+                
+    driverController.a().whileTrue(Commands.run(() -> shooter.setGoal(3000), shooter));
+
+    shooter.setDefaultCommand(Commands.run(() -> shooter.setGoal(0), shooter));
   }
 
   /**
