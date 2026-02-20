@@ -28,14 +28,6 @@ public class Shooter extends SubsystemBase {
     return instance;
   }
 
-  private double distanceFunction(double x) {
-    //RPM = distance^2+4
-
-    double distanceRPM = x*x+4;
-    return distanceRPM;
-    
-  }
-
   public void setGoal(double defaultRPM, BooleanSupplier isYHeldDown) {
     double targetRPM = defaultRPM;
     if (isYHeldDown.getAsBoolean() && defaultRPM != 0)
@@ -46,7 +38,7 @@ public class Shooter extends SubsystemBase {
 
       if (Jello > ShooterConstants.minDistance && Jello < ShooterConstants.maxDistance)
       {
-        targetRPM = distanceFunction(Jello);
+        targetRPM = ShooterConstants.distanceFunction(Jello);
       }
       
     }
