@@ -19,13 +19,12 @@ import frc.robot.Subsystems.Shooter.ShooterIOReal;
 import frc.robot.Subsystems.Shooter.ShooterIOSim;
 import frc.robot.Subsystems.drive.Drive;
 import frc.robot.Subsystems.drive.GyroIO;
-import frc.robot.Subsystems.drive.GyroIOPigeon2;
+import frc.robot.Subsystems.drive.GyroIORedux;
 import frc.robot.Subsystems.drive.ModuleIO;
 import frc.robot.Subsystems.drive.ModuleIOSim;
 import frc.robot.Subsystems.drive.ModuleIOSpark;
 import frc.robot.Subsystems.vision.Vision;
 import frc.robot.Subsystems.vision.VisionConstants;
-import frc.robot.Subsystems.vision.VisionIoReal;
 import frc.robot.Subsystems.vision.VisionIoSim;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.autoAlign;
@@ -63,12 +62,12 @@ public class RobotContainer {
         // Real robot, instantiate hardware IO implementations
         drive =
             Drive.createInstance(
-                new GyroIOPigeon2(),
+                new GyroIORedux(),
                 new ModuleIOSpark(0),
                 new ModuleIOSpark(1),
                 new ModuleIOSpark(2),
                 new ModuleIOSpark(3));
-        vision = Vision.createInstance(new VisionIoReal(0));
+        vision = Vision.createInstance(new VisionIoSim());
         shooter = Shooter.Initialize(new ShooterIOReal());
         break;
 

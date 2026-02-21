@@ -1,7 +1,6 @@
 package frc.robot.Subsystems.vision;
 
 import edu.wpi.first.math.geometry.Rotation2d;
-import frc.robot.Constants;
 import frc.robot.Subsystems.drive.Drive;
 import org.littletonrobotics.junction.Logger;
 import org.photonvision.PhotonCamera;
@@ -16,24 +15,22 @@ public class VisionIoSim implements VisionIo {
   private PhotonCameraSim cameraSimOne;
 
   public VisionIoSim() {
-    if (Constants.currentMode == Constants.Mode.SIM) {
-      visionSim = new VisionSystemSim("main");
-      visionSim.addAprilTags(VisionConstants.aprilTagFieldLayout2);
+    visionSim = new VisionSystemSim("main");
+    visionSim.addAprilTags(VisionConstants.aprilTagFieldLayout2);
 
-      cameraProp = new SimCameraProperties();
-      cameraProp.setCalibration(1280, 800, Rotation2d.fromDegrees(78));
-      cameraProp.setCalibError(0.38, 0.2);
-      cameraProp.setFPS(30);
-      cameraProp.setAvgLatencyMs(35);
-      cameraProp.setLatencyStdDevMs(5);
+    cameraProp = new SimCameraProperties();
+    cameraProp.setCalibration(1280, 800, Rotation2d.fromDegrees(78));
+    cameraProp.setCalibError(0.38, 0.2);
+    cameraProp.setFPS(30);
+    cameraProp.setAvgLatencyMs(35);
+    cameraProp.setLatencyStdDevMs(5);
 
-      // Add all three cameras to sim
-      cameraOne = new PhotonCamera(VisionConstants.cameraNames[0]);
-      cameraSimOne = new PhotonCameraSim(cameraOne, cameraProp);
-      cameraSimOne.setMaxSightRange(8);
+    // Add all three cameras to sim
+    cameraOne = new PhotonCamera(VisionConstants.cameraNames[0]);
+    cameraSimOne = new PhotonCameraSim(cameraOne, cameraProp);
+    cameraSimOne.setMaxSightRange(8);
 
-      visionSim.addCamera(cameraSimOne, VisionConstants.positionOfCameras[0]);
-    }
+    visionSim.addCamera(cameraSimOne, VisionConstants.positionOfCameras[0]);
   }
 
   @Override

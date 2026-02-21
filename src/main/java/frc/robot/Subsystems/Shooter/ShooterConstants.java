@@ -1,8 +1,7 @@
 package frc.robot.Subsystems.Shooter;
 
 public class ShooterConstants {
-  public static final int motorPort1 = 0;
-  public static final int motorPort2 = 0;
+  public static final int motorPort1 = 14;
   public static final int maxAmps = 30;
   public static final int shooterVoltage = 5;
   // RPM
