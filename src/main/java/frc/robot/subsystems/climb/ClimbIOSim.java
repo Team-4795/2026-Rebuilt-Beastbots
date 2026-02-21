@@ -1,4 +1,4 @@
-package frc.robot.subsystems.climb;
+package frc.robot.Subsystems.climb;
 
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
