@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import com.reduxrobotics.canand.CanandEventLoop;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFieldLayout.OriginPosition;
 import edu.wpi.first.apriltag.AprilTagFields;
@@ -97,8 +98,7 @@ public class RobotContainer {
         shooter = Shooter.Initialize(new ShooterIOSim());
         break;
     }
-
-
+    CanandEventLoop.getInstance();
     configureBindings();
   }
 
@@ -154,9 +154,14 @@ public class RobotContainer {
                     drive)
                 .ignoringDisable(true));
 
-    driverController.a().whileTrue(Commands.run(() -> shooter.setGoal(3000,()->driverController.isYHeldDown), shooter));
+    driverController
+        .a()
+        .whileTrue(
+            Commands.run(
+                () -> shooter.setGoal(3000, () -> driverController.y().getAsBoolean()), shooter));
 
-    shooter.setDefaultCommand(Commands.run(() -> shooter.setGoal(0), shooter));
+    shooter.setDefaultCommand(
+        Commands.run(() -> shooter.setGoal(0, () -> driverController.y().getAsBoolean()), shooter));
   }
 
   /**

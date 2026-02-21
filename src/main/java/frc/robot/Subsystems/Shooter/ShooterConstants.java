@@ -12,17 +12,17 @@ public class ShooterConstants {
 
   public static final double allowedErr = 0.1;
   public static final double voltsPerRPM = 2000 / 39;
-  //in Meters
+  // in Meters
   public static final double minDistance = 2;
   public static final double maxDistance = 8;
 
   public static double distanceFunction(double x) {
-    //RPM = distance^2+4
+    // RPM = distance^2+4
 
-    double distanceRPM = x*x+4;
+    double distanceRPM = x * x + 4;
     return distanceRPM;
-    
   }
+
   public class PID {
 
     // Proportion if it ollicilates decrease it if it doesnt give it enough volts incresa
