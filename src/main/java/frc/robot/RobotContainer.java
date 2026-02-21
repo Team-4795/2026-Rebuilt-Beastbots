@@ -14,7 +14,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Subsystems.Intake.Intake;
+import frc.robot.Subsystems.Intake.IntakeIOReal;
+import frc.robot.Subsystems.Intake.IntakeIOSim;
 import frc.robot.Subsystems.Shooter.Shooter;
+import frc.robot.Subsystems.Shooter.ShooterConstants;
 import frc.robot.Subsystems.Shooter.ShooterIOReal;
 import frc.robot.Subsystems.Shooter.ShooterIOSim;
 import frc.robot.Subsystems.drive.Drive;
@@ -45,6 +49,7 @@ public class RobotContainer {
   private Vision vision;
   private Shooter shooter;
   private Climb climb;
+  private Intake intake;
 
   // Controllers
   private final CommandXboxController driverController = new CommandXboxController(0);
@@ -72,9 +77,10 @@ public class RobotContainer {
                 new ModuleIOSpark(1),
                 new ModuleIOSpark(2),
                 new ModuleIOSpark(3));
-        // vision = Vision.createInstance(new VisionIoSim());
+        // vision = Vision.createInstance(new VisionIoSim()); // probably causing memory problems
         climb = Climb.Initialize(new ClimbIOReal());
         shooter = Shooter.Initialize(new ShooterIOReal());
+        intake = Intake.Initialize(new IntakeIOReal());
         break;
       case SIM:
         // Sim robot, instantiate physics sim IO implementations
@@ -88,6 +94,7 @@ public class RobotContainer {
         vision = Vision.createInstance(new VisionIoSim());
         climb = Climb.Initialize(new ClimbIOSim());
         shooter = Shooter.Initialize(new ShooterIOSim());
+        intake = Intake.Initialize(new IntakeIOSim());
         break;
 
       default:
@@ -102,6 +109,7 @@ public class RobotContainer {
         vision = Vision.createInstance(new VisionIoSim());
         climb = Climb.Initialize(new ClimbIOSim());
         shooter = Shooter.Initialize(new ShooterIOSim());
+        intake = Intake.Initialize(new IntakeIOSim());
         break;
     }
     CanandEventLoop.getInstance();
@@ -172,6 +180,17 @@ public class RobotContainer {
 
     operatorController.leftTrigger().whileTrue(Commands.run(() -> climb.setVoltage(10)));
     operatorController.rightTrigger().whileTrue(Commands.run(() -> climb.setVoltage(-10)));
+    shooter.setDefaultCommand(Commands.run(() -> shooter.setShooterVoltage(0), shooter));
+
+    driverController
+        .rightBumper()
+        .onTrue(
+            Commands.run(() -> shooter.setShooterVoltage(ShooterConstants.shooterVoltage), shooter));
+
+    operatorController
+        .leftBumper()
+        .onTrue(Commands.run(() -> intake.setVoltage(10), intake))
+        .onFalse(Commands.run(() -> intake.setVoltage(0), intake));
   }
 
   /**
