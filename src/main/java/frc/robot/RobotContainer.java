@@ -67,10 +67,9 @@ public class RobotContainer {
                 new ModuleIOSpark(1),
                 new ModuleIOSpark(2),
                 new ModuleIOSpark(3));
-        vision = Vision.createInstance(new VisionIoSim());
+        // vision = Vision.createInstance(new VisionIoSim());
         shooter = Shooter.Initialize(new ShooterIOReal());
         break;
-
       case SIM:
         // Sim robot, instantiate physics sim IO implementations
         drive =
@@ -117,7 +116,7 @@ public class RobotContainer {
             drive,
             () -> -driverController.getLeftY(),
             () -> -driverController.getLeftX(),
-            () -> -driverController.getRightX()));
+            () -> driverController.getRightX()));
 
     // Lock to 0° when A button is held
     driverController
