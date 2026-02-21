@@ -29,6 +29,9 @@ import frc.robot.Subsystems.vision.VisionIoSim;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.autoAlign;
 import java.io.IOException;
+import frc.robot.Subsystems.climb.Climb;
+import frc.robot.Subsystems.climb.ClimbIOReal;
+import frc.robot.Subsystems.climb.ClimbIOSim;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -41,6 +44,8 @@ public class RobotContainer {
   private final Drive drive;
   private Vision vision;
   private Shooter shooter;
+  private Climb climb;
+
   // Controllers
   private final CommandXboxController driverController = new CommandXboxController(0);
   private final CommandXboxController operatorController = new CommandXboxController(1);
@@ -68,6 +73,7 @@ public class RobotContainer {
                 new ModuleIOSpark(2),
                 new ModuleIOSpark(3));
         // vision = Vision.createInstance(new VisionIoSim());
+        climb = Climb.Initialize(new ClimbIOReal());
         shooter = Shooter.Initialize(new ShooterIOReal());
         break;
       case SIM:
@@ -80,6 +86,7 @@ public class RobotContainer {
                 new ModuleIOSim(),
                 new ModuleIOSim());
         vision = Vision.createInstance(new VisionIoSim());
+        climb = Climb.Initialize(new ClimbIOSim());
         shooter = Shooter.Initialize(new ShooterIOSim());
         break;
 
@@ -93,6 +100,7 @@ public class RobotContainer {
                 new ModuleIO() {},
                 new ModuleIO() {});
         vision = Vision.createInstance(new VisionIoSim());
+        climb = Climb.Initialize(new ClimbIOSim());
         shooter = Shooter.Initialize(new ShooterIOSim());
         break;
     }
@@ -160,6 +168,10 @@ public class RobotContainer {
 
     shooter.setDefaultCommand(
         Commands.run(() -> shooter.setGoal(0, () -> driverController.y().getAsBoolean()), shooter));
+    climb.setDefaultCommand(Commands.run(() -> climb.setVoltage(0), climb));
+
+    operatorController.leftTrigger().whileTrue(Commands.run(() -> climb.setVoltage(10)));
+    operatorController.rightTrigger().whileTrue(Commands.run(() -> climb.setVoltage(-10)));
   }
 
   /**
