@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import com.reduxrobotics.canand.CanandEventLoop;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFieldLayout.OriginPosition;
 import edu.wpi.first.apriltag.AprilTagFields;
@@ -25,6 +24,7 @@ import frc.robot.Subsystems.drive.ModuleIOSim;
 import frc.robot.Subsystems.drive.ModuleIOSpark;
 import frc.robot.Subsystems.vision.Vision;
 import frc.robot.Subsystems.vision.VisionConstants;
+import frc.robot.Subsystems.vision.VisionIoReal;
 import frc.robot.Subsystems.vision.VisionIoSim;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.autoAlign;
@@ -67,9 +67,10 @@ public class RobotContainer {
                 new ModuleIOSpark(1),
                 new ModuleIOSpark(2),
                 new ModuleIOSpark(3));
-        // vision = Vision.createInstance(new VisionIoSim());
+        vision = Vision.createInstance(new VisionIoReal(0));
         shooter = Shooter.Initialize(new ShooterIOReal());
         break;
+
       case SIM:
         // Sim robot, instantiate physics sim IO implementations
         drive =
@@ -96,7 +97,6 @@ public class RobotContainer {
         shooter = Shooter.Initialize(new ShooterIOSim());
         break;
     }
-    CanandEventLoop.getInstance();
     configureBindings();
   }
 
@@ -116,7 +116,7 @@ public class RobotContainer {
             drive,
             () -> -driverController.getLeftY(),
             () -> -driverController.getLeftX(),
-            () -> driverController.getRightX()));
+            () -> -driverController.getRightX()));
 
     // Lock to 0° when A button is held
     driverController
