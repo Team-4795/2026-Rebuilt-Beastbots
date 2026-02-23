@@ -12,9 +12,20 @@ public interface ShooterIO {
     public double position2 = 0;
     public double voltage2 = 0;
     public double velocity2 = 0;
+
+    public double position3 = 0;
+    public double voltage3 = 0;
+    public double velocity3 = 0;
+
+    public double goalVelocity = 0;
+    public double setpointVelocity = 0;
   }
 
   public default void setVoltage(double voltage) {}
+
+  public default void setShooterVoltage(double voltage) {}
+
+  public default void setVoltageAll(double voltage) {}
 
   public default void updateInputs(ShooterIOInputs inputs1) {}
 

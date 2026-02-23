@@ -1,6 +1,8 @@
 package frc.robot.Subsystems.Shooter;
 
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Subsystems.drive.Drive;
 import frc.robot.commands.autoAlign;
@@ -41,8 +43,31 @@ public class Shooter extends SubsystemBase {
     shooterIo.setGoal(targetRPM);
   }
 
+  public void setGoalSimple(double rpm) {
+    shooterIo.setGoal(rpm);
+  }
+
+  public void shootWithRPM(double rpm) {
+    setGoalSimple(rpm);
+    setShooterVoltage(9);
+  }
+
   public void setShooterVoltage(double volts) {
+    shooterIo.setShooterVoltage(volts);
+  }
+
+  public void setVoltage(double volts) {
     shooterIo.setVoltage(volts);
+  }
+
+  public void setVoltageAll(double volts) {
+    shooterIo.setVoltageAll(volts);
+  }
+
+  public Command intake() {
+    return Commands.parallel(
+        Commands.run(() -> shooterIo.setVoltage(5), this),
+        Commands.run(() -> shooterIo.setShooterVoltage(-3)));
   }
 
   public Shooter(ShooterIO io) {
@@ -53,6 +78,7 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     shooterIo.updateInputs(inputs);
+    shooterIo.updateMotionProfile();
     Logger.processInputs("Shooter/Shooter", inputs);
   }
 }

@@ -14,13 +14,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Subsystems.Intake.Intake;
-import frc.robot.Subsystems.Intake.IntakeIOReal;
-import frc.robot.Subsystems.Intake.IntakeIOSim;
 import frc.robot.Subsystems.Shooter.Shooter;
-import frc.robot.Subsystems.Shooter.ShooterConstants;
 import frc.robot.Subsystems.Shooter.ShooterIOReal;
 import frc.robot.Subsystems.Shooter.ShooterIOSim;
+import frc.robot.Subsystems.climb.Climb;
+import frc.robot.Subsystems.climb.ClimbIOReal;
+import frc.robot.Subsystems.climb.ClimbIOSim;
 import frc.robot.Subsystems.drive.Drive;
 import frc.robot.Subsystems.drive.GyroIO;
 import frc.robot.Subsystems.drive.GyroIORedux;
@@ -33,9 +32,6 @@ import frc.robot.Subsystems.vision.VisionIoSim;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.autoAlign;
 import java.io.IOException;
-import frc.robot.Subsystems.climb.Climb;
-import frc.robot.Subsystems.climb.ClimbIOReal;
-import frc.robot.Subsystems.climb.ClimbIOSim;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -49,7 +45,7 @@ public class RobotContainer {
   private Vision vision;
   private Shooter shooter;
   private Climb climb;
-  private Intake intake;
+  // private Intake intake;
 
   // Controllers
   private final CommandXboxController driverController = new CommandXboxController(0);
@@ -80,7 +76,7 @@ public class RobotContainer {
         // vision = Vision.createInstance(new VisionIoSim()); // probably causing memory problems
         climb = Climb.Initialize(new ClimbIOReal());
         shooter = Shooter.Initialize(new ShooterIOReal());
-        intake = Intake.Initialize(new IntakeIOReal());
+        // intake = Intake.Initialize(new IntakeIOReal());
         break;
       case SIM:
         // Sim robot, instantiate physics sim IO implementations
@@ -94,7 +90,7 @@ public class RobotContainer {
         vision = Vision.createInstance(new VisionIoSim());
         climb = Climb.Initialize(new ClimbIOSim());
         shooter = Shooter.Initialize(new ShooterIOSim());
-        intake = Intake.Initialize(new IntakeIOSim());
+        // intake = Intake.Initialize(new IntakeIOSim());
         break;
 
       default:
@@ -109,7 +105,7 @@ public class RobotContainer {
         vision = Vision.createInstance(new VisionIoSim());
         climb = Climb.Initialize(new ClimbIOSim());
         shooter = Shooter.Initialize(new ShooterIOSim());
-        intake = Intake.Initialize(new IntakeIOSim());
+        // intake = Intake.Initialize(new IntakeIOSim());
         break;
     }
     CanandEventLoop.getInstance();
@@ -174,23 +170,48 @@ public class RobotContainer {
             Commands.run(
                 () -> shooter.setGoal(3000, () -> driverController.y().getAsBoolean()), shooter));
 
-    shooter.setDefaultCommand(
-        Commands.run(() -> shooter.setGoal(0, () -> driverController.y().getAsBoolean()), shooter));
-    climb.setDefaultCommand(Commands.run(() -> climb.setVoltage(0), climb));
+    // COMMENTED OUT FOR TESTING PURPOSES
+    // also there should not be two default commands for shooter
+    // shooter.setDefaultCommand(
+    //     Commands.run(() -> shooter.setGoal(0, () -> driverController.y().getAsBoolean()),
+    // shooter));
+    // shooter.setDefaultCommand(Commands.run(() -> shooter.setGoalSimple(0), shooter));
+    shooter.setDefaultCommand(Commands.run(() -> shooter.setVoltageAll(0), shooter));
+    // shooter.setDefaultCommand(Commands.run(() -> shooter.setShooterVoltage(0), shooter));
 
-    operatorController.leftTrigger().whileTrue(Commands.run(() -> climb.setVoltage(10)));
-    operatorController.rightTrigger().whileTrue(Commands.run(() -> climb.setVoltage(-10)));
-    shooter.setDefaultCommand(Commands.run(() -> shooter.setShooterVoltage(0), shooter));
+    // climb.setDefaultCommand(Commands.run(() -> climb.setVoltage(0), climb));
 
-    driverController
-        .rightBumper()
-        .onTrue(
-            Commands.run(() -> shooter.setShooterVoltage(ShooterConstants.shooterVoltage), shooter));
+    // operatorController.leftTrigger().whileTrue(Commands.run(() -> climb.setVoltage(10)));
+    // operatorController.rightTrigger().whileTrue(Commands.run(() -> climb.setVoltage(-10)));
 
+    // driverController
+    //     .rightBumper()
+    //     .onTrue(
+    //         Commands.run(() -> shooter.setShooterVoltage(ShooterConstants.shooterVoltage),
+    // shooter));
+
+    // operatorController
+    //     .leftBumper()
+    //     .onTrue(Commands.run(() -> intake.setVoltage(10), intake))
+    //     .onFalse(Commands.run(() -> intake.setVoltage(0), intake));
+
+    // for testing use only
     operatorController
         .leftBumper()
-        .onTrue(Commands.run(() -> intake.setVoltage(10), intake))
-        .onFalse(Commands.run(() -> intake.setVoltage(0), intake));
+        .whileTrue(shooter.intake())
+        .onFalse(Commands.run(() -> shooter.setVoltageAll(0), shooter));
+    operatorController
+        .rightBumper()
+        .onTrue(Commands.run(() -> shooter.setVoltageAll(9), shooter))
+        .onFalse(Commands.run(() -> shooter.setVoltageAll(0), shooter));
+    operatorController
+        .povUp()
+        .onTrue(Commands.run(() -> shooter.setVoltage(-9)))
+        .onFalse(Commands.run(() -> shooter.setVoltage(0)));
+    // operatorController.povUp().whileTrue(Commands.run(() -> shooter.setGoalSimple(3600)));
+    // operatorController.povLeft().whileTrue(Commands.run(() -> shooter.setGoalSimple(2000)));
+    // operatorController.povRight().whileTrue(Commands.run(() -> shooter.setGoalSimple(1000)));
+    // operatorController.povDown().whileTrue(Commands.run(() -> shooter.setGoalSimple(0)));
   }
 
   /**
