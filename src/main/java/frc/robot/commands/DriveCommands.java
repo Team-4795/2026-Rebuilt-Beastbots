@@ -88,43 +88,42 @@ public class DriveCommands {
               || (((drive.getPose().getX() - Constants.FieldConstants.redHub.getX()) < 2)
                   && ((drive.getPose().getX() - Constants.FieldConstants.redHub.getX()) > 0)
                   && (drive.getChassisSpeeds().vxMetersPerSecond <= 0))) {
-            modifier = autoAlign.controller.calculate(velocity, 3);
-            DriveCommands.setRotationGoal(drive, xSupplier, ySupplier, () -> Math.PI);
-          } else {
-            Logger.recordOutput(
-                "RoboVelocity",
-                Math.sqrt(
-                    Math.pow(drive.getChassisSpeeds().vxMetersPerSecond, 2)
-                        + Math.pow(drive.getChassisSpeeds().vyMetersPerSecond, 2)));
-            Logger.recordOutput("Modifier2", modifier);
-
-            // Get linear velocity
-            Translation2d linearVelocity =
-                getLinearVelocityFromJoysticks(
-                    xSupplier.getAsDouble() * modifier, ySupplier.getAsDouble() * modifier);
-
-            // Apply rotation deadband
-            double omega = MathUtil.applyDeadband(omegaSupplier.getAsDouble(), DEADBAND);
-
-            // Square rotation value for more precise control
-            omega = Math.copySign(omega * omega, omega);
-
-            // Convert to field relative speeds & send command
-            ChassisSpeeds speeds =
-                new ChassisSpeeds(
-                    linearVelocity.getX() * drive.getMaxLinearSpeedMetersPerSec(),
-                    linearVelocity.getY() * drive.getMaxLinearSpeedMetersPerSec(),
-                    omega * drive.getMaxAngularSpeedRadPerSec());
-            boolean isFlipped =
-                DriverStation.getAlliance().isPresent()
-                    && DriverStation.getAlliance().get() == Alliance.Red;
-            drive.runVelocity(
-                ChassisSpeeds.fromFieldRelativeSpeeds(
-                    speeds,
-                    isFlipped
-                        ? drive.getRotation().plus(new Rotation2d(Math.PI))
-                        : drive.getRotation()));
+            modifier = autoAlign.controller.calculate(velocity, 2.5);
+            // DriveCommands.setRotationGoal(drive, xSupplier, ySupplier, () -> Math.PI);
           }
+          Logger.recordOutput(
+              "RoboVelocity",
+              Math.sqrt(
+                  Math.pow(drive.getChassisSpeeds().vxMetersPerSecond, 2)
+                      + Math.pow(drive.getChassisSpeeds().vyMetersPerSecond, 2)));
+          Logger.recordOutput("Modifier2", modifier);
+
+          // Get linear velocity
+          Translation2d linearVelocity =
+              getLinearVelocityFromJoysticks(
+                  xSupplier.getAsDouble() * modifier, ySupplier.getAsDouble() * modifier);
+
+          // Apply rotation deadband
+          double omega = MathUtil.applyDeadband(omegaSupplier.getAsDouble(), DEADBAND);
+
+          // Square rotation value for more precise control
+          omega = Math.copySign(omega * omega, omega);
+
+          // Convert to field relative speeds & send command
+          ChassisSpeeds speeds =
+              new ChassisSpeeds(
+                  linearVelocity.getX() * drive.getMaxLinearSpeedMetersPerSec(),
+                  linearVelocity.getY() * drive.getMaxLinearSpeedMetersPerSec(),
+                  omega * drive.getMaxAngularSpeedRadPerSec());
+          boolean isFlipped =
+              DriverStation.getAlliance().isPresent()
+                  && DriverStation.getAlliance().get() == Alliance.Red;
+          drive.runVelocity(
+              ChassisSpeeds.fromFieldRelativeSpeeds(
+                  speeds,
+                  isFlipped
+                      ? drive.getRotation().plus(new Rotation2d(Math.PI))
+                      : drive.getRotation()));
         },
         drive);
   }
