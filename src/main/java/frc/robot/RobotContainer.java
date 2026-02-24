@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import com.reduxrobotics.canand.CanandEventLoop;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFieldLayout.OriginPosition;
 import edu.wpi.first.apriltag.AprilTagFields;
@@ -37,7 +36,7 @@ import java.io.IOException;
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
- * subsystems, commands, and trigger mappings) should be declared here.
+ * Subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
   // Subsystems
@@ -51,7 +50,7 @@ public class RobotContainer {
   private final CommandXboxController driverController = new CommandXboxController(0);
   private final CommandXboxController operatorController = new CommandXboxController(1);
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. * */
+  /** The container for the robot. Contains Subsystems, OI devices, and commands. * */
   public RobotContainer() throws IOException {
     try {
       VisionConstants.aprilTagFieldLayout2 =
@@ -108,7 +107,6 @@ public class RobotContainer {
         // intake = Intake.Initialize(new IntakeIOSim());
         break;
     }
-    CanandEventLoop.getInstance();
     configureBindings();
   }
 
@@ -196,7 +194,7 @@ public class RobotContainer {
     //     .onFalse(Commands.run(() -> intake.setVoltage(0), intake));
 
     // for testing use only
-    
+
     operatorController
         .leftBumper()
         .whileTrue(shooter.intake())
