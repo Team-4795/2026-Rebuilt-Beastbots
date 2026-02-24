@@ -196,18 +196,19 @@ public class RobotContainer {
     //     .onFalse(Commands.run(() -> intake.setVoltage(0), intake));
 
     // for testing use only
+    
     operatorController
         .leftBumper()
         .whileTrue(shooter.intake())
         .onFalse(Commands.run(() -> shooter.setVoltageAll(0), shooter));
     operatorController
-        .rightBumper()
-        .onTrue(Commands.run(() -> shooter.setVoltageAll(9), shooter))
-        .onFalse(Commands.run(() -> shooter.setVoltageAll(0), shooter));
+        .povDown()
+        .onTrue(Commands.run(() -> shooter.setShooterVoltage(9), shooter))
+        .onFalse(Commands.run(() -> shooter.setShooterVoltage(0), shooter));
     operatorController
         .povUp()
-        .onTrue(Commands.run(() -> shooter.setVoltage(-9)))
-        .onFalse(Commands.run(() -> shooter.setVoltage(0)));
+        .onTrue(Commands.run(() -> shooter.setVoltage(-9), shooter))
+        .onFalse(Commands.run(() -> shooter.setVoltage(0), shooter));
     // operatorController.povUp().whileTrue(Commands.run(() -> shooter.setGoalSimple(3600)));
     // operatorController.povLeft().whileTrue(Commands.run(() -> shooter.setGoalSimple(2000)));
     // operatorController.povRight().whileTrue(Commands.run(() -> shooter.setGoalSimple(1000)));
