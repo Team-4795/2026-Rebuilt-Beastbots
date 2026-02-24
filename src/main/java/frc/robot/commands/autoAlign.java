@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -20,7 +21,7 @@ public class autoAlign extends Command {
   private final double shootVelocity = 3; // M/S
 
   public static Translation2d lookGoal;
-
+  public static final PIDController controller = new PIDController(1.3, 0.5, 0.0);
   private Alliance currentAlliance;
   public static autoAlign instance;
   private Drive drive;

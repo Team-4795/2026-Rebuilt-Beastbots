@@ -17,9 +17,9 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Subsystems.Shooter.Shooter;
 import frc.robot.Subsystems.Shooter.ShooterIOReal;
 import frc.robot.Subsystems.Shooter.ShooterIOSim;
-import frc.robot.Subsystems.climb.Climb;
-import frc.robot.Subsystems.climb.ClimbIOReal;
-import frc.robot.Subsystems.climb.ClimbIOSim;
+// import frc.robot.Subsystems.climb.Climb;
+// import frc.robot.Subsystems.climb.ClimbIOReal;
+// import frc.robot.Subsystems.climb.ClimbIOSim;
 import frc.robot.Subsystems.drive.Drive;
 import frc.robot.Subsystems.drive.GyroIO;
 import frc.robot.Subsystems.drive.GyroIORedux;
@@ -44,7 +44,7 @@ public class RobotContainer {
   private final Drive drive;
   private Vision vision;
   private Shooter shooter;
-  private Climb climb;
+  // private Climb climb;
   // private Intake intake;
 
   // Controllers
@@ -74,7 +74,7 @@ public class RobotContainer {
                 new ModuleIOSpark(2),
                 new ModuleIOSpark(3));
         // vision = Vision.createInstance(new VisionIoSim()); // probably causing memory problems
-        climb = Climb.Initialize(new ClimbIOReal());
+        // climb = Climb.Initialize(new ClimbIOReal());
         shooter = Shooter.Initialize(new ShooterIOReal());
         // intake = Intake.Initialize(new IntakeIOReal());
         break;
@@ -88,7 +88,7 @@ public class RobotContainer {
                 new ModuleIOSim(),
                 new ModuleIOSim());
         vision = Vision.createInstance(new VisionIoSim());
-        climb = Climb.Initialize(new ClimbIOSim());
+        // climb = Climb.Initialize(new ClimbIOSim());
         shooter = Shooter.Initialize(new ShooterIOSim());
         // intake = Intake.Initialize(new IntakeIOSim());
         break;
@@ -103,7 +103,7 @@ public class RobotContainer {
                 new ModuleIO() {},
                 new ModuleIO() {});
         vision = Vision.createInstance(new VisionIoSim());
-        climb = Climb.Initialize(new ClimbIOSim());
+        // climb = Climb.Initialize(new ClimbIOSim());
         shooter = Shooter.Initialize(new ShooterIOSim());
         // intake = Intake.Initialize(new IntakeIOSim());
         break;

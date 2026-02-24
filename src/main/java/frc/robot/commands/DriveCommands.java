@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.Constants;
 import frc.robot.Subsystems.drive.Drive;
 import frc.robot.Subsystems.drive.DriveConstants;
 import java.text.DecimalFormat;
@@ -30,6 +31,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
+import org.littletonrobotics.junction.Logger;
 
 public class DriveCommands {
   private static final double DEADBAND = 0.1;
@@ -68,9 +70,38 @@ public class DriveCommands {
       DoubleSupplier omegaSupplier) {
     return Commands.run(
         () -> {
+          double modifier = 1;
+          double velocity =
+              Math.sqrt(
+                  Math.pow(drive.getChassisSpeeds().vxMetersPerSecond, 2)
+                      + Math.pow(drive.getChassisSpeeds().vyMetersPerSecond, 2));
+          // Slow down if going over the bump only slows down for first half
+          if ((((drive.getPose().getX() - Constants.FieldConstants.blueHub.getX()) > -2)
+                  && ((drive.getPose().getX() - Constants.FieldConstants.blueHub.getX()) < 0)
+                  && (drive.getChassisSpeeds().vxMetersPerSecond >= 0))
+              || (((drive.getPose().getX() - Constants.FieldConstants.blueHub.getX()) < 2)
+                  && ((drive.getPose().getX() - Constants.FieldConstants.blueHub.getX()) > 0)
+                  && (drive.getChassisSpeeds().vxMetersPerSecond <= 0))
+              || (((drive.getPose().getX() - Constants.FieldConstants.redHub.getX()) > -2)
+                  && ((drive.getPose().getX() - Constants.FieldConstants.redHub.getX()) < 0)
+                  && (drive.getChassisSpeeds().vxMetersPerSecond >= 0))
+              || (((drive.getPose().getX() - Constants.FieldConstants.redHub.getX()) < 2)
+                  && ((drive.getPose().getX() - Constants.FieldConstants.redHub.getX()) > 0)
+                  && (drive.getChassisSpeeds().vxMetersPerSecond <= 0))) {
+            modifier = autoAlign.controller.calculate(velocity, 2.5);
+            // DriveCommands.setRotationGoal(drive, xSupplier, ySupplier, () -> Math.PI);
+          }
+          Logger.recordOutput(
+              "RoboVelocity",
+              Math.sqrt(
+                  Math.pow(drive.getChassisSpeeds().vxMetersPerSecond, 2)
+                      + Math.pow(drive.getChassisSpeeds().vyMetersPerSecond, 2)));
+          Logger.recordOutput("Modifier2", modifier);
+
           // Get linear velocity
           Translation2d linearVelocity =
-              getLinearVelocityFromJoysticks(xSupplier.getAsDouble(), ySupplier.getAsDouble());
+              getLinearVelocityFromJoysticks(
+                  xSupplier.getAsDouble() * modifier, ySupplier.getAsDouble() * modifier);
 
           // Apply rotation deadband
           double omega = MathUtil.applyDeadband(omegaSupplier.getAsDouble(), DEADBAND);

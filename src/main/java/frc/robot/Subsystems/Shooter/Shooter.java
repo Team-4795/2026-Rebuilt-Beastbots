@@ -1,5 +1,6 @@
 package frc.robot.Subsystems.Shooter;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -12,6 +13,8 @@ import org.littletonrobotics.junction.Logger;
 public class Shooter extends SubsystemBase {
   public static Shooter instance;
   public ShooterIOInputsAutoLogged inputs = new ShooterIOInputsAutoLogged();
+  public static final PIDController controller = new PIDController(1.3, 0.5, 0.0);
+
   public ShooterIO shooterIo;
   private Drive drive;
 
