@@ -1,8 +1,11 @@
 package frc.robot.Subsystems.Led;
 
+import java.util.Map;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -14,7 +17,7 @@ public class Led extends SubsystemBase {
     SOLID
   }
 
-  private Led LED; 
+  private Led LED;
   private AddressableLED led;
   private AddressableLEDBuffer buffer;
   private BlinkState blink;
@@ -22,7 +25,7 @@ public class Led extends SubsystemBase {
   private static Led instance;
 
   /**
-   * Gets the current instance of {@link Led}. If none exists, one is created
+   * Gets the current instance of {@blink Led}. If none exists, one is created
    *
    * @return
    */
@@ -38,10 +41,20 @@ public class Led extends SubsystemBase {
     buffer = new AddressableLEDBuffer(LedConstants.ledLength);
     led.setLength(buffer.getLength());
 
-    setDefaultCommand(Commands.either(
-    Commands.runOnce(()-> setTeamColors(), LED), 
-    null,
+    setDefaultCommand(Commands.either(Commands.runOnce(() -> setTeamColors(), LED), 
+    Command.select(Map.ofEntries(
+      Map.entry(null, null),
+      Map.entry(null, null),
+      Map.entry(null, null))), 
     null));
+  }
+
+  /** Sets the led strip to the team color */
+  private void setTeamColors() {
+    setColorNoOutput(180, 80, 80, 0, (LedConstants.ledLength / 2));
+    setColorNoOutput(90, 100, 100, (LedConstants.ledLength / 2 + 1), LedConstants.ledLength);
+
+    setOutput();
   }
 
   /**
@@ -75,14 +88,6 @@ public class Led extends SubsystemBase {
     for (int i = start; i < end; i++) {
       buffer.setHSV(i, h, s, v);
     }
-  }
-
-  /** Sets the led strip to the team color */
-  public void setTeamColors() {
-    setColorNoOutput(180, 80, 80, 0, (LedConstants.ledLength / 2));
-    setColorNoOutput(90, 100, 100, (LedConstants.ledLength / 2 + 1), LedConstants.ledLength);
-
-    setOutput();
   }
 
   /** Flushes the LED buffer to the physical LED */
