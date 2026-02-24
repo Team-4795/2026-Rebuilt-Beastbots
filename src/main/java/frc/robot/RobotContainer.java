@@ -24,6 +24,7 @@ import frc.robot.Subsystems.drive.ModuleIO;
 import frc.robot.Subsystems.drive.ModuleIOSim;
 import frc.robot.Subsystems.drive.ModuleIOSpark;
 import frc.robot.commands.AutoCommands;
+import frc.robot.commands.DriveCommands;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
@@ -58,12 +59,13 @@ public class RobotContainer {
       case SIM:
         shooter = Shooter.Initialize(new ShooterIOSim());
         intake = Intake.Initialize(new IntakeIOSim());
-        new Drive(
-            new GyroIO() {},
-            new ModuleIOSim(),
-            new ModuleIOSim(),
-            new ModuleIOSim(),
-            new ModuleIOSim());
+        drive =
+            new Drive(
+                new GyroIO() {},
+                new ModuleIOSim(),
+                new ModuleIOSim(),
+                new ModuleIOSim(),
+                new ModuleIOSim());
       default:
         shooter = Shooter.Initialize(new ShooterIOSim());
         intake = Intake.Initialize(new IntakeIOSim());
@@ -83,7 +85,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("startShooter", AutoCommands.startShooter());
     NamedCommands.registerCommand("stopShooter", AutoCommands.stopShooter());
     NamedCommands.registerCommand("startIntake", AutoCommands.startIntake());
-    NamedCommands.registerCommand("stopShooter", AutoCommands.stopIntake());
+    NamedCommands.registerCommand("stopIntake", AutoCommands.stopIntake());
     NamedCommands.registerCommand("startClimb", AutoCommands.startClimb());
 
     autoChooser =
@@ -100,6 +102,11 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+    DriveCommands.joystickDrive(
+        drive,
+        () -> driverController.getLeftX(),
+        () -> driverController.getLeftY(),
+        () -> driverController.getRightX());
     driverController
         .rightBumper()
         .whileTrue(
