@@ -33,5 +33,6 @@ public class IntakeIOReal implements IntakeIO {
     inputs.position = encoder.getPosition();
     inputs.voltage = currentVoltage;
     inputs.velocity = encoder.getVelocity();
+    inputs.currentCurrent = motor.getAppliedOutput();
   }
 }
