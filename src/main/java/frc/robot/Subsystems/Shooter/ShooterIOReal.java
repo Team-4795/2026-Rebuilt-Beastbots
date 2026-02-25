@@ -119,7 +119,7 @@ public class ShooterIOReal implements ShooterIO {
   }
 
   @Override
-  public void setShooterVoltage(double voltage) {
+  public void setIndexerVoltage(double voltage) {
     outTakeMotor3.setVoltage(voltage);
     currentVoltage3 = voltage;
   }
@@ -129,15 +129,15 @@ public class ShooterIOReal implements ShooterIO {
     inputs1.position1 = outTakeEncoder1.getPosition();
     inputs1.voltage1 = currentVoltage;
     inputs1.velocity1 = outTakeEncoder1.getVelocity();
-    inputs1.currentCurrent1 = outTakeMotor1.getAppliedOutput();
+    inputs1.currentCurrent1 = outTakeMotor1.getOutputCurrent();
     inputs1.position2 = outTakeEncoder2.getPosition();
     inputs1.voltage2 = currentVoltage;
     inputs1.velocity2 = outTakeEncoder2.getVelocity();
-    inputs1.currentCurrent2 = outTakeMotor2.getAppliedOutput();
+    inputs1.currentCurrent2 = outTakeMotor2.getOutputCurrent();
     inputs1.position3 = outTakeEncoder3.getPosition();
     inputs1.voltage3 = currentVoltage3;
     inputs1.velocity3 = outTakeEncoder3.getVelocity();
-    inputs1.currentCurrent3 = outTakeMotor3.getAppliedOutput();
+    inputs1.currentCurrent3 = outTakeMotor3.getOutputCurrent();
     inputs1.goalVelocity = RPMgoal;
     inputs1.setpointVelocity = m_controller.getSetpoint();
   }

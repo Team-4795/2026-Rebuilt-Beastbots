@@ -201,11 +201,11 @@ public class RobotContainer {
         .onFalse(Commands.run(() -> shooter.setVoltageAll(0), shooter));
     operatorController
         .povDown()
-        .onTrue(Commands.run(() -> shooter.setShooterVoltage(9), shooter))
-        .onFalse(Commands.run(() -> shooter.setShooterVoltage(0), shooter));
+        .onTrue(Commands.run(() -> shooter.setIndexerVoltage(6), shooter))
+        .onFalse(Commands.run(() -> shooter.setIndexerVoltage(0), shooter));
     operatorController
         .povUp()
-        .onTrue(Commands.run(() -> shooter.setVoltage(-9), shooter))
+        .onTrue(Commands.run(() -> shooter.setVoltage(-6), shooter))
         .onFalse(Commands.run(() -> shooter.setVoltage(0), shooter));
     // operatorController.povUp().whileTrue(Commands.run(() -> shooter.setGoalSimple(3600)));
     // operatorController.povLeft().whileTrue(Commands.run(() -> shooter.setGoalSimple(2000)));

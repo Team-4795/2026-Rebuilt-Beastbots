@@ -52,11 +52,11 @@ public class Shooter extends SubsystemBase {
 
   public void shootWithRPM(double rpm) {
     setGoalSimple(rpm);
-    setShooterVoltage(9);
+    setIndexerVoltage(9);
   }
 
-  public void setShooterVoltage(double volts) {
-    shooterIo.setShooterVoltage(volts);
+  public void setIndexerVoltage(double volts) {
+    shooterIo.setIndexerVoltage(volts);
   }
 
   public void setVoltage(double volts) {
@@ -70,7 +70,7 @@ public class Shooter extends SubsystemBase {
   public Command intake() {
     return Commands.parallel(
         Commands.run(() -> shooterIo.setVoltage(5), this),
-        Commands.run(() -> shooterIo.setShooterVoltage(-3)));
+        Commands.run(() -> shooterIo.setIndexerVoltage(-3)));
   }
 
   public Shooter(ShooterIO io) {
@@ -82,6 +82,7 @@ public class Shooter extends SubsystemBase {
   public void periodic() {
     shooterIo.updateInputs(inputs);
     shooterIo.updateMotionProfile();
+    Logger.recordOutput("hi3p4", 5);
     Logger.processInputs("Shooter/Shooter", inputs);
   }
 }
