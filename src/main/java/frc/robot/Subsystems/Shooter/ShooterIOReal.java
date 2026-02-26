@@ -3,6 +3,8 @@ package frc.robot.Subsystems.Shooter;
 import com.revrobotics.PersistMode;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.ResetMode;
+import com.revrobotics.spark.ClosedLoopSlot;
+import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
@@ -26,8 +28,8 @@ public class ShooterIOReal implements ShooterIO {
   public ShooterIOReal() {
     config.idleMode(IdleMode.kCoast);
     config.smartCurrentLimit(ShooterConstants.maxAmps);
-    outTakeMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    outTakeMotor.clearFaults();
+    outTakeMotor1.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    outTakeMotor1.clearFaults();
     config
         .closedLoop
         .p(ShooterConstants.PID.kP, ClosedLoopSlot.kSlot1)

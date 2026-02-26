@@ -24,21 +24,12 @@ import frc.robot.Subsystems.Shooter.ShooterIOReal;
 import frc.robot.Subsystems.Shooter.ShooterIOSim;
 import frc.robot.Subsystems.drive.Drive;
 import frc.robot.Subsystems.drive.GyroIO;
-import frc.robot.Subsystems.drive.GyroIOPigeon2;
-import frc.robot.Subsystems.drive.ModuleIO;
-import frc.robot.Subsystems.drive.ModuleIOSim;
-import frc.robot.Subsystems.drive.ModuleIOSpark;
-import frc.robot.commands.AutoCommands;
-import frc.robot.commands.DriveCommands;
-import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 import frc.robot.Subsystems.drive.GyroIORedux;
 import frc.robot.Subsystems.drive.ModuleIO;
 import frc.robot.Subsystems.drive.ModuleIOSim;
 import frc.robot.Subsystems.drive.ModuleIOSpark;
-import frc.robot.Subsystems.vision.Vision;
 import frc.robot.Subsystems.vision.VisionConstants;
-import frc.robot.Subsystems.vision.VisionIoReal;
-import frc.robot.Subsystems.vision.VisionIoSim;
+import frc.robot.commands.AutoCommands;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.autoAlign;
 import java.io.IOException;
@@ -52,17 +43,16 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
  */
 public class RobotContainer {
   // Subsystems
-  private final Drive drive;
-  private Vision vision;
+  private Drive drive;
+  // private Vision vision;
   private Shooter shooter;
   private Intake intake;
-  private Drive drive;
   LoggedDashboardChooser<Command> autoChooser;
   // Controllers
   private final CommandXboxController driverController = new CommandXboxController(0);
   private final CommandXboxController operatorController = new CommandXboxController(1);
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. * */
+  /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() throws IOException {
     try {
       VisionConstants.aprilTagFieldLayout2 =
@@ -74,9 +64,6 @@ public class RobotContainer {
       e.printStackTrace();
     }
 
-
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
-  public RobotContainer() {
     switch (Constants.currentMode) {
       case REAL:
         shooter = Shooter.Initialize(new ShooterIOReal());
@@ -88,7 +75,7 @@ public class RobotContainer {
                 new ModuleIOSpark(1),
                 new ModuleIOSpark(2),
                 new ModuleIOSpark(3));
-        vision = Vision.createInstance(new VisionIoReal(0));
+        //  vision = Vision.createInstance(new VisionIoReal(0));
         shooter = Shooter.Initialize(new ShooterIOReal());
       case SIM:
         shooter = Shooter.Initialize(new ShooterIOSim());
@@ -100,7 +87,7 @@ public class RobotContainer {
                 new ModuleIOSim(),
                 new ModuleIOSim(),
                 new ModuleIOSim());
-        vision = Vision.createInstance(new VisionIoSim());
+        //   vision = Vision.createInstance(new VisionIoSim());
         shooter = Shooter.Initialize(new ShooterIOSim());
       default:
         shooter = Shooter.Initialize(new ShooterIOSim());
@@ -112,10 +99,9 @@ public class RobotContainer {
                 new ModuleIO() {},
                 new ModuleIO() {},
                 new ModuleIO() {});
-        vision = Vision.createInstance(new VisionIoSim());
+        //  vision = Vision.createInstance(new VisionIoSim());
         shooter = Shooter.Initialize(new ShooterIOSim());
         break;
-    }
     }
 
     // Configure the trigger bindings
@@ -161,11 +147,11 @@ public class RobotContainer {
         .whileTrue(
             Commands.run(
                 () -> shooter.setShooterVoltage(ShooterConstants.shooterVoltage), shooter));
-            DriveCommands.joystickDriveAtAngle(
-                drive,
-                () -> -driverController.getLeftY(),
-                () -> -driverController.getLeftX(),
-                () -> Rotation2d.kZero));
+    DriveCommands.joystickDriveAtAngle(
+        drive,
+        () -> -driverController.getLeftY(),
+        () -> -driverController.getLeftX(),
+        () -> Rotation2d.kZero);
     driverController
         .y()
         .whileTrue(

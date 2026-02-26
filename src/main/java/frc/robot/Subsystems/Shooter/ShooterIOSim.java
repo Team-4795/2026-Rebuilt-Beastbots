@@ -1,6 +1,5 @@
 package frc.robot.Subsystems.Shooter;
 
-import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -29,12 +28,14 @@ public class ShooterIOSim implements ShooterIO {
 
   @Override
   public void updateMotionProfile() {
-    simMotor.setState(0, simMotor.getAngularVelocityRadPerSec());
+    outTakeMotor.setState(0, outTakeMotor.getAngularVelocityRadPerSec());
     double ffVoltage = ffmodel.calculate(setRPM);
 
     setVoltage(
         MathUtil.clamp(
-            ffVoltage + controller.calculate(simMotor.getAngularVelocityRPM(), setRPM), -12, 12));
+            ffVoltage + controller.calculate(outTakeMotor.getAngularVelocityRPM(), setRPM),
+            -12,
+            12));
   }
 
   @Override
@@ -45,17 +46,17 @@ public class ShooterIOSim implements ShooterIO {
 
   @Override
   public void updateInputs(ShooterIOInputs inputs1) {
-    inputs1.position1 = simMotor.getAngularPositionRad();
-    inputs1.position1 = simMotor.getAngularPositionRad();
+    inputs1.position1 = outTakeMotor.getAngularPositionRad();
+    inputs1.position1 = outTakeMotor.getAngularPositionRad();
     inputs1.voltage1 = currentVoltage;
-    inputs1.velocity1 = simMotor.getAngularVelocityRPM();
+    inputs1.velocity1 = outTakeMotor.getAngularVelocityRPM();
 
-    inputs1.position2 = simMotor.getAngularPositionRad();
+    inputs1.position2 = outTakeMotor.getAngularPositionRad();
     inputs1.voltage2 = currentVoltage;
-    inputs1.velocity2 = simMotor.getAngularVelocityRPM();
-    inputs1.velocity1 = simMotor.getAngularVelocityRPM();
+    inputs1.velocity2 = outTakeMotor.getAngularVelocityRPM();
+    inputs1.velocity1 = outTakeMotor.getAngularVelocityRPM();
 
-    simMotor.update(0.02);
+    outTakeMotor.update(0.02);
 
     updateMotionProfile();
   }
