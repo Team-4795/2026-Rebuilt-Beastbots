@@ -6,6 +6,11 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFieldLayout.OriginPosition;
+import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -26,6 +31,18 @@ import frc.robot.Subsystems.drive.ModuleIOSpark;
 import frc.robot.commands.AutoCommands;
 import frc.robot.commands.DriveCommands;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
+import frc.robot.Subsystems.drive.GyroIORedux;
+import frc.robot.Subsystems.drive.ModuleIO;
+import frc.robot.Subsystems.drive.ModuleIOSim;
+import frc.robot.Subsystems.drive.ModuleIOSpark;
+import frc.robot.Subsystems.vision.Vision;
+import frc.robot.Subsystems.vision.VisionConstants;
+import frc.robot.Subsystems.vision.VisionIoReal;
+import frc.robot.Subsystems.vision.VisionIoSim;
+import frc.robot.commands.DriveCommands;
+import frc.robot.commands.autoAlign;
+import java.io.IOException;
+import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -34,7 +51,9 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
+  // Subsystems
+  private final Drive drive;
+  private Vision vision;
   private Shooter shooter;
   private Intake intake;
   private Drive drive;
@@ -43,6 +62,19 @@ public class RobotContainer {
   private final CommandXboxController driverController = new CommandXboxController(0);
   private final CommandXboxController operatorController = new CommandXboxController(1);
 
+  /** The container for the robot. Contains subsystems, OI devices, and commands. * */
+  public RobotContainer() throws IOException {
+    try {
+      VisionConstants.aprilTagFieldLayout2 =
+          AprilTagFieldLayout.loadFromResource(
+              AprilTagFields.k2026RebuiltAndymark.m_resourceFile); // Placefolder
+      VisionConstants.aprilTagFieldLayout2.setOrigin(OriginPosition.kBlueAllianceWallRightSide);
+
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     switch (Constants.currentMode) {
@@ -50,32 +82,40 @@ public class RobotContainer {
         shooter = Shooter.Initialize(new ShooterIOReal());
         intake = Intake.Initialize(new IntakeIOReal());
         drive =
-            new Drive(
-                new GyroIOPigeon2(),
+            Drive.createInstance(
+                new GyroIORedux(),
                 new ModuleIOSpark(0),
                 new ModuleIOSpark(1),
                 new ModuleIOSpark(2),
                 new ModuleIOSpark(3));
+        vision = Vision.createInstance(new VisionIoReal(0));
+        shooter = Shooter.Initialize(new ShooterIOReal());
       case SIM:
         shooter = Shooter.Initialize(new ShooterIOSim());
         intake = Intake.Initialize(new IntakeIOSim());
         drive =
-            new Drive(
+            Drive.createInstance(
                 new GyroIO() {},
                 new ModuleIOSim(),
                 new ModuleIOSim(),
                 new ModuleIOSim(),
                 new ModuleIOSim());
+        vision = Vision.createInstance(new VisionIoSim());
+        shooter = Shooter.Initialize(new ShooterIOSim());
       default:
         shooter = Shooter.Initialize(new ShooterIOSim());
         intake = Intake.Initialize(new IntakeIOSim());
         drive =
-            new Drive(
+            Drive.createInstance(
                 new GyroIO() {},
                 new ModuleIO() {},
                 new ModuleIO() {},
                 new ModuleIO() {},
                 new ModuleIO() {});
+        vision = Vision.createInstance(new VisionIoSim());
+        shooter = Shooter.Initialize(new ShooterIOSim());
+        break;
+    }
     }
 
     // Configure the trigger bindings
@@ -102,6 +142,15 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+    // Default command, normal field-relative drive
+    drive.setDefaultCommand(
+        DriveCommands.joystickDrive(
+            drive,
+            () -> -driverController.getLeftY(),
+            () -> -driverController.getLeftX(),
+            () -> -driverController.getRightX()));
+
+    // Lock to 0° when A button is held
     DriveCommands.joystickDrive(
         drive,
         () -> driverController.getLeftX(),
@@ -112,6 +161,44 @@ public class RobotContainer {
         .whileTrue(
             Commands.run(
                 () -> shooter.setShooterVoltage(ShooterConstants.shooterVoltage), shooter));
+            DriveCommands.joystickDriveAtAngle(
+                drive,
+                () -> -driverController.getLeftY(),
+                () -> -driverController.getLeftX(),
+                () -> Rotation2d.kZero));
+    driverController
+        .y()
+        .whileTrue(
+            Commands.parallel(
+                DriveCommands.setRotationGoal(
+                    drive,
+                    () -> -driverController.getLeftY(),
+                    () -> -driverController.getLeftX(),
+                    () -> autoAlign.goalAngle),
+                new autoAlign()));
+
+    // Switch to X pattern when X button is pressed
+    driverController.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
+
+    // Reset gyro to 0° when B button is pressed
+    driverController
+        .b()
+        .onTrue(
+            Commands.runOnce(
+                    () ->
+                        drive.setPose(
+                            new Pose2d(drive.getPose().getTranslation(), Rotation2d.kZero)),
+                    drive)
+                .ignoringDisable(true));
+
+    driverController
+        .a()
+        .whileTrue(
+            Commands.run(
+                () -> shooter.setGoal(3000, () -> driverController.y().getAsBoolean()), shooter));
+
+    shooter.setDefaultCommand(
+        Commands.run(() -> shooter.setGoal(0, () -> driverController.y().getAsBoolean()), shooter));
   }
 
   /**
