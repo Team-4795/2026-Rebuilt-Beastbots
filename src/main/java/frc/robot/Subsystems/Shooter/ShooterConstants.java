@@ -22,6 +22,8 @@ public class ShooterConstants {
 
   public static final int currentLimit = 40;
 
+  public static final double tolerableRpmRangeShooter = 1000;
+
   public static double distanceFunction(double x) {
     // RPM = distance^2+4
 
@@ -32,23 +34,25 @@ public class ShooterConstants {
   public class PID {
 
     // Proportion if it ollicilates decrease it if it doesnt give it enough volts incresa
-    public static double kP = 0.000003;
+    // Shooter 3 increase until goal if oscillates decrease
+    public static double kP = 0.0;
     // Integral
     public static double kI = 0.0;
-    // Derivative
+    // Derivative 4 change until oscillate
     public static double kD = 0.0;
 
     // Overcome gravity, it's not an arm or elevator so we probably don't need
     public static double kG = 0.0;
-    // Volts for a singular unit increase if undershoot
+    // Volts for a singular unit increase if undershoot (2)
     public static double kV = 0.00213;
 
-    // Overcome static friction
+    // Overcome static friction 1 until motor moves a bit
     public static double kS = 0.12;
-
+    //
     public static double kA = 0.0;
 
     // these arent tuned
+    // Middle bar
     public static double kP2 = 0.0;
     public static double kI2 = 0.0;
     public static double kD2 = 0.0;

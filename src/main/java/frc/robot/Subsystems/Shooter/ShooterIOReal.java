@@ -43,6 +43,21 @@ public class ShooterIOReal implements ShooterIO {
   private double RPMgoal = 0;
 
   @Override
+  public void configure1(double kp, double ki, double kd, double ks, double kv, double ka) {
+    config.closedLoop.pid(kp, ki, kd).outputRange(0, ShooterConstants.kMaxOutput);
+    config.closedLoop.feedForward.kS(ks).kV(kv).kA(ka);
+    outTakeMotor1.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+  }
+
+  @Override
+  public void configure2(double kp, double ki, double kd, double ks, double kv, double ka) {
+    config2.closedLoop.pid(kp, ki, kd).outputRange(0, ShooterConstants.kMaxOutput);
+    config2.closedLoop.feedForward.kS(ks).kV(kv).kA(ka);
+    outTakeMotor3.configure(
+        config2, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+  }
+
+  @Override
   public void setGoal(double RPM) {
     if (RPM != RPMgoal) {
       RPMgoal = RPM;
@@ -119,7 +134,7 @@ public class ShooterIOReal implements ShooterIO {
   }
 
   @Override
-  public void setIndexerVoltage(double voltage) {
+  public void setShooterVoltage(double voltage) {
     outTakeMotor3.setVoltage(voltage);
     currentVoltage3 = voltage;
   }
@@ -129,15 +144,15 @@ public class ShooterIOReal implements ShooterIO {
     inputs1.position1 = outTakeEncoder1.getPosition();
     inputs1.voltage1 = currentVoltage;
     inputs1.velocity1 = outTakeEncoder1.getVelocity();
-    inputs1.currentCurrent1 = outTakeMotor1.getOutputCurrent();
+
     inputs1.position2 = outTakeEncoder2.getPosition();
     inputs1.voltage2 = currentVoltage;
     inputs1.velocity2 = outTakeEncoder2.getVelocity();
-    inputs1.currentCurrent2 = outTakeMotor2.getOutputCurrent();
+
     inputs1.position3 = outTakeEncoder3.getPosition();
     inputs1.voltage3 = currentVoltage3;
     inputs1.velocity3 = outTakeEncoder3.getVelocity();
-    inputs1.currentCurrent3 = outTakeMotor3.getOutputCurrent();
+
     inputs1.goalVelocity = RPMgoal;
     inputs1.setpointVelocity = m_controller.getSetpoint();
   }

@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import com.reduxrobotics.canand.CanandEventLoop;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFieldLayout.OriginPosition;
 import edu.wpi.first.apriltag.AprilTagFields;
@@ -14,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Subsystems.Shooter.Shooter;
+import frc.robot.Subsystems.Shooter.ShooterConstants;
 import frc.robot.Subsystems.Shooter.ShooterIOReal;
 import frc.robot.Subsystems.Shooter.ShooterIOSim;
 // import frc.robot.Subsystems.climb.Climb;
@@ -36,7 +38,7 @@ import java.io.IOException;
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
- * Subsystems, commands, and trigger mappings) should be declared here.
+ * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
   // Subsystems
@@ -50,7 +52,7 @@ public class RobotContainer {
   private final CommandXboxController driverController = new CommandXboxController(0);
   private final CommandXboxController operatorController = new CommandXboxController(1);
 
-  /** The container for the robot. Contains Subsystems, OI devices, and commands. * */
+  /** The container for the robot. Contains subsystems, OI devices, and commands. * */
   public RobotContainer() throws IOException {
     try {
       VisionConstants.aprilTagFieldLayout2 =
@@ -107,6 +109,7 @@ public class RobotContainer {
         // intake = Intake.Initialize(new IntakeIOSim());
         break;
     }
+    CanandEventLoop.getInstance();
     configureBindings();
   }
 
@@ -182,11 +185,12 @@ public class RobotContainer {
     // operatorController.leftTrigger().whileTrue(Commands.run(() -> climb.setVoltage(10)));
     // operatorController.rightTrigger().whileTrue(Commands.run(() -> climb.setVoltage(-10)));
 
-    // driverController
-    //     .rightBumper()
-    //     .onTrue(
-    //         Commands.run(() -> shooter.setShooterVoltage(ShooterConstants.shooterVoltage),
-    // shooter));
+    operatorController
+        .rightBumper()
+        .onTrue(
+            Commands.run(
+                () -> shooter.setShooterVoltage(ShooterConstants.shooterVoltage), shooter));
+    operatorController.a().onTrue(Commands.run(() -> shooter.Configure(), shooter));
 
     // operatorController
     //     .leftBumper()
@@ -195,22 +199,22 @@ public class RobotContainer {
 
     // for testing use only
 
-    operatorController
-        .leftBumper()
-        .whileTrue(shooter.intake())
-        .onFalse(Commands.run(() -> shooter.setVoltageAll(0), shooter));
-    operatorController
-        .povDown()
-        .onTrue(Commands.run(() -> shooter.setIndexerVoltage(6), shooter))
-        .onFalse(Commands.run(() -> shooter.setIndexerVoltage(0), shooter));
-    operatorController
-        .povUp()
-        .onTrue(Commands.run(() -> shooter.setVoltage(-6), shooter))
-        .onFalse(Commands.run(() -> shooter.setVoltage(0), shooter));
-    // operatorController.povUp().whileTrue(Commands.run(() -> shooter.setGoalSimple(3600)));
-    // operatorController.povLeft().whileTrue(Commands.run(() -> shooter.setGoalSimple(2000)));
-    // operatorController.povRight().whileTrue(Commands.run(() -> shooter.setGoalSimple(1000)));
-    // operatorController.povDown().whileTrue(Commands.run(() -> shooter.setGoalSimple(0)));
+    // operatorController
+    //     .leftBumper()
+    //     .whileTrue(shooter.intake())
+    //     .onFalse(Commands.run(() -> shooter.setVoltageAll(0), shooter));
+    // operatorController
+    //     .povDown()
+    //     .onTrue(Commands.run(() -> shooter.setShooterVoltage(9), shooter))
+    //     .onFalse(Commands.run(() -> shooter.setShooterVoltage(0), shooter));
+    // operatorController
+    //     .povUp()
+    //     .onTrue(Commands.run(() -> shooter.setVoltage(-9), shooter))
+    //     .onFalse(Commands.run(() -> shooter.setVoltage(0), shooter));
+    operatorController.povUp().whileTrue(Commands.run(() -> shooter.setGoalSimple(3600)));
+    operatorController.povLeft().whileTrue(Commands.run(() -> shooter.setGoalSimple(2000)));
+    operatorController.povRight().whileTrue(Commands.run(() -> shooter.setGoalSimple(1000)));
+    operatorController.povDown().whileTrue(Commands.run(() -> shooter.setGoalSimple(0)));
   }
 
   /**

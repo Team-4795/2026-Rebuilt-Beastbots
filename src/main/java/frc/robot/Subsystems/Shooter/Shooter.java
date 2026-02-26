@@ -1,19 +1,33 @@
 package frc.robot.Subsystems.Shooter;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Subsystems.drive.Drive;
 import frc.robot.commands.autoAlign;
+import frc.robot.util.LoggedTunableNumber;
 import java.util.function.BooleanSupplier;
 import org.littletonrobotics.junction.Logger;
 
 public class Shooter extends SubsystemBase {
   public static Shooter instance;
   public ShooterIOInputsAutoLogged inputs = new ShooterIOInputsAutoLogged();
-  public static final PIDController controller = new PIDController(1.3, 0.5, 0.0);
+  private LoggedTunableNumber kp = new LoggedTunableNumber("Kp", ShooterConstants.PID.kP);
+  private LoggedTunableNumber ki = new LoggedTunableNumber("Ki", ShooterConstants.PID.kI);
+  private LoggedTunableNumber kd = new LoggedTunableNumber("Kd", ShooterConstants.PID.kD);
+
+  private LoggedTunableNumber ks = new LoggedTunableNumber("Kp", ShooterConstants.PID.kP);
+  private LoggedTunableNumber kv = new LoggedTunableNumber("Ki", ShooterConstants.PID.kI);
+  private LoggedTunableNumber ka = new LoggedTunableNumber("Kd", ShooterConstants.PID.kD);
+
+  private LoggedTunableNumber kp2 = new LoggedTunableNumber("Kp2", ShooterConstants.PID.kP2);
+  private LoggedTunableNumber ki2 = new LoggedTunableNumber("Ki2", ShooterConstants.PID.kI2);
+  private LoggedTunableNumber kd2 = new LoggedTunableNumber("Kd2", ShooterConstants.PID.kD2);
+
+  private LoggedTunableNumber ks2 = new LoggedTunableNumber("Kp2", ShooterConstants.PID.kP2);
+  private LoggedTunableNumber kv2 = new LoggedTunableNumber("Ki2", ShooterConstants.PID.kI2);
+  private LoggedTunableNumber ka2 = new LoggedTunableNumber("Kd2", ShooterConstants.PID.kD2);
 
   public ShooterIO shooterIo;
   private Drive drive;
@@ -27,6 +41,23 @@ public class Shooter extends SubsystemBase {
       instance = new Shooter(shooterIo);
     }
     return instance;
+  }
+
+  public void Configure() {
+    shooterIo.configure1(
+        kp.getAsDouble(),
+        ki.getAsDouble(),
+        kd.getAsDouble(),
+        ks.getAsDouble(),
+        kv.getAsDouble(),
+        ka.getAsDouble());
+    shooterIo.configure2(
+        kp2.getAsDouble(),
+        ki2.getAsDouble(),
+        kd2.getAsDouble(),
+        ks2.getAsDouble(),
+        kv2.getAsDouble(),
+        ka2.getAsDouble());
   }
 
   public void setGoal(double defaultRPM, BooleanSupplier isYHeldDown) {
@@ -52,11 +83,11 @@ public class Shooter extends SubsystemBase {
 
   public void shootWithRPM(double rpm) {
     setGoalSimple(rpm);
-    setIndexerVoltage(9);
+    setShooterVoltage(9);
   }
 
-  public void setIndexerVoltage(double volts) {
-    shooterIo.setIndexerVoltage(volts);
+  public void setShooterVoltage(double volts) {
+    shooterIo.setShooterVoltage(volts);
   }
 
   public void setVoltage(double volts) {
@@ -70,7 +101,7 @@ public class Shooter extends SubsystemBase {
   public Command intake() {
     return Commands.parallel(
         Commands.run(() -> shooterIo.setVoltage(5), this),
-        Commands.run(() -> shooterIo.setIndexerVoltage(-3)));
+        Commands.run(() -> shooterIo.setShooterVoltage(-3)));
   }
 
   public Shooter(ShooterIO io) {
@@ -82,7 +113,6 @@ public class Shooter extends SubsystemBase {
   public void periodic() {
     shooterIo.updateInputs(inputs);
     shooterIo.updateMotionProfile();
-    Logger.recordOutput("hi3p4", 5);
     Logger.processInputs("Shooter/Shooter", inputs);
   }
 }
