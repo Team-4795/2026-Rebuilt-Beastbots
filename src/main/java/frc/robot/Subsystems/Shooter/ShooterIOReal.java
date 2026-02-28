@@ -32,26 +32,46 @@ public class ShooterIOReal implements ShooterIO {
 
   // PID
   SparkClosedLoopController m_controller = outTakeMotor1.getClosedLoopController();
-  SparkClosedLoopController m_controller2 = outTakeMotor2.getClosedLoopController();
+  SparkClosedLoopController m_controller3 = outTakeMotor3.getClosedLoopController();
   // private PIDController controller1 = new PIDController(ShooterConstants.PID.kP,
   // ShooterConstants.PID.kI, ShooterConstants.PID.kD);
   // private PIDController controller2 = new PIDController(ShooterConstants.PID.kP2,
   // ShooterConstants.PID.kI2, ShooterConstants.PID.kD2)
 
-  private final SparkMaxConfig config = new SparkMaxConfig();
-  private final SparkMaxConfig config2 = new SparkMaxConfig();
+  private SparkMaxConfig config = new SparkMaxConfig();
+  private SparkMaxConfig config2 = new SparkMaxConfig();
   private double RPMgoal = 0;
 
   @Override
   public void configure1(double kp, double ki, double kd, double ks, double kv, double ka) {
-    config.closedLoop.pid(kp, ki, kd).outputRange(0, ShooterConstants.kMaxOutput);
+    config = new SparkMaxConfig();
+    config.idleMode(IdleMode.kCoast);
+    config.smartCurrentLimit(ShooterConstants.maxAmps);
+    config
+        .closedLoop
+        .maxMotion
+        .maxAcceleration(ShooterConstants.maxAcceleration)
+        .allowedProfileError(ShooterConstants.allowedErr);
+    config.smartCurrentLimit(ShooterConstants.currentLimit);
+    config.closedLoop.pid(kp, ki, kd);
     config.closedLoop.feedForward.kS(ks).kV(kv).kA(ka);
     outTakeMotor1.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    config.follow(ShooterConstants.motorPort1, true);
+    outTakeMotor2.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
   @Override
   public void configure2(double kp, double ki, double kd, double ks, double kv, double ka) {
-    config2.closedLoop.pid(kp, ki, kd).outputRange(0, ShooterConstants.kMaxOutput);
+    config = new SparkMaxConfig();
+    config.idleMode(IdleMode.kCoast);
+    config.smartCurrentLimit(ShooterConstants.maxAmps);
+    config
+        .closedLoop
+        .maxMotion
+        .maxAcceleration(ShooterConstants.maxAcceleration)
+        .allowedProfileError(ShooterConstants.allowedErr);
+    config.smartCurrentLimit(ShooterConstants.currentLimit);
+    config2.closedLoop.pid(kp, ki, kd);
     config2.closedLoop.feedForward.kS(ks).kV(kv).kA(ka);
     outTakeMotor3.configure(
         config2, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -67,7 +87,7 @@ public class ShooterIOReal implements ShooterIO {
   @Override
   public void updateMotionProfile() {
     m_controller.setSetpoint(RPMgoal, ControlType.kVelocity, ClosedLoopSlot.kSlot0);
-    m_controller2.setSetpoint(RPMgoal, ControlType.kVelocity, ClosedLoopSlot.kSlot0);
+    // m_controller3.setSetpoint(RPMgoal, ControlType.kVelocity, ClosedLoopSlot.kSlot0);
   }
 
   public ShooterIOReal() {
@@ -134,7 +154,7 @@ public class ShooterIOReal implements ShooterIO {
   }
 
   @Override
-  public void setShooterVoltage(double voltage) {
+  public void setIndexerVoltage(double voltage) {
     outTakeMotor3.setVoltage(voltage);
     currentVoltage3 = voltage;
   }

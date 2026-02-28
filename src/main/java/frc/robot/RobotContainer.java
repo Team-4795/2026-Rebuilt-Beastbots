@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Subsystems.Shooter.Shooter;
-import frc.robot.Subsystems.Shooter.ShooterConstants;
 import frc.robot.Subsystems.Shooter.ShooterIOReal;
 import frc.robot.Subsystems.Shooter.ShooterIOSim;
 // import frc.robot.Subsystems.climb.Climb;
@@ -150,6 +149,7 @@ public class RobotContainer {
                     () -> -driverController.getLeftX(),
                     () -> autoAlign.goalAngle),
                 new autoAlign()));
+    shooter.setDefaultCommand(Commands.run(() -> shooter.defaultCommand(), shooter));
 
     // Switch to X pattern when X button is pressed
     driverController.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
@@ -165,11 +165,18 @@ public class RobotContainer {
                     drive)
                 .ignoringDisable(true));
 
-    driverController
-        .a()
+    operatorController
+        .b()
         .whileTrue(
             Commands.run(
-                () -> shooter.setGoal(3000, () -> driverController.y().getAsBoolean()), shooter));
+                () -> shooter.setGoal(3000, () -> driverController.y().getAsBoolean(), () -> true),
+                shooter));
+    operatorController
+        .x()
+        .whileTrue(
+            Commands.run(
+                () -> shooter.setGoal(3000, () -> driverController.y().getAsBoolean(), () -> false),
+                shooter));
 
     // COMMENTED OUT FOR TESTING PURPOSES
     // also there should not be two default commands for shooter
@@ -177,7 +184,6 @@ public class RobotContainer {
     //     Commands.run(() -> shooter.setGoal(0, () -> driverController.y().getAsBoolean()),
     // shooter));
     // shooter.setDefaultCommand(Commands.run(() -> shooter.setGoalSimple(0), shooter));
-    shooter.setDefaultCommand(Commands.run(() -> shooter.setVoltageAll(0), shooter));
     // shooter.setDefaultCommand(Commands.run(() -> shooter.setShooterVoltage(0), shooter));
 
     // climb.setDefaultCommand(Commands.run(() -> climb.setVoltage(0), climb));
@@ -185,12 +191,20 @@ public class RobotContainer {
     // operatorController.leftTrigger().whileTrue(Commands.run(() -> climb.setVoltage(10)));
     // operatorController.rightTrigger().whileTrue(Commands.run(() -> climb.setVoltage(-10)));
 
-    operatorController
-        .rightBumper()
-        .onTrue(
-            Commands.run(
-                () -> shooter.setShooterVoltage(ShooterConstants.shooterVoltage), shooter));
-    operatorController.a().onTrue(Commands.run(() -> shooter.Configure(), shooter));
+    // operatorController
+    //     .rightBumper()
+    //     .onTrue(
+    //         Commands.run(
+    //             () -> shooter.setShooterVoltage(ShooterConstants.shooterVoltage), shooter));
+    // operatorController
+    //     .leftBumper()
+    //     .onTrue(Commands.run(() -> shooter.setShooterVoltage(0), shooter));
+    // operatorController
+    //     .x()
+    //     .onTrue(
+    //         Commands.run(
+    //             () -> shooter.setShooterVoltage(-ShooterConstants.shooterVoltage), shooter));
+    operatorController.a().onTrue(Commands.runOnce(() -> shooter.Configure(), shooter));
 
     // operatorController
     //     .leftBumper()

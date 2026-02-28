@@ -13,21 +13,27 @@ import org.littletonrobotics.junction.Logger;
 public class Shooter extends SubsystemBase {
   public static Shooter instance;
   public ShooterIOInputsAutoLogged inputs = new ShooterIOInputsAutoLogged();
-  private LoggedTunableNumber kp = new LoggedTunableNumber("Kp", ShooterConstants.PID.kP);
-  private LoggedTunableNumber ki = new LoggedTunableNumber("Ki", ShooterConstants.PID.kI);
-  private LoggedTunableNumber kd = new LoggedTunableNumber("Kd", ShooterConstants.PID.kD);
+  private LoggedTunableNumber kp = new LoggedTunableNumber("Shooter1/Kp", ShooterConstants.PID.kP);
+  private LoggedTunableNumber ki = new LoggedTunableNumber("Shooter1/Ki", ShooterConstants.PID.kI);
+  private LoggedTunableNumber kd = new LoggedTunableNumber("Shooter1/Kd", ShooterConstants.PID.kD);
 
-  private LoggedTunableNumber ks = new LoggedTunableNumber("Kp", ShooterConstants.PID.kP);
-  private LoggedTunableNumber kv = new LoggedTunableNumber("Ki", ShooterConstants.PID.kI);
-  private LoggedTunableNumber ka = new LoggedTunableNumber("Kd", ShooterConstants.PID.kD);
+  private LoggedTunableNumber ks = new LoggedTunableNumber("Shooter1/Ks", ShooterConstants.PID.kS);
+  private LoggedTunableNumber kv = new LoggedTunableNumber("Shooter1/Kv", ShooterConstants.PID.kV);
+  private LoggedTunableNumber ka = new LoggedTunableNumber("Shooter1/Ka", ShooterConstants.PID.kA);
 
-  private LoggedTunableNumber kp2 = new LoggedTunableNumber("Kp2", ShooterConstants.PID.kP2);
-  private LoggedTunableNumber ki2 = new LoggedTunableNumber("Ki2", ShooterConstants.PID.kI2);
-  private LoggedTunableNumber kd2 = new LoggedTunableNumber("Kd2", ShooterConstants.PID.kD2);
+  private LoggedTunableNumber kp2 =
+      new LoggedTunableNumber("Shooter2/Kp2", ShooterConstants.PID.kP2);
+  private LoggedTunableNumber ki2 =
+      new LoggedTunableNumber("Shooter2/Ki2", ShooterConstants.PID.kI2);
+  private LoggedTunableNumber kd2 =
+      new LoggedTunableNumber("Shooter2/Kd2", ShooterConstants.PID.kD2);
 
-  private LoggedTunableNumber ks2 = new LoggedTunableNumber("Kp2", ShooterConstants.PID.kP2);
-  private LoggedTunableNumber kv2 = new LoggedTunableNumber("Ki2", ShooterConstants.PID.kI2);
-  private LoggedTunableNumber ka2 = new LoggedTunableNumber("Kd2", ShooterConstants.PID.kD2);
+  private LoggedTunableNumber ks2 =
+      new LoggedTunableNumber("Shooter2/Ks2", ShooterConstants.PID.kS2);
+  private LoggedTunableNumber kv2 =
+      new LoggedTunableNumber("Shooter2/Kv2", ShooterConstants.PID.kV2);
+  private LoggedTunableNumber ka2 =
+      new LoggedTunableNumber("Shooter2/Ka2", ShooterConstants.PID.kA2);
 
   public ShooterIO shooterIo;
   private Drive drive;
@@ -60,7 +66,8 @@ public class Shooter extends SubsystemBase {
         ka2.getAsDouble());
   }
 
-  public void setGoal(double defaultRPM, BooleanSupplier isYHeldDown) {
+  public void setGoal(
+      double defaultRPM, BooleanSupplier isYHeldDown, BooleanSupplier intakeOrOutake) {
     double targetRPM = defaultRPM;
     if (isYHeldDown.getAsBoolean() && defaultRPM != 0) {
       Translation2d currentGoal = autoAlign.lookGoal;
@@ -75,6 +82,17 @@ public class Shooter extends SubsystemBase {
       }
     }
     shooterIo.setGoal(targetRPM);
+    if (!intakeOrOutake.getAsBoolean()) {
+      setIndexerVoltage(-6);
+    } else {
+      if (Math.abs(inputs.velocity1 - targetRPM) < ShooterConstants.tolerableRpmRangeShooter) {
+        if (intakeOrOutake.getAsBoolean()) {
+          setIndexerVoltage(6);
+        }
+      } else {
+        setIndexerVoltage(0);
+      }
+    }
   }
 
   public void setGoalSimple(double rpm) {
@@ -83,11 +101,10 @@ public class Shooter extends SubsystemBase {
 
   public void shootWithRPM(double rpm) {
     setGoalSimple(rpm);
-    setShooterVoltage(9);
   }
 
-  public void setShooterVoltage(double volts) {
-    shooterIo.setShooterVoltage(volts);
+  public void setIndexerVoltage(double volts) {
+    shooterIo.setIndexerVoltage(volts);
   }
 
   public void setVoltage(double volts) {
@@ -98,10 +115,15 @@ public class Shooter extends SubsystemBase {
     shooterIo.setVoltageAll(volts);
   }
 
+  public void defaultCommand() {
+    shooterIo.setIndexerVoltage(0);
+    shooterIo.setGoal(0);
+  }
+
   public Command intake() {
     return Commands.parallel(
         Commands.run(() -> shooterIo.setVoltage(5), this),
-        Commands.run(() -> shooterIo.setShooterVoltage(-3)));
+        Commands.run(() -> shooterIo.setIndexerVoltage(-3)));
   }
 
   public Shooter(ShooterIO io) {
