@@ -64,7 +64,7 @@
   "folder": "OTB Path",
   "idealStartingState": {
     "velocity": 0.0,
-    "rotation": 85.19651424093091
+    "rotation": 112.636
   },
   "useDefaultConstraints": true
 }

@@ -20,8 +20,8 @@
         "y": 6.908987951807229
       },
       "prevControl": {
-        "x": 7.7454698795180725,
-        "y": 5.564879518072289
+        "x": 7.745459919652194,
+        "y": 5.564876360106647
       },
       "nextControl": null,
       "isLocked": false,
@@ -49,7 +49,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 112.63633398452652
+    "rotation": 112.636
   },
   "reversed": false,
   "folder": "OTB Path",
