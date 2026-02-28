@@ -22,7 +22,6 @@ public class ShooterIOSim implements ShooterIO {
           ShooterConstants.PID.kS, ShooterConstants.PID.kV, ShooterConstants.PID.kA);
   private final PIDController controller =
       new PIDController(ShooterConstants.PID.kP, ShooterConstants.PID.kI, ShooterConstants.PID.kD);
-  private double currentVoltage = 0;
   private double setRPM = 0;
 
   @Override
