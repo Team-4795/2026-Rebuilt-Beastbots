@@ -17,10 +17,11 @@ public class Led extends SubsystemBase {
     SOLID
   }
 
+  private Led LED;
   private AddressableLED led;
   private AddressableLEDBuffer buffer;
   private BlinkState blink;
-  private static Led LED;
+  private static Led instance;
 
   /**
    * Gets the current instance of {@blink Led}. If none exists, one is created
@@ -28,21 +29,21 @@ public class Led extends SubsystemBase {
    * @return
    */
   public static Led getInstance() {
-    if (LED == null) {
-      LED = new Led();
-    }
-    return LED;
+    return instance;
   }
 
   private Led() {
     led = new AddressableLED(LedConstants.ledPort);
     buffer = new AddressableLEDBuffer(LedConstants.ledLength);
     led.setLength(buffer.getLength());
-    getInstance();
+
+    if (instance == null) {
+      instance = new Led();
+    }
 
     setDefaultCommand(
         Commands.either(
-                Commands.runOnce(() -> setTeamColors(), LED),
+                runOnce(() -> setTeamColors()),
                 Commands.select(
                     (Map.ofEntries(
                         Map.entry(BlinkState.RAPID, setABeautifulHue()),
@@ -61,22 +62,25 @@ public class Led extends SubsystemBase {
     return Commands.runOnce(() -> setColor(72, 77, 86, 0, LedConstants.ledLength), LED);
   }
 
-  public Command blinkTeamColors(double interrupt, int h, int s, int v) {
+  public Command blinkTeamColors(double interrupt) {
     return Commands.sequence(
-        runOnce(() -> setABeautifulHue()),
-        Commands.waitSeconds(interrupt),
-        runOnce(() -> setCitrus()),
-        Commands.waitSeconds(interrupt));
+      Commands.runOnce(()-> setHalves(184, 100, 84, 72, 77, 86), LED),
+      Commands.waitSeconds(interrupt),
+      Commands.runOnce(()-> setHalves(72, 77, 86, 184, 100, 84), LED),
+      Commands.waitSeconds(interrupt));
   }
 
-  /** Sets the led strip to the team color */
-  private void setTeamColors() {
-    setColorNoOutput(184, 100, 84, 0, (LedConstants.ledLength / 2));
-    setColorNoOutput(72, 77, 86, ((LedConstants.ledLength / 2) + 1), LedConstants.ledLength);
-
-    setOutput();
+  public Command setTeamColors() {
+    return Commands.runOnce(() -> setHalves(184, 100, 84, 72, 77, 86), LED);
   }
 
+  public Command chase(int h, int s, int v) {
+      for(int i = 0; i < LedConstants.ledLength; i ++) {
+        return Commands.sequence(
+          Commands.runOnce(() -> setColor(h, s, v, i, i++)),
+          Commands.waitSeconds(0.5);
+    }
+  }
   public Command blink(double interrupt, int h, int s, int v) {
     return Commands.sequence(
         runOnce(() -> setColor(h, s, v, 0, LedConstants.ledLength)),
@@ -84,6 +88,14 @@ public class Led extends SubsystemBase {
         runOnce(() -> setColor(h, s, v, 0, LedConstants.ledLength)),
         Commands.waitSeconds(interrupt));
   }
+
+  public void setHalves(int h1, int s1, int v1, int h2, int s2, int v2){
+    setColorNoOutput(h1, s1, v1, 0, (LedConstants.ledLength / 2) + 1);
+    setColorNoOutput(h2, s2, v2, ((LedConstants.ledLength / 2) + 1), LedConstants.ledLength);
+
+    setOutput();
+  }
+
   /**
    * Sets the color of the LED for a specified range
    *

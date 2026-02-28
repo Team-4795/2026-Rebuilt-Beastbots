@@ -45,7 +45,6 @@ public class RobotContainer {
         intake = Intake.Initialize(new IntakeIOSim());
         hopper = Hopper.Initialize(new HopperIOSim());
     }
-    led = Led.getInstance();
 
     // Configure the trigger bindings
     configureBindings();
