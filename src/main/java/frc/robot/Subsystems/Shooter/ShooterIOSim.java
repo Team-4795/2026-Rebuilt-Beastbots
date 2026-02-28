@@ -40,6 +40,12 @@ public class ShooterIOSim implements ShooterIO {
             ffVoltage + controller.calculate(simMotor.getAngularVelocityRPM(), setRPM), -12, 12));
   }
 
+  private DCMotorSim outTakeMotor =
+      new DCMotorSim(
+          LinearSystemId.createDCMotorSystem(DCMotor.getKrakenX60(1), 0.001, 2),
+          DCMotor.getKrakenX60(1));
+  private double currentVoltage = 0;
+
   @Override
   public void setVoltage(double voltage) {
     simMotor.setInputVoltage(voltage);

@@ -13,6 +13,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Subsystems.Intake.Intake;
+import frc.robot.Subsystems.Intake.IntakeIOReal;
+import frc.robot.Subsystems.Intake.IntakeIOSim;
 import frc.robot.Subsystems.Shooter.Shooter;
 import frc.robot.Subsystems.Shooter.ShooterIOReal;
 import frc.robot.Subsystems.Shooter.ShooterIOSim;
@@ -41,6 +44,8 @@ public class RobotContainer {
   private final Drive drive;
   private Vision vision;
   private Shooter shooter;
+  private Intake intake;
+
   // Controllers
   private final CommandXboxController driverController = new CommandXboxController(0);
   private final CommandXboxController operatorController = new CommandXboxController(1);
