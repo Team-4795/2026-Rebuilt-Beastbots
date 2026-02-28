@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Top to Depot"
+            "pathName": "Bottom OTB"
           }
         },
         {
@@ -17,9 +17,9 @@
           }
         },
         {
-          "type": "wait",
+          "type": "path",
           "data": {
-            "waitTime": 6.0
+            "pathName": "Low Field High"
           }
         },
         {
@@ -31,7 +31,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Depot to Climb"
+            "pathName": "High OTB Climb"
           }
         },
         {
@@ -62,6 +62,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "Depot Autos",
+  "folder": null,
   "choreoAuto": false
 }

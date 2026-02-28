@@ -3,32 +3,41 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.647578313253012,
-        "y": 7.400734939759036
+        "x": 3.625722891566265,
+        "y": 4.045927710843373
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.711645600948731,
-        "y": 7.0025516044205345
+        "x": 0.3801927710843378,
+        "y": 2.0352289156626506
       },
       "isLocked": false,
-      "linkedName": "Top"
+      "linkedName": "Middle"
     },
     {
       "anchor": {
-        "x": 0.522253012048193,
-        "y": 0.669265060240964
+        "x": 7.385,
+        "y": 1.095
       },
       "prevControl": {
-        "x": 1.6831001495282132,
-        "y": 1.1022424763247
+        "x": 5.450650602409639,
+        "y": 3.335626506024097
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Depot"
+      "linkedName": "Low OTB"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.4788381742738578,
+      "rotationDegrees": 45.0
+    },
+    {
+      "waypointRelativePos": 0.7958506224066382,
+      "rotationDegrees": 45.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [
@@ -49,12 +58,12 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 85.19651424093091
   },
   "reversed": false,
-  "folder": "Depot Paths",
+  "folder": "OTB Path",
   "idealStartingState": {
-    "velocity": 0,
+    "velocity": 0.0,
     "rotation": 0.0
   },
   "useDefaultConstraints": true

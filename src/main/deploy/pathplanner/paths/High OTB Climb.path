@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.522253012048193,
-        "y": 0.669265060240964
+        "x": 7.319289156626505,
+        "y": 6.908987951807229
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.522253012048193,
-        "y": 0.669265060240964
+        "x": 7.17722891566265,
+        "y": 5.237048192771084
       },
       "isLocked": false,
-      "linkedName": "Depot"
+      "linkedName": null
     },
     {
       "anchor": {
@@ -20,18 +20,34 @@
         "y": 4.045927710843373
       },
       "prevControl": {
-        "x": 2.1504819277108433,
-        "y": 3.6853132530120476
+        "x": 1.8226506024096385,
+        "y": 5.750650602409639
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": "Climb"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.33443983402490346,
+      "rotationDegrees": 135.0
+    },
+    {
+      "waypointRelativePos": 0.6398340248962657,
+      "rotationDegrees": 135.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "",
+      "waypointRelativePos": 0.0,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -45,10 +61,10 @@
     "rotation": -179.56921278299137
   },
   "reversed": false,
-  "folder": "Depot Paths",
+  "folder": "OTB Path",
   "idealStartingState": {
-    "velocity": 0,
-    "rotation": 0.0
+    "velocity": 0.0,
+    "rotation": 85.19651424093091
   },
   "useDefaultConstraints": true
 }
