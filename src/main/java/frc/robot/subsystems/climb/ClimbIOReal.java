@@ -17,7 +17,7 @@ public class ClimbIOReal implements ClimbIO {
   double volts = 0;
 
   public ClimbIOReal() {
-    config.smartCurrentLimit(ClimbConstants.CurrentLimit);
+    config.smartCurrentLimit(ClimbConstants.currentLimit);
     config.idleMode(IdleMode.kBrake);
     ClimbMotor.configure(
         config, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
