@@ -4,10 +4,13 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFieldLayout.OriginPosition;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Subsystems.Intake.Intake;
@@ -24,8 +27,10 @@ import frc.robot.Subsystems.vision.Vision;
 import frc.robot.Subsystems.vision.VisionConstants;
 import frc.robot.Subsystems.vision.VisionIoReal;
 import frc.robot.Subsystems.vision.VisionIoSim;
+import frc.robot.commands.AutoCommands;
 import frc.robot.commands.DriveCommands;
 import java.io.IOException;
+import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -36,6 +41,7 @@ import java.io.IOException;
 public class RobotContainer {
   // Subsystems
   private final Drive drive;
+  LoggedDashboardChooser<Command> autoChooser;
   private Vision vision;
   private Shooter shooter;
   private Intake intake;
@@ -97,6 +103,18 @@ public class RobotContainer {
         break;
     }
     configureBindings();
+
+    CommandScheduler.getInstance().registerSubsystem(intake);
+    // Register commands
+    NamedCommands.registerCommand("startShooter", AutoCommands.startShooter());
+    NamedCommands.registerCommand("stopShooter", AutoCommands.stopShooter());
+    NamedCommands.registerCommand("startIntake", AutoCommands.startIntake());
+    NamedCommands.registerCommand("stopIntake", AutoCommands.stopIntake());
+    NamedCommands.registerCommand("startClimb", AutoCommands.startClimb());
+
+    autoChooser =
+        new LoggedDashboardChooser<>(
+            "Auto Chooser", AutoBuilder.buildAutoChooser("Top Depot Climb"));
   }
 
   /**
@@ -170,6 +188,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return null;
+    return autoChooser.get();
   }
 }
