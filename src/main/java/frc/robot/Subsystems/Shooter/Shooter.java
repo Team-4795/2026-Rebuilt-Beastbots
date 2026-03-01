@@ -34,7 +34,7 @@ public class Shooter extends SubsystemBase {
       new LoggedTunableNumber("Shooter2/Kv2", ShooterConstants.PID.kV2);
   private LoggedTunableNumber ka2 =
       new LoggedTunableNumber("Shooter2/Ka2", ShooterConstants.PID.kA2);
-
+  private LoggedTunableNumber RPM = new LoggedTunableNumber("Shooter/RPM", 3000);
   public ShooterIO shooterIo;
   private Drive drive;
 
@@ -68,8 +68,8 @@ public class Shooter extends SubsystemBase {
 
   public void setGoal(
       double defaultRPM, BooleanSupplier isYHeldDown, BooleanSupplier intakeOrOutake) {
-    double targetRPM = defaultRPM;
-    if (isYHeldDown.getAsBoolean() && defaultRPM != 0) {
+    double targetRPM = RPM.getAsDouble();
+    if (isYHeldDown.getAsBoolean() && targetRPM != 0) {
       Translation2d currentGoal = autoAlign.lookGoal;
       Translation2d drivePos = drive.getPose().getTranslation();
       double Jello =

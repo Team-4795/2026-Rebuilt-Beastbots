@@ -17,9 +17,9 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Subsystems.Shooter.Shooter;
 import frc.robot.Subsystems.Shooter.ShooterIOReal;
 import frc.robot.Subsystems.Shooter.ShooterIOSim;
-// import frc.robot.Subsystems.climb.Climb;
-// import frc.robot.Subsystems.climb.ClimbIOReal;
-// import frc.robot.Subsystems.climb.ClimbIOSim;
+import frc.robot.Subsystems.climb.Climb;
+import frc.robot.Subsystems.climb.ClimbIOReal;
+import frc.robot.Subsystems.climb.ClimbIOSim;
 import frc.robot.Subsystems.drive.Drive;
 import frc.robot.Subsystems.drive.GyroIO;
 import frc.robot.Subsystems.drive.GyroIORedux;
@@ -44,7 +44,7 @@ public class RobotContainer {
   private final Drive drive;
   private Vision vision;
   private Shooter shooter;
-  // private Climb climb;
+  private Climb climb;
   // private Intake intake;
 
   // Controllers
@@ -66,15 +66,26 @@ public class RobotContainer {
     switch (Constants.currentMode) {
       case REAL:
         // Real robot, instantiate hardware IO implementations
-        drive =
-            Drive.createInstance(
-                new GyroIORedux(),
-                new ModuleIOSpark(0),
-                new ModuleIOSpark(1),
-                new ModuleIOSpark(2),
-                new ModuleIOSpark(3));
+        if (Constants.shouldDrive) {
+          drive =
+              Drive.createInstance(
+                  new GyroIORedux(),
+                  new ModuleIOSpark(0),
+                  new ModuleIOSpark(1),
+                  new ModuleIOSpark(2),
+                  new ModuleIOSpark(3));
+        } else {
+          drive =
+              Drive.createInstance(
+                  new GyroIO() {},
+                  new ModuleIOSim(),
+                  new ModuleIOSim(),
+                  new ModuleIOSim(),
+                  new ModuleIOSim());
+        }
+
         // vision = Vision.createInstance(new VisionIoSim()); // probably causing memory problems
-        // climb = Climb.Initialize(new ClimbIOReal());
+        climb = Climb.Initialize(new ClimbIOReal());
         shooter = Shooter.Initialize(new ShooterIOReal());
         // intake = Intake.Initialize(new IntakeIOReal());
         break;
@@ -88,7 +99,7 @@ public class RobotContainer {
                 new ModuleIOSim(),
                 new ModuleIOSim());
         vision = Vision.createInstance(new VisionIoSim());
-        // climb = Climb.Initialize(new ClimbIOSim());
+        climb = Climb.Initialize(new ClimbIOSim());
         shooter = Shooter.Initialize(new ShooterIOSim());
         // intake = Intake.Initialize(new IntakeIOSim());
         break;
@@ -103,7 +114,7 @@ public class RobotContainer {
                 new ModuleIO() {},
                 new ModuleIO() {});
         vision = Vision.createInstance(new VisionIoSim());
-        // climb = Climb.Initialize(new ClimbIOSim());
+        climb = Climb.Initialize(new ClimbIOSim());
         shooter = Shooter.Initialize(new ShooterIOSim());
         // intake = Intake.Initialize(new IntakeIOSim());
         break;
@@ -149,7 +160,10 @@ public class RobotContainer {
                     () -> -driverController.getLeftX(),
                     () -> autoAlign.goalAngle),
                 new autoAlign()));
+
+    // default commands
     shooter.setDefaultCommand(Commands.run(() -> shooter.defaultCommand(), shooter));
+    climb.setDefaultCommand(Commands.run(() -> climb.setVoltage(0), climb));
 
     // Switch to X pattern when X button is pressed
     driverController.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
@@ -165,14 +179,19 @@ public class RobotContainer {
                     drive)
                 .ignoringDisable(true));
 
-    operatorController
-        .b()
+    // climb
+
+    driverController.leftTrigger().whileTrue(Commands.run(() -> climb.setVoltage(6)));
+    driverController.rightTrigger().whileTrue(Commands.run(() -> climb.setVoltage(-6)));
+
+    driverController
+        .rightBumper()
         .whileTrue(
             Commands.run(
                 () -> shooter.setGoal(3000, () -> driverController.y().getAsBoolean(), () -> true),
                 shooter));
-    operatorController
-        .x()
+    driverController
+        .leftBumper()
         .whileTrue(
             Commands.run(
                 () -> shooter.setGoal(3000, () -> driverController.y().getAsBoolean(), () -> false),
@@ -204,7 +223,7 @@ public class RobotContainer {
     //     .onTrue(
     //         Commands.run(
     //             () -> shooter.setShooterVoltage(-ShooterConstants.shooterVoltage), shooter));
-    operatorController.a().onTrue(Commands.runOnce(() -> shooter.Configure(), shooter));
+    driverController.povDown().onTrue(Commands.runOnce(() -> shooter.Configure(), shooter));
 
     // operatorController
     //     .leftBumper()
@@ -225,10 +244,6 @@ public class RobotContainer {
     //     .povUp()
     //     .onTrue(Commands.run(() -> shooter.setVoltage(-9), shooter))
     //     .onFalse(Commands.run(() -> shooter.setVoltage(0), shooter));
-    operatorController.povUp().whileTrue(Commands.run(() -> shooter.setGoalSimple(3600)));
-    operatorController.povLeft().whileTrue(Commands.run(() -> shooter.setGoalSimple(2000)));
-    operatorController.povRight().whileTrue(Commands.run(() -> shooter.setGoalSimple(1000)));
-    operatorController.povDown().whileTrue(Commands.run(() -> shooter.setGoalSimple(0)));
   }
 
   /**

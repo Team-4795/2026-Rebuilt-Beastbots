@@ -22,7 +22,7 @@ public class ShooterConstants {
 
   public static final int currentLimit = 40;
 
-  public static final double tolerableRpmRangeShooter = 1000;
+  public static final double tolerableRpmRangeShooter = 100;
 
   public static double distanceFunction(double x) {
     // RPM = distance^2+4
