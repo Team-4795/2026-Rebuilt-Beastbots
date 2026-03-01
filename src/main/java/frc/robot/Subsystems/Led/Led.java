@@ -48,11 +48,14 @@ public class Led extends SubsystemBase {
                 Commands.select(
                     (Map.ofEntries(
                         Map.entry(BlinkState.RAPID, setABeautifulHue()),
-                        Map.entry(BlinkState.SLOW, blink(0.20, 184, 100, 84)),
-                        Map.entry(BlinkState.SOLID, blink(0.10, 184, 100, 84)))),
+                        Map.entry(
+                            BlinkState.SLOW,
+                            setBlink(0.20, 184, 100, 84, 0, LedConstants.ledLength)),
+                        Map.entry(
+                            BlinkState.SOLID,
+                            setBlink(0.10, 184, 100, 84, 0, LedConstants.ledLength)))),
                     () -> blink),
-                DriverStation::isDisabled)
-            .ignoringDisable(true));
+                DriverStation::isDisabled).ignoringDisable(true));
   }
 
   public Command setABeautifulHue() {
@@ -65,38 +68,46 @@ public class Led extends SubsystemBase {
 
   public Command blinkTeamColors(double interrupt) {
     return Commands.repeatingSequence(
-      Commands.runOnce(()-> setHalves(184, 100, 84, 72, 77, 86), LED),
-      Commands.waitSeconds(interrupt),
-      Commands.runOnce(()-> setHalves(72, 77, 86, 184, 100, 84), LED),
-      Commands.waitSeconds(interrupt));
+        Commands.runOnce(() -> setHalves(184, 100, 84, 72, 77, 86), LED),
+        Commands.waitSeconds(interrupt),
+        Commands.runOnce(() -> setHalves(72, 77, 86, 184, 100, 84), LED),
+        Commands.waitSeconds(interrupt));
   }
 
   public Command setTeamColors() {
     return Commands.runOnce(() -> setHalves(184, 100, 84, 72, 77, 86), LED);
   }
 
-  // public Command chase(int h, int s, int v) {
-  //   return Commands.repeatingSequence(
-  //     Commands.either(
-  //       (Commands.runOnce(num = 0), null),
-  //       (Commands.sequence(
-  //         runOnce(() -> setColor(h, s, v, num, num + 1)),
-  //         Commands.waitSeconds(0.5 ), 
-  //         LED)),
-  //       (
-  //         null;
-  //       )))
-  //   }
-
-  public Command blink(double interrupt, int h, int s, int v) {
+  public Command setRise(int h, int s, int v) {
     return Commands.repeatingSequence(
-        runOnce(() -> setColor(h, s, v, 0, LedConstants.ledLength)),
-        Commands.waitSeconds(interrupt),
-        runOnce(() -> setColor(h, s, v, 0, LedConstants.ledLength)),
-        Commands.waitSeconds(interrupt));
+        Commands.either(
+            (Commands.runOnce(() -> num = 0)),
+            (Commands.sequence(
+                runOnce(() -> setBlink(0.5, h, s, v, num, num + 1)), 
+                runOnce(() -> setBlank()))),
+            (() -> (num > LedConstants.ledLength))));
   }
 
-  public void setHalves(int h1, int s1, int v1, int h2, int s2, int v2){
+  public Command setFall(int h, int s, int v) {
+    return Commands.repeatingSequence(
+        Commands.either(
+            (Commands.runOnce(() -> num = LedConstants.ledLength)),
+            (Commands.sequence(
+                runOnce(() -> setBlink(0.5, h, s, v, num - 1, num)),
+                runOnce(() -> setBlank()))),
+            (() -> (num < 0))));
+  }
+
+  public Command setBlink(double interrupt, int h, int s, int v, int start, int end) {
+    return Commands.repeatingSequence(
+        runOnce(() -> setColor(h, s, v, start, end)), Commands.waitSeconds(interrupt));
+  }
+
+  public Command setBlank() {
+    return Commands.runOnce(() -> setColor(0, 0, 0, 0, LedConstants.ledLength));
+  }
+
+  public void setHalves(int h1, int s1, int v1, int h2, int s2, int v2) {
     setColorNoOutput(h1, s1, v1, 0, (LedConstants.ledLength / 2) + 1);
     setColorNoOutput(h2, s2, v2, ((LedConstants.ledLength / 2) + 1), LedConstants.ledLength);
 
