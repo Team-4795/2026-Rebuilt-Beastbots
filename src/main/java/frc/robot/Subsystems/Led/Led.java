@@ -22,6 +22,7 @@ public class Led extends SubsystemBase {
   private AddressableLEDBuffer buffer;
   private BlinkState blink;
   private static Led instance;
+  private int num;
 
   /**
    * Gets the current instance of {@blink Led}. If none exists, one is created
@@ -63,7 +64,7 @@ public class Led extends SubsystemBase {
   }
 
   public Command blinkTeamColors(double interrupt) {
-    return Commands.sequence(
+    return Commands.repeatingSequence(
       Commands.runOnce(()-> setHalves(184, 100, 84, 72, 77, 86), LED),
       Commands.waitSeconds(interrupt),
       Commands.runOnce(()-> setHalves(72, 77, 86, 184, 100, 84), LED),
@@ -74,15 +75,21 @@ public class Led extends SubsystemBase {
     return Commands.runOnce(() -> setHalves(184, 100, 84, 72, 77, 86), LED);
   }
 
-  public Command chase(int h, int s, int v) {
-      for(int i = 0; i < LedConstants.ledLength; i ++) {
-        return Commands.sequence(
-          Commands.runOnce(() -> setColor(h, s, v, i, i++)),
-          Commands.waitSeconds(0.5);
-    }
-  }
+  // public Command chase(int h, int s, int v) {
+  //   return Commands.repeatingSequence(
+  //     Commands.either(
+  //       (Commands.runOnce(num = 0), null),
+  //       (Commands.sequence(
+  //         runOnce(() -> setColor(h, s, v, num, num + 1)),
+  //         Commands.waitSeconds(0.5 ), 
+  //         LED)),
+  //       (
+  //         null;
+  //       )))
+  //   }
+
   public Command blink(double interrupt, int h, int s, int v) {
-    return Commands.sequence(
+    return Commands.repeatingSequence(
         runOnce(() -> setColor(h, s, v, 0, LedConstants.ledLength)),
         Commands.waitSeconds(interrupt),
         runOnce(() -> setColor(h, s, v, 0, LedConstants.ledLength)),
