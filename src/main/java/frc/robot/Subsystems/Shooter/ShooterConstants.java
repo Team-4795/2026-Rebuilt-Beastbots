@@ -35,7 +35,7 @@ public class ShooterConstants {
 
     // Proportion if it ollicilates decrease it if it doesnt give it enough volts incresa
     // Shooter 3 increase until goal if oscillates decrease
-    public static double kP = 0.0;
+    public static double kP = 0.000007;
     // Integral
     public static double kI = 0.0;
     // Derivative 4 change until oscillate
