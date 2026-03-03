@@ -125,8 +125,8 @@ public class RobotContainer {
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
             drive,
-            () -> -driverController.getLeftY(),
-            () -> -driverController.getLeftX(),
+            () -> driverController.getLeftY(),
+            () -> driverController.getLeftX(),
             () -> -driverController.getRightX()));
 
     // Lock to 0° when A button is held
@@ -148,6 +148,8 @@ public class RobotContainer {
                     () -> -driverController.getLeftX(),
                     () -> autoAlign.goalAngle),
                 new autoAlign()));
+
+    driverController.povRight().whileTrue(Commands.run(() -> shooter.setIndexerVoltage(-3)));
 
     // default commands
     shooter.setDefaultCommand(Commands.run(() -> shooter.defaultCommand(), shooter));

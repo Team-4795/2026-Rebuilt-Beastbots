@@ -81,14 +81,14 @@ public class Shooter extends SubsystemBase {
         targetRPM = ShooterConstants.distanceFunction(Jello);
       }
     }
-    shooterIo.setGoal(targetRPM);
     if (!intakeOrOutake.getAsBoolean()) {
       setIndexerVoltage(-6);
-    } else {
       shooterIo.setGoal(2000);
+    } else {
+      shooterIo.setGoal(targetRPM);
       if (Math.abs(inputs.velocity1 - targetRPM) < ShooterConstants.tolerableRpmRangeShooter) {
         if (intakeOrOutake.getAsBoolean()) {
-          setIndexerVoltage(-6);
+          setIndexerVoltage(6);
         }
       } else {
         setIndexerVoltage(0);
