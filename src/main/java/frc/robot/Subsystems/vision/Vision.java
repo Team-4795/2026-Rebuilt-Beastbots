@@ -73,13 +73,14 @@ public class Vision extends SubsystemBase {
             (tagPoses.size() == 1
                     ? VisionConstants.xyStdDevSingleTag
                     : VisionConstants.xyStdDevMultiTag)
-                * Math.pow(distance, 2);
+                * Math.pow(distance, 3);
         Vector<N3> stddevs = VecBuilder.fill(xyStdDev, xyStdDev, Units.degreesToRadians(40));
 
         Logger.recordOutput("Vision/" + VisionConstants.cameraNames[i] + "/Avg distance", distance);
         Logger.recordOutput("Vision/" + VisionConstants.cameraNames[i] + "/xy std dev", xyStdDev);
+        Logger.recordOutput("Vision/" + VisionConstants.cameraNames[i] + "/Robot Pose", robotPose);
 
-        if (shouldUpdate[i]) {
+        if (shouldUpdate[i] && inputs[i].poseAmbiguity[p] < 0.1) {
           // Bro idk what to do here
           Drive.getInstance()
               .addVisionMeasurement(robotPose.toPose2d(), inputs[i].timestamp[p], stddevs);

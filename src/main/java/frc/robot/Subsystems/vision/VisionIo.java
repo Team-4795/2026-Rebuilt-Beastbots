@@ -11,7 +11,7 @@ public interface VisionIo {
     double[] timestamp = new double[] {};
     int[] tags = new int[] {};
 
-    double poseAmbiguity = 0.0;
+    double[] poseAmbiguity = new double[] {};
 
     int pipelineIndex = 10;
     String sortMode = "";

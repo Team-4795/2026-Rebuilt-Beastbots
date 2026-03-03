@@ -1,17 +1,15 @@
 package frc.robot.Subsystems.Shooter;
 
-import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
-import frc.robot.Subsystems.Shooter.ShooterIO.ShooterIOInputs;
 
 public class ShooterIOSim implements ShooterIO {
   // PID
-  private final SparkMaxConfig config = new SparkMaxConfig();
+  // private final SparkMaxConfig config = new SparkMaxConfig();
 
   private DCMotorSim simMotor =
       new DCMotorSim(
@@ -53,8 +51,12 @@ public class ShooterIOSim implements ShooterIO {
   }
 
   @Override
+  public void setIndexerVoltage(double volts) {
+    outTakeMotor.setInputVoltage(volts);
+  }
+
+  @Override
   public void updateInputs(ShooterIOInputs inputs1) {
-    inputs1.position1 = simMotor.getAngularPositionRad();
     inputs1.position1 = simMotor.getAngularPositionRad();
     inputs1.voltage1 = currentVoltage;
     inputs1.velocity1 = simMotor.getAngularVelocityRPM();
@@ -62,10 +64,15 @@ public class ShooterIOSim implements ShooterIO {
     inputs1.position2 = simMotor.getAngularPositionRad();
     inputs1.voltage2 = currentVoltage;
     inputs1.velocity2 = simMotor.getAngularVelocityRPM();
-    inputs1.velocity1 = simMotor.getAngularVelocityRPM();
+
     inputs1.currentCurrent1 = simMotor.getCurrentDrawAmps();
     inputs1.currentCurrent2 = simMotor.getCurrentDrawAmps();
     inputs1.currentCurrent3 = simMotor.getCurrentDrawAmps();
+
+    inputs1.voltage3 = outTakeMotor.getInputVoltage();
+    inputs1.velocity3 = outTakeMotor.getAngularVelocityRPM();
+
+    inputs1.goalVelocity = setRPM;
 
     simMotor.update(0.02);
 

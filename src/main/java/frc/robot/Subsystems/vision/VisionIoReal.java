@@ -51,6 +51,13 @@ public class VisionIoReal implements VisionIo {
                           return target.getFiducialId();
                         })
                     .toArray();
+            inputs.poseAmbiguity =
+                pose.targetsUsed.stream()
+                    .mapToDouble(
+                        (target) -> {
+                          return target.getPoseAmbiguity();
+                        })
+                    .toArray();
           },
           () -> {
             inputs.pose = new Pose3d[] {};

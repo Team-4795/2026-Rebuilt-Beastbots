@@ -5,9 +5,6 @@
 package frc.robot;
 
 import com.reduxrobotics.canand.CanandEventLoop;
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.apriltag.AprilTagFieldLayout.OriginPosition;
-import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -27,7 +24,7 @@ import frc.robot.Subsystems.drive.ModuleIO;
 import frc.robot.Subsystems.drive.ModuleIOSim;
 import frc.robot.Subsystems.drive.ModuleIOSpark;
 import frc.robot.Subsystems.vision.Vision;
-import frc.robot.Subsystems.vision.VisionConstants;
+import frc.robot.Subsystems.vision.VisionIoReal;
 import frc.robot.Subsystems.vision.VisionIoSim;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.autoAlign;
@@ -53,15 +50,6 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. * */
   public RobotContainer() throws IOException {
-    try {
-      VisionConstants.aprilTagFieldLayout2 =
-          AprilTagFieldLayout.loadFromResource(
-              AprilTagFields.k2026RebuiltAndymark.m_resourceFile); // Placefolder
-      VisionConstants.aprilTagFieldLayout2.setOrigin(OriginPosition.kBlueAllianceWallRightSide);
-
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
 
     switch (Constants.currentMode) {
       case REAL:
@@ -84,7 +72,7 @@ public class RobotContainer {
                   new ModuleIOSim());
         }
 
-        // vision = Vision.createInstance(new VisionIoSim()); // probably causing memory problems
+        vision = Vision.createInstance(new VisionIoReal(0));
         climb = Climb.Initialize(new ClimbIOReal());
         shooter = Shooter.Initialize(new ShooterIOReal());
         // intake = Intake.Initialize(new IntakeIOReal());
@@ -139,7 +127,7 @@ public class RobotContainer {
             drive,
             () -> -driverController.getLeftY(),
             () -> -driverController.getLeftX(),
-            () -> driverController.getRightX()));
+            () -> -driverController.getRightX()));
 
     // Lock to 0° when A button is held
     driverController
@@ -180,7 +168,6 @@ public class RobotContainer {
                 .ignoringDisable(true));
 
     // climb
-
     driverController.leftTrigger().whileTrue(Commands.run(() -> climb.setVoltage(6)));
     driverController.rightTrigger().whileTrue(Commands.run(() -> climb.setVoltage(-6)));
 
@@ -198,13 +185,6 @@ public class RobotContainer {
                 shooter));
 
     // COMMENTED OUT FOR TESTING PURPOSES
-    // also there should not be two default commands for shooter
-    // shooter.setDefaultCommand(
-    //     Commands.run(() -> shooter.setGoal(0, () -> driverController.y().getAsBoolean()),
-    // shooter));
-    // shooter.setDefaultCommand(Commands.run(() -> shooter.setGoalSimple(0), shooter));
-    // shooter.setDefaultCommand(Commands.run(() -> shooter.setShooterVoltage(0), shooter));
-
     // climb.setDefaultCommand(Commands.run(() -> climb.setVoltage(0), climb));
 
     // operatorController.leftTrigger().whileTrue(Commands.run(() -> climb.setVoltage(10)));

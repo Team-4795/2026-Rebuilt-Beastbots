@@ -51,7 +51,7 @@ public class ShooterConstants {
     //
     public static double kA = 0.0;
 
-    // these arent tuned
+    // these arent tuned and probably dont need to be
     // Middle bar
     public static double kP2 = 0.0;
     public static double kI2 = 0.0;

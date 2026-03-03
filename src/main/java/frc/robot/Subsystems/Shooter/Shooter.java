@@ -34,7 +34,7 @@ public class Shooter extends SubsystemBase {
       new LoggedTunableNumber("Shooter2/Kv2", ShooterConstants.PID.kV2);
   private LoggedTunableNumber ka2 =
       new LoggedTunableNumber("Shooter2/Ka2", ShooterConstants.PID.kA2);
-  private LoggedTunableNumber RPM = new LoggedTunableNumber("Shooter/RPM", 3000);
+  private LoggedTunableNumber RPM = new LoggedTunableNumber("Shooter/RPM", 5000);
   public ShooterIO shooterIo;
   private Drive drive;
 
@@ -85,9 +85,10 @@ public class Shooter extends SubsystemBase {
     if (!intakeOrOutake.getAsBoolean()) {
       setIndexerVoltage(-6);
     } else {
+      shooterIo.setGoal(2000);
       if (Math.abs(inputs.velocity1 - targetRPM) < ShooterConstants.tolerableRpmRangeShooter) {
         if (intakeOrOutake.getAsBoolean()) {
-          setIndexerVoltage(6);
+          setIndexerVoltage(-6);
         }
       } else {
         setIndexerVoltage(0);
