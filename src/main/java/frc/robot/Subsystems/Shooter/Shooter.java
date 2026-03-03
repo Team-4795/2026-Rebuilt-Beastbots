@@ -82,16 +82,14 @@ public class Shooter extends SubsystemBase {
       }
     }
     if (!intakeOrOutake.getAsBoolean()) {
-      setIndexerVoltage(-6);
+      setIndexerVoltage(-7);
       shooterIo.setGoal(2000);
     } else {
       shooterIo.setGoal(targetRPM);
       if (Math.abs(inputs.velocity1 - targetRPM) < ShooterConstants.tolerableRpmRangeShooter) {
         if (intakeOrOutake.getAsBoolean()) {
-          setIndexerVoltage(6);
+          setIndexerVoltage(7);
         }
-      } else {
-        setIndexerVoltage(0);
       }
     }
   }

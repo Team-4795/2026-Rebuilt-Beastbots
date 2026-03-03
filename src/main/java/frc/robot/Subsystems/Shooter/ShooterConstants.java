@@ -24,12 +24,14 @@ public class ShooterConstants {
 
   public static final int currentLimit = 40;
 
-  public static final double tolerableRpmRangeShooter = 50;
+  public static final double tolerableRpmRangeShooter = 10;
 
   public static final InterpolatingDoubleTreeMap shooterMap = new InterpolatingDoubleTreeMap();
 
   static {
-    shooterMap.put(0.0, 0.0);
+    shooterMap.put(2.66, 4500.0);
+    shooterMap.put(2.24, 4200.0);
+    shooterMap.put(1.9, 4150.0);
   }
 
   public static double distanceFunction(double x) {
