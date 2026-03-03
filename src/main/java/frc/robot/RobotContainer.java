@@ -15,7 +15,6 @@ import frc.robot.Subsystems.Shooter.Shooter;
 import frc.robot.Subsystems.Shooter.ShooterIOReal;
 import frc.robot.Subsystems.Shooter.ShooterIOSim;
 import frc.robot.Subsystems.climb.Climb;
-import frc.robot.Subsystems.climb.ClimbIOReal;
 import frc.robot.Subsystems.climb.ClimbIOSim;
 import frc.robot.Subsystems.drive.Drive;
 import frc.robot.Subsystems.drive.GyroIO;
@@ -73,7 +72,7 @@ public class RobotContainer {
         }
 
         vision = Vision.createInstance(new VisionIoReal(0));
-        climb = Climb.Initialize(new ClimbIOReal());
+        climb = Climb.Initialize(new ClimbIOSim()); // climb removed
         shooter = Shooter.Initialize(new ShooterIOReal());
         // intake = Intake.Initialize(new IntakeIOReal());
         break;
@@ -125,8 +124,8 @@ public class RobotContainer {
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
             drive,
-            () -> driverController.getLeftY(),
-            () -> driverController.getLeftX(),
+            () -> -driverController.getLeftY(),
+            () -> -driverController.getLeftX(),
             () -> -driverController.getRightX()));
 
     // Lock to 0° when A button is held
@@ -170,10 +169,10 @@ public class RobotContainer {
                 .ignoringDisable(true));
 
     // climb
-    driverController.leftTrigger().whileTrue(Commands.run(() -> climb.setVoltage(6)));
-    driverController.rightTrigger().whileTrue(Commands.run(() -> climb.setVoltage(-6)));
+    operatorController.leftTrigger().whileTrue(Commands.run(() -> climb.setVoltage(6)));
+    operatorController.rightTrigger().whileTrue(Commands.run(() -> climb.setVoltage(-6)));
 
-    driverController
+    operatorController
         .rightBumper()
         .whileTrue(
             Commands.run(

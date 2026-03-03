@@ -86,12 +86,20 @@ public class Shooter extends SubsystemBase {
       shooterIo.setGoal(2000);
     } else {
       shooterIo.setGoal(targetRPM);
-      if (Math.abs(inputs.velocity1 - targetRPM) < ShooterConstants.tolerableRpmRangeShooter) {
+      if (inputs.velocity1 - targetRPM
+          < ShooterConstants
+              .tolerableRpmRangeShooter) { // idc if we overshoot, as long as we get the indexer
+        // spinning
         if (intakeOrOutake.getAsBoolean()) {
           setIndexerVoltage(7);
         }
       }
     }
+  }
+
+  public void setGoalDynamic(double distance) {
+    double rpm = ShooterConstants.shooterMap.get(distance);
+    this.setGoalSimple(rpm);
   }
 
   public void setGoalSimple(double rpm) {
