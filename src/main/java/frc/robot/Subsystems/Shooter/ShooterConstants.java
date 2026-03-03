@@ -29,11 +29,11 @@ public class ShooterConstants {
   public static final InterpolatingDoubleTreeMap shooterMap = new InterpolatingDoubleTreeMap();
 
   static {
-    shooterMap.put(3.38, 5350.0);
-    shooterMap.put(2.92, 5050.0);
-    shooterMap.put(2.74, 4900.0);
-    shooterMap.put(2.21, 4600.0);
     shooterMap.put(1.82, 4350.0);
+    shooterMap.put(2.21, 4600.0);
+    shooterMap.put(2.74, 4900.0);
+    shooterMap.put(2.92, 5050.0);
+    shooterMap.put(3.38, 5350.0);
   }
 
   public static double distanceFunction(double x) {

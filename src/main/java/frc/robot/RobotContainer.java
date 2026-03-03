@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.reduxrobotics.canand.CanandEventLoop;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -25,9 +26,11 @@ import frc.robot.Subsystems.drive.ModuleIOSpark;
 import frc.robot.Subsystems.vision.Vision;
 import frc.robot.Subsystems.vision.VisionIoReal;
 import frc.robot.Subsystems.vision.VisionIoSim;
+import frc.robot.commands.AutoCommands;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.autoAlign;
 import java.io.IOException;
+import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -46,6 +49,7 @@ public class RobotContainer {
   // Controllers
   private final CommandXboxController driverController = new CommandXboxController(0);
   private final CommandXboxController operatorController = new CommandXboxController(1);
+  private LoggedDashboardChooser<Command> autoChooser;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. * */
   public RobotContainer() throws IOException {
@@ -108,6 +112,7 @@ public class RobotContainer {
     }
     CanandEventLoop.getInstance();
     configureBindings();
+    autoChooser = new LoggedDashboardChooser<>("Auto Chooser", AutoBuilder.buildAutoChooser());
   }
 
   /**
@@ -172,18 +177,10 @@ public class RobotContainer {
     operatorController.leftTrigger().whileTrue(Commands.run(() -> climb.setVoltage(6)));
     operatorController.rightTrigger().whileTrue(Commands.run(() -> climb.setVoltage(-6)));
 
-    operatorController
-        .rightBumper()
-        .whileTrue(
-            Commands.run(
-                () -> shooter.setGoal(3000, () -> driverController.y().getAsBoolean(), () -> true),
-                shooter));
-    driverController
-        .leftBumper()
-        .whileTrue(
-            Commands.run(
-                () -> shooter.setGoal(3000, () -> driverController.y().getAsBoolean(), () -> false),
-                shooter));
+    operatorController.rightBumper().whileTrue(AutoCommands.shootDynamic());
+
+    operatorController.povUp().whileTrue(Commands.run(() -> shooter.setGoalStatic(), shooter));
+    driverController.leftBumper().whileTrue(Commands.run(() -> shooter.intake(), shooter));
 
     // COMMENTED OUT FOR TESTING PURPOSES
     // climb.setDefaultCommand(Commands.run(() -> climb.setVoltage(0), climb));

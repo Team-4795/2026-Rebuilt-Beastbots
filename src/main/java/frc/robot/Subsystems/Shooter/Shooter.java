@@ -1,13 +1,7 @@
 package frc.robot.Subsystems.Shooter;
 
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Subsystems.drive.Drive;
-import frc.robot.commands.autoAlign;
 import frc.robot.util.LoggedTunableNumber;
-import java.util.function.BooleanSupplier;
 import org.littletonrobotics.junction.Logger;
 
 public class Shooter extends SubsystemBase {
@@ -36,7 +30,7 @@ public class Shooter extends SubsystemBase {
       new LoggedTunableNumber("Shooter2/Ka2", ShooterConstants.PID.kA2);
   private LoggedTunableNumber RPM = new LoggedTunableNumber("Shooter/RPM", 5000);
   public ShooterIO shooterIo;
-  private Drive drive;
+  // private Drive drive;
 
   public static Shooter getInstance() {
     return instance;
@@ -66,40 +60,40 @@ public class Shooter extends SubsystemBase {
         ka2.getAsDouble());
   }
 
-  public void setGoal(
-      double defaultRPM, BooleanSupplier isYHeldDown, BooleanSupplier intakeOrOutake) {
-    double targetRPM = RPM.getAsDouble();
-    if (isYHeldDown.getAsBoolean() && targetRPM != 0) {
-      Translation2d currentGoal = autoAlign.lookGoal;
-      Translation2d drivePos = drive.getPose().getTranslation();
-      double Jello =
-          Math.sqrt(
-              Math.pow(currentGoal.getX() - drivePos.getX(), 2)
-                  + Math.pow(currentGoal.getY() - drivePos.getY(), 2));
+  public void setGoal(double rpm) {
+    this.readyToShoot(rpm);
+  }
 
-      if (Jello > ShooterConstants.minDistance && Jello < ShooterConstants.maxDistance) {
-        targetRPM = ShooterConstants.distanceFunction(Jello);
-      }
-    }
-    if (!intakeOrOutake.getAsBoolean()) {
-      setIndexerVoltage(-7);
-      shooterIo.setGoal(2000);
-    } else {
-      shooterIo.setGoal(targetRPM);
-      if (inputs.velocity1 - targetRPM
-          < ShooterConstants
-              .tolerableRpmRangeShooter) { // idc if we overshoot, as long as we get the indexer
-        // spinning
-        if (intakeOrOutake.getAsBoolean()) {
-          setIndexerVoltage(7);
-        }
-      }
-    }
+  public void setGoalStatic() {
+    double targetRPM = RPM.getAsDouble();
+    // if (isYHeldDown.getAsBoolean() && targetRPM != 0) {
+    //   Translation2d currentGoal = autoAlign.lookGoal;
+    //   Translation2d drivePos = drive.getPose().getTranslation();
+    //   double Jello =
+    //       Math.sqrt(
+    //           Math.pow(currentGoal.getX() - drivePos.getX(), 2)
+    //               + Math.pow(currentGoal.getY() - drivePos.getY(), 2));
+
+    //   if (Jello > ShooterConstants.minDistance && Jello < ShooterConstants.maxDistance) {
+    //     targetRPM = ShooterConstants.distanceFunction(Jello);
+    //   }
+    // }
+    this.readyToShoot(targetRPM);
   }
 
   public void setGoalDynamic(double distance) {
     double rpm = ShooterConstants.shooterMap.get(distance);
-    this.setGoalSimple(rpm);
+    this.readyToShoot(rpm);
+  }
+
+  public void readyToShoot(double targetRPM) {
+    shooterIo.setGoal(targetRPM);
+    if (inputs.velocity1 - targetRPM
+        < ShooterConstants
+            .tolerableRpmRangeShooter) { // idc if we overshoot, as long as we get the indexer
+      // spinning
+      setIndexerVoltage(7);
+    }
   }
 
   public void setGoalSimple(double rpm) {
@@ -127,15 +121,14 @@ public class Shooter extends SubsystemBase {
     shooterIo.setGoal(0);
   }
 
-  public Command intake() {
-    return Commands.parallel(
-        Commands.run(() -> shooterIo.setVoltage(5), this),
-        Commands.run(() -> shooterIo.setIndexerVoltage(-3)));
+  public void intake() {
+    shooterIo.setIndexerVoltage(-7);
+    shooterIo.setGoal(2000);
   }
 
   public Shooter(ShooterIO io) {
     shooterIo = io;
-    drive = Drive.getInstance();
+    // drive = Drive.getInstance();
   }
 
   @Override
