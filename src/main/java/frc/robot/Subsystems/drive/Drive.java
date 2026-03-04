@@ -54,6 +54,8 @@ public class Drive extends SubsystemBase {
       new Alert("Disconnected gyro, using kinematics as fallback.", AlertType.kError);
   private static Drive instance;
 
+  private boolean tweakDriveSensitivity = false;
+
   public static Drive createInstance(
       GyroIO gyroIO,
       ModuleIO flModuleIO,
@@ -157,6 +159,7 @@ public class Drive extends SubsystemBase {
     }
 
     Logger.recordOutput("Distance to Red Hub", this.getDistanceToRedHub());
+    Logger.recordOutput("Adjust Sensitivity", this.tweakDriveSensitivity);
 
     // Update odometry
     double[] sampleTimestamps =
@@ -335,5 +338,13 @@ public class Drive extends SubsystemBase {
 
   public double getDistanceToRedHub() {
     return (this.getPose().getTranslation().getDistance(Constants.FieldConstants.redHub));
+  }
+
+  public void toggleDriveSensitivity() {
+    tweakDriveSensitivity = !tweakDriveSensitivity;
+  }
+
+  public boolean getDriveSensitivity() {
+    return tweakDriveSensitivity;
   }
 }

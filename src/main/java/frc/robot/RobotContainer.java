@@ -89,7 +89,7 @@ public class RobotContainer {
                 new ModuleIOSim(),
                 new ModuleIOSim(),
                 new ModuleIOSim());
-        vision = Vision.createInstance(new VisionIoSim());
+        //vision = Vision.createInstance(new VisionIoSim());
         climb = Climb.Initialize(new ClimbIOSim());
         shooter = Shooter.Initialize(new ShooterIOSim());
         // intake = Intake.Initialize(new IntakeIOSim());
@@ -142,6 +142,8 @@ public class RobotContainer {
                 () -> -driverController.getLeftY(),
                 () -> -driverController.getLeftX(),
                 () -> Rotation2d.kZero));
+
+    // auto align i think
     driverController
         .y()
         .whileTrue(
@@ -153,7 +155,7 @@ public class RobotContainer {
                     () -> autoAlign.goalAngle),
                 new autoAlign()));
 
-    driverController.povRight().whileTrue(Commands.run(() -> shooter.setIndexerVoltage(-3)));
+    // driverController.povRight().whileTrue(Commands.run(() -> shooter.setIndexerVoltage(-3)));
 
     // default commands
     shooter.setDefaultCommand(Commands.run(() -> shooter.defaultCommand(), shooter));
@@ -172,6 +174,10 @@ public class RobotContainer {
                             new Pose2d(drive.getPose().getTranslation(), Rotation2d.kZero)),
                     drive)
                 .ignoringDisable(true));
+
+    driverController
+        .povDown()
+        .onTrue(Commands.runOnce(() -> drive.toggleDriveSensitivity(), drive));
 
     // climb
     operatorController.leftTrigger().whileTrue(Commands.run(() -> climb.setVoltage(6)));
@@ -201,7 +207,7 @@ public class RobotContainer {
     //     .onTrue(
     //         Commands.run(
     //             () -> shooter.setShooterVoltage(-ShooterConstants.shooterVoltage), shooter));
-    driverController.povDown().onTrue(Commands.runOnce(() -> shooter.Configure(), shooter));
+    operatorController.povDown().onTrue(Commands.runOnce(() -> shooter.Configure(), shooter));
 
     // operatorController
     //     .leftBumper()

@@ -99,9 +99,17 @@ public class DriveCommands {
           Logger.recordOutput("Modifier2", modifier);
 
           // Get linear velocity
-          Translation2d linearVelocity =
-              getLinearVelocityFromJoysticks(
-                  xSupplier.getAsDouble() * modifier, ySupplier.getAsDouble() * modifier);
+          Translation2d linearVelocity;
+          if (drive.getDriveSensitivity()) { // change drive sensitivity
+            linearVelocity =
+                getLinearVelocityFromJoysticks(
+                    Math.pow(xSupplier.getAsDouble(), 3) * modifier,
+                    Math.pow(ySupplier.getAsDouble(), 3) * modifier);
+          } else {
+            linearVelocity =
+                getLinearVelocityFromJoysticks(
+                    xSupplier.getAsDouble() * modifier, ySupplier.getAsDouble() * modifier);
+          }
 
           // Apply rotation deadband
           double omega = MathUtil.applyDeadband(omegaSupplier.getAsDouble(), DEADBAND);
