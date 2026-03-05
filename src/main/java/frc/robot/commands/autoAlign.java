@@ -19,9 +19,11 @@ public class autoAlign extends Command {
 
   public static double goalAngle = 0;
   private final double shootVelocity = 3; // M/S
-
-  public static Translation2d lookGoal;
+  // For modifyVelocity
+  public static double modifier = 1;
   public static final PIDController controller = new PIDController(1.3, 0.5, 0.0);
+  public static Translation2d lookGoal;
+
   private Alliance currentAlliance;
   public static autoAlign instance;
   private Drive drive;
@@ -65,9 +67,9 @@ public class autoAlign extends Command {
     ChassisSpeeds chassisSpeed =
         ChassisSpeeds.fromRobotRelativeSpeeds(drive.getChassisSpeeds(), drive.getRotation());
 
-    double offsetX = chassisSpeed.vxMetersPerSecond * timeToHub * 0.3048f;
+    double offsetX = chassisSpeed.vxMetersPerSecond * timeToHub;
 
-    double offsetY = chassisSpeed.vyMetersPerSecond * timeToHub * 0.3048f;
+    double offsetY = chassisSpeed.vyMetersPerSecond * timeToHub;
 
     Translation2d offsetHub = pos.plus(new Translation2d(-offsetX, -offsetY));
 
@@ -82,7 +84,7 @@ public class autoAlign extends Command {
 
   @Override
   public void execute() {
-
+    // FIXME: does shuttling calculations even if they are not actually needed
     if (currentAlliance != Alliance.Red) {
       shuttlePos2 =
           new Translation2d(

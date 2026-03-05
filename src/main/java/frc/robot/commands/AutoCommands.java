@@ -14,7 +14,7 @@ public class AutoCommands {
 
   public static Command startShooter() {
     try {
-      return Commands.runOnce(() -> shooter.setVoltage(0.5), shooter);
+      return Commands.runOnce(() -> shooter.readyToShoot(4500), shooter);
     } catch (Exception e) {
       return Commands.runOnce(() -> System.out.println("Command \"Start Shooter\" Failed"));
     }
@@ -22,7 +22,7 @@ public class AutoCommands {
 
   public static Command stopShooter() {
     try {
-      return Commands.runOnce(() -> shooter.setVoltage(0), shooter);
+      return Commands.runOnce(() -> shooter.setGoalSimple(0), shooter);
     } catch (Exception e) {
       return Commands.runOnce(() -> System.out.println("Command \"Stop Shooter\" Failed"));
     }
