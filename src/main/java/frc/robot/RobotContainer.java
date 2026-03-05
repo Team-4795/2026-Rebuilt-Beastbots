@@ -5,6 +5,7 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import com.reduxrobotics.canand.CanandEventLoop;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -41,6 +42,7 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 public class RobotContainer {
   // Subsystems
   private final Drive drive;
+  LoggedDashboardChooser<Command> autoChooser;
   private Vision vision;
   private Shooter shooter;
   private Climb climb;
@@ -49,8 +51,8 @@ public class RobotContainer {
   // Controllers
   private final CommandXboxController driverController = new CommandXboxController(0);
   private final CommandXboxController operatorController = new CommandXboxController(1);
-  private LoggedDashboardChooser<Command> autoChooser;
 
+  /** The container for the robot. Contains subsystems, OI devices, and commands. * */
   /** The container for the robot. Contains subsystems, OI devices, and commands. * */
   public RobotContainer() throws IOException {
 
@@ -89,7 +91,7 @@ public class RobotContainer {
                 new ModuleIOSim(),
                 new ModuleIOSim(),
                 new ModuleIOSim());
-        //vision = Vision.createInstance(new VisionIoSim());
+        // vision = Vision.createInstance(new VisionIoSim());
         climb = Climb.Initialize(new ClimbIOSim());
         shooter = Shooter.Initialize(new ShooterIOSim());
         // intake = Intake.Initialize(new IntakeIOSim());
@@ -112,7 +114,16 @@ public class RobotContainer {
     }
     CanandEventLoop.getInstance();
     configureBindings();
-    autoChooser = new LoggedDashboardChooser<>("Auto Chooser", AutoBuilder.buildAutoChooser());
+
+    NamedCommands.registerCommand("startShooter", AutoCommands.startShooter());
+    NamedCommands.registerCommand("stopShooter", AutoCommands.stopShooter());
+    NamedCommands.registerCommand("startIntake", AutoCommands.startIntake());
+    NamedCommands.registerCommand("stopIntake", AutoCommands.stopIntake());
+    NamedCommands.registerCommand("startClimb", AutoCommands.startClimb());
+
+    autoChooser =
+        new LoggedDashboardChooser<>(
+            "Auto Chooser", AutoBuilder.buildAutoChooser("Top Depot Climb"));
   }
 
   /**
@@ -237,6 +248,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return null;
+    return autoChooser.get();
   }
 }

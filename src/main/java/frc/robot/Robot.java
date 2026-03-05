@@ -25,7 +25,7 @@ import org.littletonrobotics.junction.wpilog.WPILOGWriter;
  */
 public class Robot extends LoggedRobot {
   private RobotContainer robotContainer;
-  private Command m_autonomousCommand;
+  private Command autoCommand;
 
   public Robot() {
     // Record metadata
@@ -105,10 +105,10 @@ public class Robot extends LoggedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = robotContainer.getAutonomousCommand();
+    autoCommand = robotContainer.getAutonomousCommand();
 
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
+    if (autoCommand != null) {
+      CommandScheduler.getInstance().schedule(autoCommand);
     }
   }
 
