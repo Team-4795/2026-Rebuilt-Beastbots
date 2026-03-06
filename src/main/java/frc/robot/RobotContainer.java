@@ -195,11 +195,14 @@ public class RobotContainer {
     operatorController.rightTrigger().whileTrue(Commands.run(() -> climb.setVoltage(-6)));
 
     // shooter
-    operatorController.rightBumper().whileTrue(AutoCommands.shootDynamic());
+    operatorController.rightBumper().whileTrue(AutoCommands.shootDynamic()); // dynamic shoot, do not use for week 1
     operatorController.b().whileTrue(Commands.run(() -> shooter.forceShoot(), shooter));
+    // operatorController.povUp().whileTrue(Commands.run(() -> shooter.setGoalStatic(), shooter));
+    operatorController.y().whileTrue(shooter.revShooter()); // spins up to 5000 rpm
+    driverController.rightBumper().whileTrue(Commands.run(() -> shooter.setGoalStatic(), shooter));
 
-    operatorController.povUp().whileTrue(Commands.run(() -> shooter.setGoalStatic(), shooter));
     driverController.leftBumper().whileTrue(Commands.run(() -> shooter.intake(), shooter));
+    
 
     // COMMENTED OUT FOR TESTING PURPOSES
     // climb.setDefaultCommand(Commands.run(() -> climb.setVoltage(0), climb));
@@ -220,7 +223,6 @@ public class RobotContainer {
     //     .onTrue(
     //         Commands.run(
     //             () -> shooter.setShooterVoltage(-ShooterConstants.shooterVoltage), shooter));
-    operatorController.povDown().onTrue(Commands.runOnce(() -> shooter.Configure(), shooter));
 
     // operatorController
     //     .leftBumper()
@@ -241,6 +243,7 @@ public class RobotContainer {
     //     .povUp()
     //     .onTrue(Commands.run(() -> shooter.setVoltage(-9), shooter))
     //     .onFalse(Commands.run(() -> shooter.setVoltage(0), shooter));
+    operatorController.povDown().onTrue(Commands.runOnce(() -> shooter.Configure(), shooter));
   }
 
   /**

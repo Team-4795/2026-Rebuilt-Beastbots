@@ -1,5 +1,7 @@
 package frc.robot.Subsystems.Shooter;
 
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.LoggedTunableNumber;
 import org.littletonrobotics.junction.Logger;
@@ -126,6 +128,10 @@ public class Shooter extends SubsystemBase {
   public void intake() {
     shooterIo.setIndexerVoltage(-ShooterConstants.indexerVoltage);
     shooterIo.setGoal(2000);
+  }
+
+  public Command revShooter(){
+    return Commands.run(() -> shooterIo.setGoal(RPM.getAsDouble()), this);
   }
 
   public Shooter(ShooterIO io) {
