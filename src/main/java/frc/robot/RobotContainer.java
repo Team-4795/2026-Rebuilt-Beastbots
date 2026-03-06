@@ -194,7 +194,9 @@ public class RobotContainer {
     operatorController.leftTrigger().whileTrue(Commands.run(() -> climb.setVoltage(6)));
     operatorController.rightTrigger().whileTrue(Commands.run(() -> climb.setVoltage(-6)));
 
+    // shooter
     operatorController.rightBumper().whileTrue(AutoCommands.shootDynamic());
+    operatorController.b().whileTrue(Commands.run(() -> shooter.forceShoot(), shooter));
 
     operatorController.povUp().whileTrue(Commands.run(() -> shooter.setGoalStatic(), shooter));
     driverController.leftBumper().whileTrue(Commands.run(() -> shooter.intake(), shooter));

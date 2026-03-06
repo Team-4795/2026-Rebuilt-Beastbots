@@ -22,7 +22,7 @@ public class AutoCommands {
 
   public static Command stopShooter() {
     try {
-      return Commands.runOnce(() -> shooter.setGoalSimple(0), shooter);
+      return Commands.runOnce(() -> shooter.setGoal(0), shooter);
     } catch (Exception e) {
       return Commands.runOnce(() -> System.out.println("Command \"Stop Shooter\" Failed"));
     }

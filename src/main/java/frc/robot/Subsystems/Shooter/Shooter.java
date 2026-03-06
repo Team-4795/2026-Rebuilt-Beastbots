@@ -32,6 +32,8 @@ public class Shooter extends SubsystemBase {
   public ShooterIO shooterIo;
   // private Drive drive;
 
+  private double goalRPM = 0.0;
+
   public static Shooter getInstance() {
     return instance;
   }
@@ -60,12 +62,9 @@ public class Shooter extends SubsystemBase {
         ka2.getAsDouble());
   }
 
-  public void setGoal(double rpm) {
-    this.readyToShoot(rpm);
-  }
-
   public void setGoalStatic() {
     double targetRPM = RPM.getAsDouble();
+    goalRPM = targetRPM;
     // if (isYHeldDown.getAsBoolean() && targetRPM != 0) {
     //   Translation2d currentGoal = autoAlign.lookGoal;
     //   Translation2d drivePos = drive.getPose().getTranslation();
@@ -83,6 +82,7 @@ public class Shooter extends SubsystemBase {
 
   public void setGoalDynamic(double distance) {
     double rpm = ShooterConstants.shooterMap.get(distance);
+    goalRPM = rpm;
     this.readyToShoot(rpm);
   }
 
@@ -92,16 +92,18 @@ public class Shooter extends SubsystemBase {
         < ShooterConstants
             .tolerableRpmRangeShooter) { // idc if we overshoot, as long as we get the indexer
       // spinning
-      setIndexerVoltage(7);
+      setIndexerVoltage(ShooterConstants.indexerVoltage);
     }
   }
 
-  public void setGoalSimple(double rpm) {
-    shooterIo.setGoal(rpm);
+  public void forceShoot() {
+    shooterIo.setGoal(goalRPM);
+    setIndexerVoltage(ShooterConstants.indexerVoltage);
   }
 
-  public void shootWithRPM(double rpm) {
-    setGoalSimple(rpm);
+  public void setGoal(double rpm) {
+    goalRPM = rpm;
+    shooterIo.setGoal(rpm);
   }
 
   public void setIndexerVoltage(double volts) {
@@ -122,7 +124,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public void intake() {
-    shooterIo.setIndexerVoltage(-7);
+    shooterIo.setIndexerVoltage(-ShooterConstants.indexerVoltage);
     shooterIo.setGoal(2000);
   }
 
