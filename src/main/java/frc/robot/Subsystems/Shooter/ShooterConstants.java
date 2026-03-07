@@ -26,7 +26,7 @@ public class ShooterConstants {
 
   public static final double indexerVoltage = 7.0;
 
-  public static final double tolerableRpmRangeShooter = 10;
+  public static final double tolerableRpmRangeShooter = 100;
 
   public static final InterpolatingDoubleTreeMap shooterMap = new InterpolatingDoubleTreeMap();
 

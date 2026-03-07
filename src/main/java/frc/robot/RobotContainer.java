@@ -29,7 +29,6 @@ import frc.robot.Subsystems.vision.VisionIoReal;
 import frc.robot.Subsystems.vision.VisionIoSim;
 import frc.robot.commands.AutoCommands;
 import frc.robot.commands.DriveCommands;
-import frc.robot.commands.autoAlign;
 import java.io.IOException;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
@@ -155,16 +154,17 @@ public class RobotContainer {
                 () -> Rotation2d.kZero));
 
     // auto align i think
-    driverController
-        .y()
-        .whileTrue(
-            Commands.parallel(
-                DriveCommands.setRotationGoal(
-                    drive,
-                    () -> -driverController.getLeftY(),
-                    () -> -driverController.getLeftX(),
-                    () -> autoAlign.goalAngle),
-                new autoAlign()));
+    //
+    // driverController
+    //     .y()
+    //     .whileTrue(
+    //         Commands.parallel(
+    //             DriveCommands.setRotationGoal(
+    //                 drive,
+    //                 () -> -driverController.getLeftY(),
+    //                 () -> -driverController.getLeftX(),
+    //                 () -> autoAlign.goalAngle),
+    //             new autoAlign()));
 
     // driverController.povRight().whileTrue(Commands.run(() -> shooter.setIndexerVoltage(-3)));
 
@@ -200,10 +200,14 @@ public class RobotContainer {
         .whileTrue(AutoCommands.shootDynamic()); // dynamic shoot, do not use for week 1
     operatorController.b().whileTrue(Commands.run(() -> shooter.forceShoot(), shooter));
     // operatorController.povUp().whileTrue(Commands.run(() -> shooter.setGoalStatic(), shooter));
-    operatorController.y().whileTrue(Commands.run(() -> shooter.revShooter(), shooter)); // spins up to 5000 rpm
+    operatorController
+        .y()
+        .whileTrue(Commands.run(() -> shooter.revShooter(), shooter)); // spins up to 5000 rpm
     driverController.rightBumper().whileTrue(Commands.run(() -> shooter.setGoalStatic(), shooter));
 
     driverController.leftBumper().whileTrue(Commands.run(() -> shooter.intake(), shooter));
+    driverController.rightTrigger().whileTrue(AutoCommands.shootDynamic());
+    driverController.leftTrigger().whileTrue(Commands.run(() -> shooter.revShooter(), shooter));
 
     // COMMENTED OUT FOR TESTING PURPOSES
     // climb.setDefaultCommand(Commands.run(() -> climb.setVoltage(0), climb));

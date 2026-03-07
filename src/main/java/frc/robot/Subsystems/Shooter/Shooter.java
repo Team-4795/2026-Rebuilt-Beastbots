@@ -1,7 +1,5 @@
 package frc.robot.Subsystems.Shooter;
 
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.LoggedTunableNumber;
 import org.littletonrobotics.junction.Logger;
@@ -79,7 +77,7 @@ public class Shooter extends SubsystemBase {
     //     targetRPM = ShooterConstants.distanceFunction(Jello);
     //   }
     // }
-    this.readyToShoot(targetRPM);
+    this.readyToShoot(5000);
   }
 
   public void setGoalDynamic(double distance) {
@@ -90,9 +88,8 @@ public class Shooter extends SubsystemBase {
 
   public void readyToShoot(double targetRPM) {
     shooterIo.setGoal(targetRPM);
-    if (inputs.velocity1 - targetRPM
-        < ShooterConstants
-            .tolerableRpmRangeShooter) { // idc if we overshoot, as long as we get the indexer
+    if (Math.abs(inputs.velocity1 - targetRPM) < ShooterConstants.tolerableRpmRangeShooter
+        && targetRPM != 0) { // idc if we overshoot, as long as we get the indexer
       // spinning
       setIndexerVoltage(ShooterConstants.indexerVoltage);
     }
@@ -104,6 +101,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public void setGoal(double rpm) {
+    Logger.recordOutput("Outake test rpm", rpm);
     goalRPM = rpm;
     shooterIo.setGoal(rpm);
   }
