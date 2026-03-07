@@ -145,13 +145,13 @@ public class ShooterIOReal implements ShooterIO {
     currentVoltage = voltage;
   }
 
-  @Override
-  public void setVoltageAll(double voltage) {
-    outTakeMotor1.setVoltage(voltage);
-    outTakeMotor3.setVoltage(voltage);
-    currentVoltage = voltage;
-    currentVoltage3 = voltage;
-  }
+  // @Override
+  // public void setVoltageAll(double voltage) {
+  //   outTakeMotor1.setVoltage(voltage);
+  //   outTakeMotor3.setVoltage(voltage);
+  //   currentVoltage = voltage;
+  //   currentVoltage3 = voltage;
+  // }
 
   @Override
   public void setIndexerVoltage(double voltage) {

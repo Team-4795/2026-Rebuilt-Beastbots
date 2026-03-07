@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Subsystems.Intake.Intake;
 import frc.robot.Subsystems.Shooter.Shooter;
 import frc.robot.Subsystems.drive.Drive;
-import org.littletonrobotics.junction.Logger;
 
 public class AutoCommands {
   private static Shooter shooter = Shooter.getInstance();
@@ -50,8 +49,7 @@ public class AutoCommands {
 
   public static Command shootDynamic() {
     try {
-      double distance = drive.getDistanceToRedHub();
-      Logger.recordOutput("dude", distance);
+      double distance = drive.getDistanceToRedHub(); // CHANGE SOMETIME
       return Commands.run(() -> shooter.setGoalDynamic(distance), shooter);
     } catch (Exception e) {
       return Commands.runOnce(() -> System.out.println("Command \"Shoot Dynamic\" Failed"));

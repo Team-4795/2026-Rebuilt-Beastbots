@@ -34,7 +34,7 @@ public class Shooter extends SubsystemBase {
   public ShooterIO shooterIo;
   // private Drive drive;
 
-  private double goalRPM = 0.0;
+  private double goalRPM = RPM.getAsDouble();
 
   public static Shooter getInstance() {
     return instance;
@@ -100,7 +100,7 @@ public class Shooter extends SubsystemBase {
 
   public void forceShoot() {
     shooterIo.setGoal(goalRPM);
-    setIndexerVoltage(ShooterConstants.indexerVoltage);
+    shooterIo.setIndexerVoltage(ShooterConstants.indexerVoltage);
   }
 
   public void setGoal(double rpm) {
@@ -130,8 +130,8 @@ public class Shooter extends SubsystemBase {
     shooterIo.setGoal(2000);
   }
 
-  public Command revShooter(){
-    return Commands.run(() -> shooterIo.setGoal(RPM.getAsDouble()), this);
+  public void revShooter() {
+    shooterIo.setGoal(RPM.getAsDouble());
   }
 
   public Shooter(ShooterIO io) {
