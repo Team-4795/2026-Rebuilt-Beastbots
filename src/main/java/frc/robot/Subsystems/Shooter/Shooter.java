@@ -6,6 +6,7 @@ import org.littletonrobotics.junction.Logger;
 
 public class Shooter extends SubsystemBase {
   public static Shooter instance;
+  public static boolean shouldIndexerBeFlipped = true;
   public ShooterIOInputsAutoLogged inputs = new ShooterIOInputsAutoLogged();
   private LoggedTunableNumber kp = new LoggedTunableNumber("Shooter1/Kp", ShooterConstants.PID.kP);
   private LoggedTunableNumber ki = new LoggedTunableNumber("Shooter1/Ki", ShooterConstants.PID.kI);
@@ -104,6 +105,25 @@ public class Shooter extends SubsystemBase {
     Logger.recordOutput("Outake test rpm", rpm);
     goalRPM = rpm;
     shooterIo.setGoal(rpm);
+  }
+
+  public void autoShoot(double rpm) {
+    goalRPM = rpm;
+    this.setGoal(rpm);
+
+    if (shouldIndexerBeFlipped) {
+      if (Math.abs(inputs.velocity1 - rpm) < ShooterConstants.tolerableRpmRangeShooter
+          && rpm != 0) {
+        this.setIndexerVoltage(7);
+      }
+    } else {
+      this.setIndexerVoltage(-7);
+    }
+  }
+
+  public void stopAll() {
+    shooterIo.setGoal(0);
+    shooterIo.setIndexerVoltage(0);
   }
 
   public void setIndexerVoltage(double volts) {

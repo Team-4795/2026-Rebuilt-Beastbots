@@ -340,6 +340,10 @@ public class Drive extends SubsystemBase {
     return (this.getPose().getTranslation().getDistance(Constants.FieldConstants.redHub));
   }
 
+  public double getDistanceToBlueHub() {
+    return (this.getPose().getTranslation().getDistance(Constants.FieldConstants.blueHub));
+  }
+
   public void toggleDriveSensitivity() {
     tweakDriveSensitivity = !tweakDriveSensitivity;
   }

@@ -79,7 +79,7 @@ public class autoAlign extends Command {
         Math.atan2(
                 offsetHub.getX() - drive.getPose().getX(),
                 -(offsetHub.getY() - drive.getPose().getY()))
-            - Math.PI / 2;
+            + Math.PI / 2;
   }
 
   @Override

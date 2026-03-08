@@ -7,19 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": null
+            "pathName": "LeftRightMid1"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "startShooter"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 5.0
           }
         },
         {

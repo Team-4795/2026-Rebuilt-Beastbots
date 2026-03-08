@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.5018623962040341,
-        "y": 5.030225385527876
+        "x": 0.537243589743591,
+        "y": 4.883858974358975
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.501862396204034,
-        "y": 5.030225385527876
+        "x": 1.537243589743591,
+        "y": 4.883858974358975
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "depot intake end pos"
     },
     {
       "anchor": {
@@ -48,7 +48,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -91.59114027119466
+    "rotation": -88.56790381583531
   },
   "useDefaultConstraints": true
 }

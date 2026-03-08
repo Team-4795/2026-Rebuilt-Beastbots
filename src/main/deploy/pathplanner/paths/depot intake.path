@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.5126215895610919,
-        "y": 7.3757295373665475
+        "x": 0.537243589743591,
+        "y": 7.372294871794873
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.6094543297746152,
-        "y": 6.579549228944246
+        "x": 0.5605000000000013,
+        "y": 6.511807692307692
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Depot intake pos"
     },
     {
       "anchor": {
-        "x": 0.5126215895610919,
-        "y": 5.105539739027283
+        "x": 0.537243589743591,
+        "y": 4.883858974358975
       },
       "prevControl": {
-        "x": 0.6054692586496151,
-        "y": 5.3376589117485995
+        "x": 0.4791025641025657,
+        "y": 5.186192307692308
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "depot intake end pos"
     }
   ],
   "rotationTargets": [],
@@ -48,7 +48,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -91.30195267257892
+    "rotation": -91.2866296681535
   },
   "useDefaultConstraints": true
 }

@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 0.6524911032028475,
-        "y": 7.483321470937129
+        "x": 0.537243589743591,
+        "y": 7.372294871794873
       },
       "prevControl": {
-        "x": 1.6571624704822978,
-        "y": 6.892873503751886
+        "x": 1.541914957023041,
+        "y": 6.78184690460963
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Depot intake pos"
     }
   ],
   "rotationTargets": [],
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -90.89517371021107
+    "rotation": -91.2866296681535
   },
   "reversed": false,
   "folder": null,

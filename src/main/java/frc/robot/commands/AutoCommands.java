@@ -1,5 +1,7 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Subsystems.Intake.Intake;
@@ -11,9 +13,25 @@ public class AutoCommands {
   public static Intake intake = Intake.getInstance();
   private static Drive drive = Drive.getInstance();
 
+  public static Command indexerFlippedTrue() {
+    return Commands.run(
+        () -> {
+          Shooter.shouldIndexerBeFlipped = true;
+        },
+        shooter);
+  }
+
+  public static Command indexerFlippedFalse() {
+    return Commands.run(
+        () -> {
+          Shooter.shouldIndexerBeFlipped = false;
+        },
+        shooter);
+  }
+
   public static Command startShooter() {
     try {
-      return Commands.runOnce(() -> shooter.readyToShoot(4500), shooter);
+      return Commands.run(() -> shooter.autoShoot(4600), shooter).withTimeout(5);
     } catch (Exception e) {
       return Commands.runOnce(() -> System.out.println("Command \"Start Shooter\" Failed"));
     }
@@ -21,7 +39,7 @@ public class AutoCommands {
 
   public static Command stopShooter() {
     try {
-      return Commands.runOnce(() -> shooter.setGoal(0), shooter);
+      return Commands.runOnce(() -> shooter.stopAll(), shooter);
     } catch (Exception e) {
       return Commands.runOnce(() -> System.out.println("Command \"Stop Shooter\" Failed"));
     }
@@ -29,7 +47,7 @@ public class AutoCommands {
 
   public static Command startIntake() {
     try {
-      return Commands.runOnce(() -> intake.setVoltage(0.5), intake);
+      return Commands.run(() -> shooter.intake(), shooter);
     } catch (Exception e) {
       return Commands.runOnce(() -> System.out.println("Command \"Start Intake\" Failed"));
     }
@@ -49,8 +67,17 @@ public class AutoCommands {
 
   public static Command shootDynamic() {
     try {
-      double distance = drive.getDistanceToRedHub(); // CHANGE SOMETIME
-      return Commands.run(() -> shooter.setGoalDynamic(distance), shooter);
+      return Commands.run(
+          () -> {
+            double distance = 0;
+            if (DriverStation.getAlliance().get() == Alliance.Blue) {
+              distance = drive.getDistanceToBlueHub(); // CHANGE SOMETIME
+            } else {
+              distance = drive.getDistanceToRedHub(); // CHANGE SOMETIME
+            }
+            shooter.setGoalDynamic(distance);
+          },
+          shooter);
     } catch (Exception e) {
       return Commands.runOnce(() -> System.out.println("Command \"Shoot Dynamic\" Failed"));
     }

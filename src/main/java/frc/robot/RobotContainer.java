@@ -29,6 +29,7 @@ import frc.robot.Subsystems.vision.VisionIoReal;
 import frc.robot.Subsystems.vision.VisionIoSim;
 import frc.robot.commands.AutoCommands;
 import frc.robot.commands.DriveCommands;
+import frc.robot.commands.autoAlign;
 import java.io.IOException;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
@@ -155,16 +156,16 @@ public class RobotContainer {
 
     // auto align i think
     //
-    // driverController
-    //     .y()
-    //     .whileTrue(
-    //         Commands.parallel(
-    //             DriveCommands.setRotationGoal(
-    //                 drive,
-    //                 () -> -driverController.getLeftY(),
-    //                 () -> -driverController.getLeftX(),
-    //                 () -> autoAlign.goalAngle),
-    //             new autoAlign()));
+    driverController
+        .y()
+        .whileTrue(
+            Commands.parallel(
+                DriveCommands.setRotationGoal(
+                    drive,
+                    () -> -driverController.getLeftY(),
+                    () -> -driverController.getLeftX(),
+                    () -> autoAlign.goalAngle),
+                new autoAlign()));
 
     // driverController.povRight().whileTrue(Commands.run(() -> shooter.setIndexerVoltage(-3)));
 
@@ -195,9 +196,7 @@ public class RobotContainer {
     operatorController.rightTrigger().whileTrue(Commands.run(() -> climb.setVoltage(-6), climb));
 
     // shooter
-    operatorController
-        .rightBumper()
-        .whileTrue(AutoCommands.shootDynamic()); // dynamic shoot, do not use for week 1
+    operatorController.rightBumper().whileTrue(AutoCommands.shootDynamic());
     operatorController.b().whileTrue(Commands.run(() -> shooter.forceShoot(), shooter));
     // operatorController.povUp().whileTrue(Commands.run(() -> shooter.setGoalStatic(), shooter));
     operatorController
