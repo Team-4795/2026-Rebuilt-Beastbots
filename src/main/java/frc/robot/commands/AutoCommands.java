@@ -31,7 +31,7 @@ public class AutoCommands {
 
   public static Command startShooter() {
     try {
-      return Commands.run(() -> shooter.autoShoot(4600), shooter).withTimeout(5);
+      return Commands.run(() -> shooter.readyToShoot(4000), shooter).withTimeout(5);
     } catch (Exception e) {
       return Commands.runOnce(() -> System.out.println("Command \"Start Shooter\" Failed"));
     }
@@ -47,7 +47,7 @@ public class AutoCommands {
 
   public static Command startIntake() {
     try {
-      return Commands.run(() -> shooter.intake(), shooter);
+      return Commands.runOnce(() -> shooter.intake(), shooter);
     } catch (Exception e) {
       return Commands.runOnce(() -> System.out.println("Command \"Start Intake\" Failed"));
     }

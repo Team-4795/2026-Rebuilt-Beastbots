@@ -24,7 +24,7 @@ public class ShooterConstants {
 
   public static final int currentLimit = 40;
 
-  public static final double indexerVoltage = 7.0;
+  public static final double indexerVoltage = 6.0;
 
   public static final double tolerableRpmRangeShooter = 100;
 

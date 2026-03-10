@@ -13,12 +13,6 @@
         {
           "type": "named",
           "data": {
-            "name": "indexerFlippedTrue"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
             "name": "startShooter"
           }
         },
@@ -26,12 +20,6 @@
           "type": "wait",
           "data": {
             "waitTime": 0.5
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "indexerFlippedFalse"
           }
         },
         {
