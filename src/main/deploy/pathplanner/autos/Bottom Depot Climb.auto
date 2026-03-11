@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Bottom to Depot"
+            "pathName": "Bottom To Depot"
           }
         },
         {
@@ -31,7 +31,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Depot to Climb"
+            "pathName": "Depot To Climb"
           }
         },
         {
@@ -62,6 +62,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "Depot Autos",
+  "folder": null,
   "choreoAuto": false
 }
