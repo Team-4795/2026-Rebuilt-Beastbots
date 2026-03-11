@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.537243589743591,
-        "y": 4.883858974358975
+        "x": 3.6,
+        "y": 0.6
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.537243589743591,
-        "y": 4.883858974358975
+        "x": 2.605578313253011,
+        "y": 0.4797951807228923
       },
       "isLocked": false,
-      "linkedName": "depot intake end pos"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.7182562277580082,
-        "y": 5.353001186239621
+        "x": 1.6,
+        "y": 4.0
       },
       "prevControl": {
-        "x": 1.7182562277580082,
-        "y": 5.353001186239621
+        "x": 1.805548047910945,
+        "y": 3.8576975052924234
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,8 +33,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 4.5,
+    "maxAcceleration": 4.8,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 145.95406264339843
+    "rotation": 180.0
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Blue Paths",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -88.56790381583531
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }
