@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.6,
-        "y": 0.6
+        "x": 7.385,
+        "y": 1.095
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.605578313253011,
-        "y": 0.4797951807228923
+        "x": 7.865674698795179,
+        "y": 6.122192771084338
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.6,
-        "y": 4.0
+        "x": 7.319289156626505,
+        "y": 6.908987951807229
       },
       "prevControl": {
-        "x": 1.805548047910945,
-        "y": 3.8576975052924234
+        "x": 7.745459919652194,
+        "y": 5.564876360106647
       },
       "nextControl": null,
       "isLocked": false,
@@ -31,10 +31,17 @@
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "",
+      "waypointRelativePos": 0.0,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
   "globalConstraints": {
-    "maxVelocity": 4.5,
-    "maxAcceleration": 4.8,
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -42,13 +49,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 112.636
   },
   "reversed": false,
-  "folder": "Blue Paths",
+  "folder": "OTB Path",
   "idealStartingState": {
-    "velocity": 0,
-    "rotation": 180.0
+    "velocity": 0.0,
+    "rotation": 85.19651424093091
   },
   "useDefaultConstraints": true
 }
