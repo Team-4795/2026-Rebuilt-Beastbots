@@ -3,39 +3,39 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.625722891566265,
-        "y": 4.045927710843373
+        "x": 7.7454698795180725,
+        "y": 4.526746987951808
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.3801927710843378,
-        "y": 2.0352289156626506
+        "x": 5.789409638554216,
+        "y": 5.980132530120482
       },
       "isLocked": false,
-      "linkedName": "Middle"
+      "linkedName": "High Mid OTB"
     },
     {
       "anchor": {
-        "x": 7.385,
-        "y": 1.095
+        "x": 1.66966265060241,
+        "y": 4.045927710843373
       },
       "prevControl": {
-        "x": 5.450650602409639,
-        "y": 3.335626506024097
+        "x": 1.8226506024096385,
+        "y": 5.750650602409639
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Low OTB"
+      "linkedName": "Climb"
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.4788381742738578,
-      "rotationDegrees": 45.0
+      "waypointRelativePos": 0.23651452282157462,
+      "rotationDegrees": 135.0
     },
     {
-      "waypointRelativePos": 0.7958506224066382,
-      "rotationDegrees": 45.0
+      "waypointRelativePos": 0.6398340248962657,
+      "rotationDegrees": 135.0
     }
   ],
   "constraintZones": [],
@@ -43,7 +43,7 @@
   "eventMarkers": [
     {
       "name": "",
-      "waypointRelativePos": 0,
+      "waypointRelativePos": 0.0,
       "endWaypointRelativePos": null,
       "command": null
     }
@@ -58,13 +58,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 85.19651424093091
+    "rotation": -179.56921278299137
   },
   "reversed": false,
-  "folder": "OTB Path",
+  "folder": "OTB",
   "idealStartingState": {
     "velocity": 0.0,
-    "rotation": 0.0
+    "rotation": -97.5
   },
   "useDefaultConstraints": true
 }
