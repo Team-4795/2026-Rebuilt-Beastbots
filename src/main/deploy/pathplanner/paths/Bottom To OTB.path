@@ -3,35 +3,46 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.647578313253012,
-        "y": 7.400734939759036
+        "x": 3.636650602409638,
+        "y": 2.6034698795180726
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.711645600948731,
-        "y": 7.0025516044205345
+        "x": 5.275807228915662,
+        "y": 3.1498554216867465
       },
       "isLocked": false,
-      "linkedName": "Top"
+      "linkedName": "Bottom Bump"
     },
     {
       "anchor": {
-        "x": 0.522253012048193,
-        "y": 0.669265060240964
+        "x": 7.701759036144578,
+        "y": 1.1063734939759036
       },
       "prevControl": {
-        "x": 1.6831001495282132,
-        "y": 1.1022424763247
+        "x": 5.822192771084336,
+        "y": 1.5434819277108447
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Depot"
+      "linkedName": "Low OTB"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.6946058091286296,
+      "rotationDegrees": 45.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [
+    {
+      "name": "",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
     {
       "name": "",
       "waypointRelativePos": 0,
@@ -49,13 +60,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 100.30484646876602
   },
   "reversed": false,
-  "folder": "BTB",
+  "folder": "OTB",
   "idealStartingState": {
-    "velocity": 0,
-    "rotation": 0.0
+    "velocity": 0.0,
+    "rotation": 45.0
   },
   "useDefaultConstraints": true
 }

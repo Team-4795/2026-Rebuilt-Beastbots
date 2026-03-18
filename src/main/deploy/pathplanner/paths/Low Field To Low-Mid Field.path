@@ -3,35 +3,42 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.537243589743591,
-        "y": 7.372294871794873
+        "x": 7.701759036144578,
+        "y": 1.1063734939759036
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.5605000000000013,
-        "y": 6.511807692307692
+        "x": 7.909385542168675,
+        "y": 2.6362530120481926
       },
       "isLocked": false,
-      "linkedName": "Depot intake pos"
+      "linkedName": "Low OTB"
     },
     {
       "anchor": {
-        "x": 0.537243589743591,
-        "y": 4.883858974358975
+        "x": 7.701759036144578,
+        "y": 3.466759036144578
       },
       "prevControl": {
-        "x": 0.4791025641025657,
-        "y": 5.186192307692308
+        "x": 7.8219638554216875,
+        "y": 2.6581084337349408
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "depot intake end pos"
+      "linkedName": "Low Mid OTB"
     }
   ],
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "",
+      "waypointRelativePos": 0.0,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -42,13 +49,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -88.56790381583531
+    "rotation": 100.3
   },
   "reversed": false,
-  "folder": null,
+  "folder": "OTB",
   "idealStartingState": {
-    "velocity": 0,
-    "rotation": -91.2866296681535
+    "velocity": 0.0,
+    "rotation": 100.30484646876602
   },
   "useDefaultConstraints": true
 }

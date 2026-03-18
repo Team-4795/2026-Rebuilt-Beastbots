@@ -7,7 +7,31 @@
         {
           "type": "path",
           "data": {
-            "pathName": "LeftRightMid1"
+            "pathName": "Top To OTB"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "startIntake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "High Field To High-Mid Field"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "stopIntake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "High OTB To Climb"
           }
         },
         {
@@ -19,7 +43,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.5
+            "waitTime": 6.0
           }
         },
         {
@@ -29,40 +53,15 @@
           }
         },
         {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "startIntake"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Bottom hub to center"
-                }
-              }
-            ]
-          }
-        },
-        {
           "type": "named",
           "data": {
-            "name": "stopIntake"
+            "name": "startClimb"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "OTB",
   "choreoAuto": false
 }

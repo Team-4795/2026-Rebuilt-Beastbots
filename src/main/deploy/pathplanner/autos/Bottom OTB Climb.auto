@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "top to depot"
+            "pathName": "Bottom To OTB"
           }
         },
         {
@@ -19,7 +19,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "depot intake"
+            "pathName": "Low Field To Low-Mid Field"
           }
         },
         {
@@ -31,7 +31,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "depot to hub"
+            "pathName": "Low OTB To Climb"
           }
         },
         {
@@ -43,7 +43,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 8.0
+            "waitTime": 6.0
           }
         },
         {
@@ -51,11 +51,17 @@
           "data": {
             "name": "stopShooter"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "startClimb"
+          }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "OTB",
   "choreoAuto": false
 }

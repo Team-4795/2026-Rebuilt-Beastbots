@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.589750889679717,
-        "y": 2.4049822064056934
+        "x": 0.522253012048193,
+        "y": 0.669265060240964
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.6429398521588414,
-        "y": 3.00749385680384
+        "x": 1.522253012048193,
+        "y": 0.669265060240964
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Depot"
     },
     {
       "anchor": {
-        "x": 3.3861538461538476,
-        "y": 2.6279871794871794
+        "x": 1.66966265060241,
+        "y": 4.045927710843373
       },
       "prevControl": {
-        "x": 4.343722054932021,
-        "y": 2.122305091705447
+        "x": 2.1504819277108433,
+        "y": 3.6853132530120476
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "LeftRightMid1End"
+      "linkedName": "Climb"
     }
   ],
   "rotationTargets": [],
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -145.65390259993853
+    "rotation": -179.56921278299137
   },
   "reversed": false,
-  "folder": null,
+  "folder": "BTB",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 179.66881421158462
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }

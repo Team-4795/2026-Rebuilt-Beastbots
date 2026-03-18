@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.Subsystems.Shooter.Shooter;
 import frc.robot.Subsystems.Shooter.ShooterIOReal;
 import frc.robot.Subsystems.Shooter.ShooterIOSim;
@@ -198,7 +199,6 @@ public class RobotContainer {
     // shooter
     operatorController.rightBumper().whileTrue(AutoCommands.shootDynamic());
     operatorController.b().whileTrue(Commands.run(() -> shooter.forceShoot(), shooter));
-    // operatorController.povUp().whileTrue(Commands.run(() -> shooter.setGoalStatic(), shooter));
     operatorController
         .y()
         .whileTrue(Commands.run(() -> shooter.revShooter(), shooter)); // spins up to 5000 rpm
@@ -210,46 +210,25 @@ public class RobotContainer {
 
     operatorController.povLeft().onTrue(Commands.run(() -> shooter.unstuck(), shooter));
     // operatorController.povLeft().whileTrue(Commands.run(() -> shooter.
-    // COMMENTED OUT FOR TESTING PURPOSES
     // climb.setDefaultCommand(Commands.run(() -> climb.setVoltage(0), climb));
 
     // operatorController.leftTrigger().whileTrue(Commands.run(() -> climb.setVoltage(10)));
     // operatorController.rightTrigger().whileTrue(Commands.run(() -> climb.setVoltage(-10)));
+   
+    // operatorController.povDown().onTrue(Commands.runOnce(() -> shooter.Configure(), shooter));
 
-    // operatorController
-    //     .rightBumper()
-    //     .onTrue(
-    //         Commands.run(
-    //             () -> shooter.setShooterVoltage(ShooterConstants.shooterVoltage), shooter));
-    // operatorController
-    //     .leftBumper()
-    //     .onTrue(Commands.run(() -> shooter.setShooterVoltage(0), shooter));
-    // operatorController
-    //     .x()
-    //     .onTrue(
-    //         Commands.run(
-    //             () -> shooter.setShooterVoltage(-ShooterConstants.shooterVoltage), shooter));
-
-    // operatorController
-    //     .leftBumper()
-    //     .onTrue(Commands.run(() -> intake.setVoltage(10), intake))
-    //     .onFalse(Commands.run(() -> intake.setVoltage(0), intake));
-
-    // for testing use only
-
-    // operatorController
-    //     .leftBumper()
-    //     .whileTrue(shooter.intake())
-    //     .onFalse(Commands.run(() -> shooter.setVoltageAll(0), shooter));
-    // operatorController
-    //     .povDown()
-    //     .onTrue(Commands.run(() -> shooter.setShooterVoltage(9), shooter))
-    //     .onFalse(Commands.run(() -> shooter.setShooterVoltage(0), shooter));
-    // operatorController
-    //     .povUp()
-    //     .onTrue(Commands.run(() -> shooter.setVoltage(-9), shooter))
-    //     .onFalse(Commands.run(() -> shooter.setVoltage(0), shooter));
-    operatorController.povDown().onTrue(Commands.runOnce(() -> shooter.Configure(), shooter));
+    operatorController
+        .povUp()
+        .whileTrue(Commands.run(() -> drive.sysIdDynamic(Direction.kForward)));
+    operatorController
+        .povDown()
+        .whileTrue(Commands.run(() -> drive.sysIdDynamic(Direction.kReverse)));
+    operatorController
+        .povLeft()
+        .whileTrue(Commands.run(() -> drive.sysIdQuasistatic(Direction.kForward)));
+    operatorController
+        .povRight()
+        .whileTrue(Commands.run(() -> drive.sysIdQuasistatic(Direction.kReverse)));
   }
 
   /**

@@ -3,35 +3,42 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.654,
-        "y": 2.932
+        "x": 3.647578313253012,
+        "y": 0.6515406562054205
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.299252669033767,
-        "y": 2.684721233689205
+        "x": 2.576662650602409,
+        "y": 0.6255542168674697
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Bottom"
     },
     {
       "anchor": {
-        "x": 6.419418742580624,
-        "y": 2.7062396204033212
+        "x": 0.522253012048193,
+        "y": 0.669265060240964
       },
       "prevControl": {
-        "x": 5.6985527876577295,
-        "y": 2.37270462633452
+        "x": 0.9400158121788154,
+        "y": 0.6760617534331335
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Depot"
     }
   ],
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -42,13 +49,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -158.9624889745782
+    "rotation": 0.0
   },
   "reversed": false,
-  "folder": null,
+  "folder": "BTB",
   "idealStartingState": {
-    "velocity": 0,
-    "rotation": -131.59229293478114
+    "velocity": 0.0,
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }
