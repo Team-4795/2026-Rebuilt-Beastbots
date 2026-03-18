@@ -22,7 +22,7 @@ public class ShooterConstants {
   public static final double minDistance = 2;
   public static final double maxDistance = 8;
 
-  public static final int currentLimit = 40;
+  public static final int currentLimit = 60;
 
   public static final double indexerVoltage = 6.0;
 

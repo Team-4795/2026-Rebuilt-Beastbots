@@ -202,12 +202,14 @@ public class RobotContainer {
     operatorController
         .y()
         .whileTrue(Commands.run(() -> shooter.revShooter(), shooter)); // spins up to 5000 rpm
-    driverController.rightBumper().whileTrue(Commands.run(() -> shooter.setGoalStatic(), shooter));
+    driverController.rightBumper().onTrue(Commands.run(() -> shooter.setGoalStatic(), shooter));
 
-    driverController.leftBumper().whileTrue(Commands.run(() -> shooter.intake(), shooter));
-    driverController.rightTrigger().whileTrue(AutoCommands.shootDynamic());
-    driverController.leftTrigger().whileTrue(Commands.run(() -> shooter.revShooter(), shooter));
+    driverController.leftBumper().onTrue(Commands.run(() -> shooter.intake(), shooter));
+    driverController.rightTrigger().onTrue(AutoCommands.shootDynamic());
+    driverController.leftTrigger().onTrue(Commands.run(() -> shooter.revShooter(), shooter));
 
+    operatorController.povLeft().onTrue(Commands.run(() -> shooter.unstuck(), shooter));
+    // operatorController.povLeft().whileTrue(Commands.run(() -> shooter.
     // COMMENTED OUT FOR TESTING PURPOSES
     // climb.setDefaultCommand(Commands.run(() -> climb.setVoltage(0), climb));
 
