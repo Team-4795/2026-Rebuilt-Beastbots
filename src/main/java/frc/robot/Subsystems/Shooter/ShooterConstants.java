@@ -24,7 +24,7 @@ public class ShooterConstants {
 
   public static final int currentLimit = 60;
 
-  public static final double indexerVoltage = 6.0;
+  public static final double indexerVoltage = 3.0;
 
   public static final double tolerableRpmRangeShooter = 100;
 
@@ -49,11 +49,11 @@ public class ShooterConstants {
 
     // Proportion if it ollicilates decrease it if it doesnt give it enough volts incresa
     // Shooter 3 increase until goal if oscillates decrease
-    public static double kP = 0.000007;
+    public static double kP = 0.0006;
     // Integral
     public static double kI = 0.0;
     // Derivative 4 change until oscillate
-    public static double kD = 0.0;
+    public static double kD = 0.0005;
 
     // Overcome gravity, it's not an arm or elevator so we probably don't need
     public static double kG = 0.0;

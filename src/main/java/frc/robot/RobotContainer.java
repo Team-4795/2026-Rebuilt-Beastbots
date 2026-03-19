@@ -13,11 +13,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.Subsystems.Shooter.Shooter;
 import frc.robot.Subsystems.Shooter.ShooterIOReal;
 import frc.robot.Subsystems.Shooter.ShooterIOSim;
 import frc.robot.Subsystems.climb.Climb;
+import frc.robot.Subsystems.climb.ClimbIOReal;
 import frc.robot.Subsystems.climb.ClimbIOSim;
 import frc.robot.Subsystems.drive.Drive;
 import frc.robot.Subsystems.drive.GyroIO;
@@ -79,7 +79,7 @@ public class RobotContainer {
         }
 
         vision = Vision.createInstance(new VisionIoReal(0));
-        climb = Climb.Initialize(new ClimbIOSim()); // climb removed
+        climb = Climb.Initialize(new ClimbIOReal()); // climb removed
         shooter = Shooter.Initialize(new ShooterIOReal());
         // intake = Intake.Initialize(new IntakeIOReal());
         break;
@@ -146,14 +146,14 @@ public class RobotContainer {
             () -> -driverController.getRightX()));
 
     // Lock to 0° when A button is held
-    driverController
-        .a()
-        .whileTrue(
-            DriveCommands.joystickDriveAtAngle(
-                drive,
-                () -> -driverController.getLeftY(),
-                () -> -driverController.getLeftX(),
-                () -> Rotation2d.kZero));
+    // driverController
+    //     .a()
+    //     .whileTrue(
+    //         DriveCommands.joystickDriveAtAngle(
+    //             drive,
+    //             () -> -driverController.getLeftY(),
+    //             () -> -driverController.getLeftX(),
+    //             () -> Rotation2d.kZero));
 
     // auto align i think
     //
@@ -192,43 +192,53 @@ public class RobotContainer {
         .povDown()
         .onTrue(Commands.runOnce(() -> drive.toggleDriveSensitivity(), drive));
 
+    driverController
+        .a()
+        .whileTrue(
+            DriveCommands.joystickDrive(
+                drive,
+                () -> -driverController.getLeftY() / 3.0,
+                () -> -driverController.getLeftX() / 3.0,
+                () -> -driverController.getRightX()));
+
     // climb
     operatorController.leftTrigger().whileTrue(Commands.run(() -> climb.setVoltage(6), climb));
     operatorController.rightTrigger().whileTrue(Commands.run(() -> climb.setVoltage(-6), climb));
 
     // shooter
-    operatorController.rightBumper().whileTrue(AutoCommands.shootDynamic());
+    operatorController.rightBumper().whileTrue(AutoCommands.shootDynamic()); // most likely doesnt work
     operatorController.b().whileTrue(Commands.run(() -> shooter.forceShoot(), shooter));
     operatorController
         .y()
-        .whileTrue(Commands.run(() -> shooter.revShooter(), shooter)); // spins up to 5000 rpm
-    driverController.rightBumper().onTrue(Commands.run(() -> shooter.setGoalStatic(), shooter));
+        .whileTrue(Commands.run(() -> shooter.revShooter(), shooter)); // spins up shooter
+    driverController.rightBumper().whileTrue(Commands.run(() -> shooter.setGoalStatic(), shooter));
 
-    driverController.leftBumper().onTrue(Commands.run(() -> shooter.intake(), shooter));
+    driverController.leftBumper().whileTrue(Commands.run(() -> shooter.intake(), shooter));
+
     driverController.rightTrigger().onTrue(AutoCommands.shootDynamic());
     driverController.leftTrigger().onTrue(Commands.run(() -> shooter.revShooter(), shooter));
 
     operatorController.povLeft().onTrue(Commands.run(() -> shooter.unstuck(), shooter));
     // operatorController.povLeft().whileTrue(Commands.run(() -> shooter.
-    // climb.setDefaultCommand(Commands.run(() -> climb.setVoltage(0), climb));
+    climb.setDefaultCommand(Commands.run(() -> climb.setVoltage(0), climb));
 
-    // operatorController.leftTrigger().whileTrue(Commands.run(() -> climb.setVoltage(10)));
-    // operatorController.rightTrigger().whileTrue(Commands.run(() -> climb.setVoltage(-10)));
-   
-    // operatorController.povDown().onTrue(Commands.runOnce(() -> shooter.Configure(), shooter));
+    operatorController.leftTrigger().whileTrue(Commands.run(() -> climb.setVoltage(10)));
+    operatorController.rightTrigger().whileTrue(Commands.run(() -> climb.setVoltage(-10)));
 
-    operatorController
-        .povUp()
-        .whileTrue(Commands.run(() -> drive.sysIdDynamic(Direction.kForward)));
-    operatorController
-        .povDown()
-        .whileTrue(Commands.run(() -> drive.sysIdDynamic(Direction.kReverse)));
-    operatorController
-        .povLeft()
-        .whileTrue(Commands.run(() -> drive.sysIdQuasistatic(Direction.kForward)));
-    operatorController
-        .povRight()
-        .whileTrue(Commands.run(() -> drive.sysIdQuasistatic(Direction.kReverse)));
+    operatorController.povDown().onTrue(Commands.runOnce(() -> shooter.Configure(), shooter));
+
+    // operatorController
+    //     .povUp()
+    //     .whileTrue(Commands.run(() -> drive.sysIdDynamic(Direction.kForward)));
+    // operatorController
+    //     .povDown()
+    //     .whileTrue(Commands.run(() -> drive.sysIdDynamic(Direction.kReverse)));
+    // operatorController
+    //     .povLeft()
+    //     .whileTrue(Commands.run(() -> drive.sysIdQuasistatic(Direction.kForward)));
+    // operatorController
+    //     .povRight()
+    //     .whileTrue(Commands.run(() -> drive.sysIdQuasistatic(Direction.kReverse)));
   }
 
   /**

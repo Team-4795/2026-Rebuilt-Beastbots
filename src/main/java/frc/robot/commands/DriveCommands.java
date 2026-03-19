@@ -70,7 +70,7 @@ public class DriveCommands {
       DoubleSupplier omegaSupplier) {
     return Commands.run(
         () -> {
-          double modifier = 1;
+          double modifier = 1.0;
           double velocity =
               Math.sqrt(
                   Math.pow(drive.getChassisSpeeds().vxMetersPerSecond, 2)

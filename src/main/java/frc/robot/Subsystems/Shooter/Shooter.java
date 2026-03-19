@@ -31,7 +31,7 @@ public class Shooter extends SubsystemBase {
       new LoggedTunableNumber("Shooter2/Kv2", ShooterConstants.PID.kV2);
   private LoggedTunableNumber ka2 =
       new LoggedTunableNumber("Shooter2/Ka2", ShooterConstants.PID.kA2);
-  private LoggedTunableNumber RPM = new LoggedTunableNumber("Shooter/RPM", 5000);
+  private LoggedTunableNumber RPM = new LoggedTunableNumber("Shooter/RPM", 5650);
   public ShooterIO shooterIo;
   // private Drive drive;
 
@@ -80,7 +80,7 @@ public class Shooter extends SubsystemBase {
     //     targetRPM = ShooterConstants.distanceFunction(Jello);
     //   }
     // }
-    this.readyToShoot(5000);
+    this.readyToShoot(targetRPM);
   }
 
   public void setGoalDynamic(double distance) {
