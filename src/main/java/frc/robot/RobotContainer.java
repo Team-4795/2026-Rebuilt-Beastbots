@@ -13,11 +13,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Subsystems.Hopper.*;
 import frc.robot.Subsystems.Shooter.Shooter;
 import frc.robot.Subsystems.Shooter.ShooterIOReal;
 import frc.robot.Subsystems.Shooter.ShooterIOSim;
 import frc.robot.Subsystems.climb.Climb;
-import frc.robot.Subsystems.climb.ClimbIOReal;
 import frc.robot.Subsystems.climb.ClimbIOSim;
 import frc.robot.Subsystems.drive.Drive;
 import frc.robot.Subsystems.drive.GyroIO;
@@ -26,7 +26,6 @@ import frc.robot.Subsystems.drive.ModuleIO;
 import frc.robot.Subsystems.drive.ModuleIOSim;
 import frc.robot.Subsystems.drive.ModuleIOSpark;
 import frc.robot.Subsystems.vision.Vision;
-import frc.robot.Subsystems.vision.VisionIoReal;
 import frc.robot.Subsystems.vision.VisionIoSim;
 import frc.robot.commands.AutoCommands;
 import frc.robot.commands.DriveCommands;
@@ -48,6 +47,7 @@ public class RobotContainer {
   private Shooter shooter;
   private Climb climb;
   // private Intake intake;
+  private Hopper hopper;
 
   // Controllers
   private final CommandXboxController driverController = new CommandXboxController(0);
@@ -76,10 +76,8 @@ public class RobotContainer {
                   new ModuleIOSim(),
                   new ModuleIOSim());
         }
-
-        vision = Vision.createInstance(new VisionIoReal(0));
-        climb = Climb.Initialize(new ClimbIOSim()); // climb removed
         shooter = Shooter.Initialize(new ShooterIOReal());
+        hopper = Hopper.Initialize(new HopperIOReal());
         // intake = Intake.Initialize(new IntakeIOReal());
         break;
       case SIM:
@@ -94,6 +92,7 @@ public class RobotContainer {
         // vision = Vision.createInstance(new VisionIoSim());
         climb = Climb.Initialize(new ClimbIOSim());
         shooter = Shooter.Initialize(new ShooterIOSim());
+        hopper = Hopper.Initialize(new HopperIOSim());
         // intake = Intake.Initialize(new IntakeIOSim());
         break;
 
@@ -109,6 +108,7 @@ public class RobotContainer {
         vision = Vision.createInstance(new VisionIoSim());
         climb = Climb.Initialize(new ClimbIOSim());
         shooter = Shooter.Initialize(new ShooterIOSim());
+        hopper = Hopper.Initialize(new HopperIOSim());
         // intake = Intake.Initialize(new IntakeIOSim());
         break;
     }
@@ -167,10 +167,10 @@ public class RobotContainer {
                     () -> autoAlign.goalAngle),
                 new autoAlign()));
 
-
     // default commands
     shooter.setDefaultCommand(Commands.run(() -> shooter.defaultCommand(), shooter));
     climb.setDefaultCommand(Commands.run(() -> climb.setVoltage(0), climb));
+    hopper.setDefaultCommand(Commands.run(() -> hopper.setExtended(true), hopper));
 
     // Switch to X pattern when X button is pressed
     driverController.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
