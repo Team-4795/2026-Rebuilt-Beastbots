@@ -151,10 +151,20 @@ public class DriveCommands {
     // Construct command
     return Commands.run(
             () -> {
-              // Get linear velocity
-              Translation2d linearVelocity =
-                  getLinearVelocityFromJoysticks(
-                      -xJoystick.getAsDouble(), -yJoystick.getAsDouble());
+              boolean isFlipped =
+                  DriverStation.getAlliance().isPresent()
+                      && DriverStation.getAlliance().get() == Alliance.Red;
+              Translation2d linearVelocity;
+              if (!isFlipped) {
+                // Get linear velocity
+                linearVelocity =
+                    getLinearVelocityFromJoysticks(
+                        -xJoystick.getAsDouble(), -yJoystick.getAsDouble());
+              } else {
+                linearVelocity =
+                    getLinearVelocityFromJoysticks(
+                        xJoystick.getAsDouble(), yJoystick.getAsDouble());
+              }
 
               // Calculate angular speed
               double omega =
@@ -166,9 +176,7 @@ public class DriveCommands {
                       linearVelocity.getX() * drive.getMaxLinearSpeedMetersPerSec(),
                       linearVelocity.getY() * drive.getMaxLinearSpeedMetersPerSec(),
                       omega);
-              // boolean isFlipped =
-              // DriverStation.getAlliance().isPresent()
-              // && DriverStation.getAlliance().get() == Alliance.Red;
+
               drive.runVelocity(ChassisSpeeds.fromFieldRelativeSpeeds(speeds, drive.getRotation()));
               // isFlipped
               // ? drive.getRotation().plus(new Rotation2d(Math.PI))

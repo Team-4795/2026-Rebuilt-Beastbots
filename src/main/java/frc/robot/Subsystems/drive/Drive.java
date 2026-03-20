@@ -160,6 +160,8 @@ public class Drive extends SubsystemBase {
     }
 
     Logger.recordOutput("Distance to Red Hub", this.getDistanceToRedHub());
+    Logger.recordOutput("Distance to Blue Hub", this.getDistanceToBlueHub());
+
     Logger.recordOutput("Adjust Sensitivity", this.tweakDriveSensitivity);
 
     // Update odometry

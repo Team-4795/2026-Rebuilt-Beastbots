@@ -1,9 +1,9 @@
 package frc.robot.Subsystems.Hopper;
 
 public class HopperConstants {
-  public static final int motorPort = 0;
+  public static final int canIdL = 15;
+  public static final int canIdR = 16;
   public static final int maxAmps = 30;
-  public static final int intakeVoltage = 5;
 
   // Feedforward + PID constants
   public static final double KI = 0.1;

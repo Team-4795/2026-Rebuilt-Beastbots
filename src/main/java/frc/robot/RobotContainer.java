@@ -26,6 +26,7 @@ import frc.robot.Subsystems.drive.ModuleIO;
 import frc.robot.Subsystems.drive.ModuleIOSim;
 import frc.robot.Subsystems.drive.ModuleIOSpark;
 import frc.robot.Subsystems.vision.Vision;
+import frc.robot.Subsystems.vision.VisionIoReal;
 import frc.robot.Subsystems.vision.VisionIoSim;
 import frc.robot.commands.AutoCommands;
 import frc.robot.commands.DriveCommands;
@@ -78,6 +79,7 @@ public class RobotContainer {
         }
         shooter = Shooter.Initialize(new ShooterIOReal());
         hopper = Hopper.Initialize(new HopperIOReal());
+        vision = Vision.createInstance(new VisionIoReal(0));
         // intake = Intake.Initialize(new IntakeIOReal());
         break;
       case SIM:
@@ -120,6 +122,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("startIntake", AutoCommands.startIntake());
     NamedCommands.registerCommand("stopIntake", AutoCommands.stopIntake());
     NamedCommands.registerCommand("startClimb", AutoCommands.startClimb());
+    NamedCommands.registerCommand("shootDynamic", AutoCommands.shootDynamic());
 
     autoChooser =
         new LoggedDashboardChooser<>(
@@ -162,14 +165,14 @@ public class RobotContainer {
             Commands.parallel(
                 DriveCommands.setRotationGoal(
                     drive,
-                    () -> -driverController.getLeftY(),
-                    () -> -driverController.getLeftX(),
+                    () -> driverController.getLeftY(),
+                    () -> driverController.getLeftX(),
                     () -> autoAlign.goalAngle),
                 new autoAlign()));
 
     // default commands
     shooter.setDefaultCommand(Commands.run(() -> shooter.defaultCommand(), shooter));
-    climb.setDefaultCommand(Commands.run(() -> climb.setVoltage(0), climb));
+    // climb.setDefaultCommand(Commands.run(() -> climb.setVoltage(0), climb));
     hopper.setDefaultCommand(Commands.run(() -> hopper.setExtended(true), hopper));
 
     // Switch to X pattern when X button is pressed
@@ -203,6 +206,14 @@ public class RobotContainer {
     // operatorController.leftTrigger().whileTrue(Commands.run(() -> climb.setVoltage(6), climb));
     // operatorController.rightTrigger().whileTrue(Commands.run(() -> climb.setVoltage(-6), climb));
 
+    // hopper extension
+    operatorController
+        .leftTrigger()
+        .whileTrue(Commands.run(() -> hopper.setExtended(true), hopper));
+    operatorController
+        .rightTrigger()
+        .whileTrue(Commands.run(() -> hopper.setExtended(false), hopper));
+
     // shooter
     operatorController
         .rightBumper()
@@ -215,10 +226,10 @@ public class RobotContainer {
 
     driverController.leftBumper().whileTrue(Commands.run(() -> shooter.intake(), shooter));
 
-    driverController.rightTrigger().onTrue(AutoCommands.shootDynamic());
-    driverController.leftTrigger().onTrue(Commands.run(() -> shooter.revShooter(), shooter));
+    driverController.rightTrigger().whileTrue(AutoCommands.shootDynamic());
+    driverController.leftTrigger().whileTrue(Commands.run(() -> shooter.revShooter(), shooter));
 
-    operatorController.povLeft().onTrue(Commands.run(() -> shooter.unstuck(), shooter));
+    operatorController.povLeft().whileTrue(Commands.run(() -> shooter.unstuck(), shooter));
 
     operatorController.povDown().onTrue(Commands.runOnce(() -> shooter.Configure(), shooter));
 

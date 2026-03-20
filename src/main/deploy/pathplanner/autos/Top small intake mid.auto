@@ -7,31 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "LeftRightMid1"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "startShooter"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "stopShooter"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
+            "pathName": "Top to mid"
           }
         },
         {
@@ -47,7 +23,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Bottom hub to center"
+                  "pathName": "mid to small intake"
                 }
               }
             ]
@@ -62,13 +38,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "right mid to high "
+            "pathName": "Intake top mid back to shoot"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "startShooter"
+            "name": "shootDynamic"
           }
         }
       ]

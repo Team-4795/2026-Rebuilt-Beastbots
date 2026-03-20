@@ -47,11 +47,6 @@ public class autoAlign extends Command {
     }
   }
 
-  public void getControllerInputs(double leftX, double leftY) {
-    controllerLeftX = leftX;
-    controllerLeftY = leftY;
-  }
-
   public void autoAlignAngle(double angle) {
     DriveCommands.setRotationGoal(drive, () -> controllerLeftX, () -> controllerLeftY, () -> angle);
   }
@@ -59,7 +54,7 @@ public class autoAlign extends Command {
   public void aimAtPosition(Translation2d pos) {
     lookGoal = pos;
 
-    Logger.recordOutput("current Target goal:", new Pose2d(pos, new Rotation2d(0, 0)));
+    Logger.recordOutput("current Target goal:", new Pose2d(pos, new Rotation2d(1, 0)));
 
     double distance = drive.getPose().getTranslation().getDistance(pos);
     double timeToHub = distance / shootVelocity;
@@ -73,7 +68,7 @@ public class autoAlign extends Command {
 
     Translation2d offsetHub = pos.plus(new Translation2d(-offsetX, -offsetY));
 
-    Logger.recordOutput("offset Target goal:", new Pose2d(offsetHub, new Rotation2d(0, 0)));
+    Logger.recordOutput("offset Target goal:", new Pose2d(offsetHub, new Rotation2d(1, 0)));
 
     goalAngle =
         Math.atan2(
@@ -103,9 +98,9 @@ public class autoAlign extends Command {
     if (drive.getPose().getX() > Constants.FieldConstants.blueHub.getX()
         && drive.getPose().getX() < Constants.FieldConstants.redHub.getX()) {
       if (drive.getPose().getY() > Constants.FieldConstants.fieldlWidth / 2.0) {
-        aimAtPosition(shuttlePos1);
-      } else {
         aimAtPosition(shuttlePos2);
+      } else {
+        aimAtPosition(shuttlePos1);
       }
     } else {
       aimAtPosition(hubPosition);
