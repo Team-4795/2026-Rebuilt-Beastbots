@@ -54,7 +54,6 @@ public class RobotContainer {
   private final CommandXboxController operatorController = new CommandXboxController(1);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. * */
-  /** The container for the robot. Contains subsystems, OI devices, and commands. * */
   public RobotContainer() throws IOException {
 
     switch (Constants.currentMode) {
@@ -79,7 +78,7 @@ public class RobotContainer {
         }
 
         vision = Vision.createInstance(new VisionIoReal(0));
-        climb = Climb.Initialize(new ClimbIOReal()); // climb removed
+        climb = Climb.Initialize(new ClimbIOSim()); // climb removed
         shooter = Shooter.Initialize(new ShooterIOReal());
         // intake = Intake.Initialize(new IntakeIOReal());
         break;
@@ -168,7 +167,6 @@ public class RobotContainer {
                     () -> autoAlign.goalAngle),
                 new autoAlign()));
 
-    // driverController.povRight().whileTrue(Commands.run(() -> shooter.setIndexerVoltage(-3)));
 
     // default commands
     shooter.setDefaultCommand(Commands.run(() -> shooter.defaultCommand(), shooter));
@@ -201,12 +199,14 @@ public class RobotContainer {
                 () -> -driverController.getLeftX() / 3.0,
                 () -> -driverController.getRightX()));
 
-    // climb
-    operatorController.leftTrigger().whileTrue(Commands.run(() -> climb.setVoltage(6), climb));
-    operatorController.rightTrigger().whileTrue(Commands.run(() -> climb.setVoltage(-6), climb));
+    // climb no more
+    // operatorController.leftTrigger().whileTrue(Commands.run(() -> climb.setVoltage(6), climb));
+    // operatorController.rightTrigger().whileTrue(Commands.run(() -> climb.setVoltage(-6), climb));
 
     // shooter
-    operatorController.rightBumper().whileTrue(AutoCommands.shootDynamic()); // most likely doesnt work
+    operatorController
+        .rightBumper()
+        .whileTrue(AutoCommands.shootDynamic()); // most likely doesnt work
     operatorController.b().whileTrue(Commands.run(() -> shooter.forceShoot(), shooter));
     operatorController
         .y()
@@ -219,11 +219,6 @@ public class RobotContainer {
     driverController.leftTrigger().onTrue(Commands.run(() -> shooter.revShooter(), shooter));
 
     operatorController.povLeft().onTrue(Commands.run(() -> shooter.unstuck(), shooter));
-    // operatorController.povLeft().whileTrue(Commands.run(() -> shooter.
-    climb.setDefaultCommand(Commands.run(() -> climb.setVoltage(0), climb));
-
-    operatorController.leftTrigger().whileTrue(Commands.run(() -> climb.setVoltage(10)));
-    operatorController.rightTrigger().whileTrue(Commands.run(() -> climb.setVoltage(-10)));
 
     operatorController.povDown().onTrue(Commands.runOnce(() -> shooter.Configure(), shooter));
 
