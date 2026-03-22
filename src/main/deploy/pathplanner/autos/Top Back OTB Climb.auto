@@ -11,9 +11,33 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "startShooter"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 6.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "stopShooter"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Back-Top To OTB"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "startIntake"
           }
         },
         {
@@ -23,9 +47,21 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "stopIntake"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Mid-High OTB To Climb"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shootDynamicForever"
           }
         }
       ]

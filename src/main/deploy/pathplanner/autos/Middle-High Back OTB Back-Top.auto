@@ -7,7 +7,31 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Top To OTB"
+            "pathName": "Middle Slightly-Back"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "startShooter"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 6.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "stopShooter"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Back-Middle To High OTB"
           }
         },
         {
@@ -31,7 +55,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Mid-High OTB To Climb"
+            "pathName": "Mid-High OTB To Back-Top"
           }
         },
         {
@@ -44,6 +68,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "OTB",
+  "folder": "Back OTB",
   "choreoAuto": false
 }

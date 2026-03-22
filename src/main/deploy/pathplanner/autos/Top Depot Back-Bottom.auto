@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Top To OTB"
+            "pathName": "Top to Depot"
           }
         },
         {
@@ -17,9 +17,9 @@
           }
         },
         {
-          "type": "path",
+          "type": "wait",
           "data": {
-            "pathName": "High Field To High-Mid Field"
+            "waitTime": 6.0
           }
         },
         {
@@ -31,7 +31,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Mid-High OTB To Climb"
+            "pathName": "Depot To Back-Bottom"
           }
         },
         {
@@ -44,6 +44,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "OTB",
+  "folder": "BTB",
   "choreoAuto": false
 }

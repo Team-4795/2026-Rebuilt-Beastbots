@@ -37,25 +37,7 @@
         {
           "type": "named",
           "data": {
-            "name": "startShooter"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 6.0
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "stopShooter"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "startClimb"
+            "name": "shootDynamicForever"
           }
         }
       ]
