@@ -5,12 +5,6 @@
     "data": {
       "commands": [
         {
-          "type": "path",
-          "data": {
-            "pathName": "Top to mid"
-          }
-        },
-        {
           "type": "parallel",
           "data": {
             "commands": [
@@ -23,7 +17,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "mid to small intake"
+                  "pathName": "Liams beautiful beatiful auto"
                 }
               }
             ]
@@ -33,12 +27,6 @@
           "type": "named",
           "data": {
             "name": "stopIntake"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Intake top mid back to shoot"
           }
         },
         {

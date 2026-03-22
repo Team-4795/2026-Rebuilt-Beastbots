@@ -163,7 +163,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public void unstuck() {
-    shooterIo.setIndexerVoltage(-ShooterConstants.indexerVoltage);
+    shooterIo.setIndexerVoltage(ShooterConstants.indexerVoltage);
     shooterIo.setGoal(-2000);
   }
 

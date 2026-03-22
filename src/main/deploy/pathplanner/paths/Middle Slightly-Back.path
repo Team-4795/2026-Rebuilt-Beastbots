@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.5616224188790557,
-        "y": 4.028532448377581
+        "x": 3.625722891566265,
+        "y": 4.045927710843373
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.8115742421873593,
-        "y": 4.023624696870563
+        "x": 3.8756747148745685,
+        "y": 4.041019959336356
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.6755678466076693,
+        "x": 2.2125741399762755,
         "y": 4.028532448377581
       },
       "prevControl": {
-        "x": 2.9980194329609264,
+        "x": 2.5350257263295326,
         "y": 4.035957869171923
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Back Middle"
     }
   ],
   "rotationTargets": [],
@@ -33,8 +33,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 5.0,
+    "maxAcceleration": 4.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -178.86557836902304
+    "rotation": 180.0
   },
   "reversed": false,
-  "folder": null,
+  "folder": "BTB",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -179.3904934233249
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }

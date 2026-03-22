@@ -46,7 +46,6 @@ public class ShooterIOReal implements ShooterIO {
   public void configure1(double kp, double ki, double kd, double ks, double kv, double ka) {
     config = new SparkMaxConfig();
     config.idleMode(IdleMode.kCoast);
-    config.smartCurrentLimit(ShooterConstants.maxAmps);
     config
         .closedLoop
         .maxMotion

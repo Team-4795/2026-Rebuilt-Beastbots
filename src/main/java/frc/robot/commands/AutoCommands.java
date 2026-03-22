@@ -83,4 +83,22 @@ public class AutoCommands {
       return Commands.runOnce(() -> System.out.println("Command \"Shoot Dynamic\" Failed"));
     }
   }
+
+  public static Command shootDynamicForever() {
+    try {
+      return Commands.run(
+          () -> {
+            double distance = 0;
+            if (DriverStation.getAlliance().get() == Alliance.Blue) {
+              distance = drive.getDistanceToBlueHub(); // CHANGE SOMETIME
+            } else {
+              distance = drive.getDistanceToRedHub(); // CHANGE SOMETIME
+            }
+            shooter.setGoalDynamic(distance);
+          },
+          shooter);
+    } catch (Exception e) {
+      return Commands.runOnce(() -> System.out.println("Command \"Shoot Dynamic\" Failed"));
+    }
+  }
 }

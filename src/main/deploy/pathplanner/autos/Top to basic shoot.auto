@@ -7,13 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Middle Slightly-Back"
+            "pathName": "Top Bump Slightly-Back"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "shootDynamic"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "stopShooter"
           }
         }
       ]

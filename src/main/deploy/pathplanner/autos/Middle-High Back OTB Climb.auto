@@ -1,0 +1,37 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Top Bump Slightly-Back"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Back-Top To OTB"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "High Field To High-Mid Field"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Mid-High OTB To Climb"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "Back OTB",
+  "choreoAuto": false
+}

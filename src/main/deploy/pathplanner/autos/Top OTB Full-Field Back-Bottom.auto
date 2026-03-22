@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Middle To High OTB"
+            "pathName": "Top To OTB"
           }
         },
         {
@@ -19,7 +19,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "High Field To High-Mid Field"
+            "pathName": "High Field To Low Field"
           }
         },
         {
@@ -31,7 +31,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Mid-High OTB To Climb"
+            "pathName": "Low OTB To Back-Bottom"
           }
         },
         {

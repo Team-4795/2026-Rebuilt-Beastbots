@@ -8,27 +8,36 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 8.107205128205129,
-        "y": 2.3837948717948723
+        "x": 6.165294871794874,
+        "y": 2.860551282051283
       },
       "isLocked": false,
-      "linkedName": "Low OTB"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 7.6071923076923085,
-        "y": 3.6163846153846153
+        "x": 2.9093974358974375,
+        "y": 2.9303205128205136
       },
       "prevControl": {
-        "x": 7.921153846153848,
-        "y": 2.779153846153846
+        "x": 4.04896153846154,
+        "y": 2.3721666666666668
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Low Mid OTB"
+      "linkedName": "Back Bottom"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.28298755186721863,
+      "rotationDegrees": -135.0
+    },
+    {
+      "waypointRelativePos": 0.8771929824561434,
+      "rotationDegrees": -135.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [
@@ -49,13 +58,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 100.3
+    "rotation": -135.0
   },
   "reversed": false,
   "folder": "OTB",
   "idealStartingState": {
     "velocity": 0.0,
-    "rotation": 100.30484646876602
+    "rotation": -97.5
   },
   "useDefaultConstraints": true
 }

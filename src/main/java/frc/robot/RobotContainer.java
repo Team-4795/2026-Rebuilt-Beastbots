@@ -78,7 +78,7 @@ public class RobotContainer {
                   new ModuleIOSim());
         }
         shooter = Shooter.Initialize(new ShooterIOReal());
-        hopper = Hopper.Initialize(new HopperIOReal());
+        hopper = Hopper.Initialize(new HopperIOSim());
         vision = Vision.createInstance(new VisionIoReal(0));
         // intake = Intake.Initialize(new IntakeIOReal());
         break;
@@ -123,6 +123,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("stopIntake", AutoCommands.stopIntake());
     NamedCommands.registerCommand("startClimb", AutoCommands.startClimb());
     NamedCommands.registerCommand("shootDynamic", AutoCommands.shootDynamic());
+    NamedCommands.registerCommand("shootDynamicForever", AutoCommands.shootDynamicForever());
 
     autoChooser =
         new LoggedDashboardChooser<>(
@@ -161,6 +162,16 @@ public class RobotContainer {
     //
     driverController
         .y()
+        .whileTrue(
+            Commands.parallel(
+                DriveCommands.setRotationGoal(
+                    drive,
+                    () -> driverController.getLeftY(),
+                    () -> driverController.getLeftX(),
+                    () -> autoAlign.goalAngle),
+                new autoAlign()));
+    operatorController
+        .povUp()
         .whileTrue(
             Commands.parallel(
                 DriveCommands.setRotationGoal(
@@ -216,13 +227,14 @@ public class RobotContainer {
 
     // shooter
     operatorController
-        .rightBumper()
+        .leftBumper()
         .whileTrue(AutoCommands.shootDynamic()); // most likely doesnt work
     operatorController.b().whileTrue(Commands.run(() -> shooter.forceShoot(), shooter));
     operatorController
         .y()
         .whileTrue(Commands.run(() -> shooter.revShooter(), shooter)); // spins up shooter
     driverController.rightBumper().whileTrue(Commands.run(() -> shooter.setGoalStatic(), shooter));
+    operatorController.a().whileTrue(Commands.run(() -> shooter.setGoalStatic(), shooter));
 
     driverController.leftBumper().whileTrue(Commands.run(() -> shooter.intake(), shooter));
 
