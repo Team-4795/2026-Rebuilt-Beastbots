@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Subsystems.Hopper.*;
 import frc.robot.Subsystems.Shooter.Shooter;
 import frc.robot.Subsystems.Shooter.ShooterIOReal;
 import frc.robot.Subsystems.Shooter.ShooterIOSim;
@@ -48,7 +47,7 @@ public class RobotContainer {
   private Shooter shooter;
   private Climb climb;
   // private Intake intake;
-  private Hopper hopper;
+  //   private Hopper hopper;
 
   // Controllers
   private final CommandXboxController driverController = new CommandXboxController(0);
@@ -78,7 +77,7 @@ public class RobotContainer {
                   new ModuleIOSim());
         }
         shooter = Shooter.Initialize(new ShooterIOReal());
-        hopper = Hopper.Initialize(new HopperIOSim());
+        // hopper = Hopper.Initialize(new HopperIOSim());
         vision = Vision.createInstance(new VisionIoReal(0));
         // intake = Intake.Initialize(new IntakeIOReal());
         break;
@@ -94,7 +93,7 @@ public class RobotContainer {
         // vision = Vision.createInstance(new VisionIoSim());
         climb = Climb.Initialize(new ClimbIOSim());
         shooter = Shooter.Initialize(new ShooterIOSim());
-        hopper = Hopper.Initialize(new HopperIOSim());
+        //  hopper = Hopper.Initialize(new HopperIOSim());
         // intake = Intake.Initialize(new IntakeIOSim());
         break;
 
@@ -110,7 +109,7 @@ public class RobotContainer {
         vision = Vision.createInstance(new VisionIoSim());
         climb = Climb.Initialize(new ClimbIOSim());
         shooter = Shooter.Initialize(new ShooterIOSim());
-        hopper = Hopper.Initialize(new HopperIOSim());
+        // hopper = Hopper.Initialize(new HopperIOSim());
         // intake = Intake.Initialize(new IntakeIOSim());
         break;
     }
@@ -184,7 +183,7 @@ public class RobotContainer {
     // default commands
     shooter.setDefaultCommand(Commands.run(() -> shooter.defaultCommand(), shooter));
     // climb.setDefaultCommand(Commands.run(() -> climb.setVoltage(0), climb));
-    hopper.setDefaultCommand(Commands.run(() -> hopper.setExtended(true), hopper));
+    // hopper.setDefaultCommand(Commands.run(() -> hopper.setExtended(true), hopper));
 
     // Switch to X pattern when X button is pressed
     driverController.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
@@ -218,12 +217,12 @@ public class RobotContainer {
     // operatorController.rightTrigger().whileTrue(Commands.run(() -> climb.setVoltage(-6), climb));
 
     // hopper extension
-    operatorController
-        .leftTrigger()
-        .whileTrue(Commands.run(() -> hopper.setExtended(true), hopper));
-    operatorController
-        .rightTrigger()
-        .whileTrue(Commands.run(() -> hopper.setExtended(false), hopper));
+    // operatorController
+    //     .leftTrigger()
+    //     .whileTrue(Commands.run(() -> hopper.setExtended(true), hopper));
+    // operatorController
+    //     .rightTrigger()
+    //     .whileTrue(Commands.run(() -> hopper.setExtended(false), hopper));
 
     // shooter
     operatorController
