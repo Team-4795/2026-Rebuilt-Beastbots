@@ -16,7 +16,7 @@ public class Vision extends SubsystemBase {
   private static Vision instance;
   private VisionIo currentIo[];
   private VisionIoInputsAutoLogged inputs[];
-  private boolean[] shouldUpdate = new boolean[] {true};
+  private boolean[] shouldUpdate = new boolean[] {false};
 
   public static Vision getInstance() {
     return instance;

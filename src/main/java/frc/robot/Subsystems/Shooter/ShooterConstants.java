@@ -9,10 +9,10 @@ public class ShooterConstants {
 
   public static final int motorPort3 = 14; // shooter only
 
-  public static final int maxAmps = 30;
-  public static final int shooterVoltage = 5;
+  public static final int maxAmps = 20;
+  public static final int shooterVoltage = 3;
   // RPM
-  public static final double maxVeloxity = 10;
+  public static final double maxVeloxity = 7;
   public static final double maxAcceleration = 3;
   public static final double kMaxOutput = 0.5;
 

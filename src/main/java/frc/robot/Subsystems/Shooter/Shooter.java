@@ -99,7 +99,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public void forceShoot() {
-    shooterIo.setGoal(goalRPM);
+    shooterIo.setGoal(500);
     shooterIo.setIndexerVoltage(ShooterConstants.indexerVoltage);
   }
 
@@ -107,6 +107,10 @@ public class Shooter extends SubsystemBase {
     Logger.recordOutput("Outake test rpm", rpm);
     goalRPM = rpm;
     shooterIo.setGoal(rpm);
+  }
+
+  public void runIndexer(double voltage) {
+    shooterIo.setIndexerVoltage(voltage);
   }
 
   public void autoShoot(double rpm) {
@@ -168,7 +172,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public void revShooter() {
-    shooterIo.setGoal(RPM.getAsDouble());
+    shooterIo.setGoal(4250);
   }
 
   public Shooter(ShooterIO io) {

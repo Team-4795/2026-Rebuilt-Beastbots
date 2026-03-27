@@ -30,7 +30,6 @@ import frc.robot.Subsystems.vision.VisionIoReal;
 import frc.robot.Subsystems.vision.VisionIoSim;
 import frc.robot.commands.AutoCommands;
 import frc.robot.commands.DriveCommands;
-import frc.robot.commands.autoAlign;
 import java.io.IOException;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
@@ -144,9 +143,9 @@ public class RobotContainer {
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
             drive,
-            () -> -driverController.getLeftY(),
-            () -> -driverController.getLeftX(),
-            () -> -driverController.getRightX()));
+            () -> -driverController.getLeftY() * 0.5,
+            () -> -driverController.getLeftX() * 0.5,
+            () -> -driverController.getRightX() * 0.5));
 
     // Lock to 0° when A button is held
     // driverController
@@ -160,26 +159,26 @@ public class RobotContainer {
 
     // auto align i think
     //
-    driverController
-        .y()
-        .whileTrue(
-            Commands.parallel(
-                DriveCommands.setRotationGoal(
-                    drive,
-                    () -> driverController.getLeftY(),
-                    () -> driverController.getLeftX(),
-                    () -> autoAlign.goalAngle),
-                new autoAlign()));
-    operatorController
-        .povUp()
-        .whileTrue(
-            Commands.parallel(
-                DriveCommands.setRotationGoal(
-                    drive,
-                    () -> driverController.getLeftY(),
-                    () -> driverController.getLeftX(),
-                    () -> autoAlign.goalAngle),
-                new autoAlign()));
+    // driverController
+    //     .y()
+    //     .whileTrue(
+    //         Commands.parallel(
+    //             DriveCommands.setRotationGoal(
+    //                 drive,
+    //                 () -> driverController.getLeftY(),
+    //                 () -> driverController.getLeftX(),
+    //                 () -> autoAlign.goalAngle),
+    //             new autoAlign()));
+    // operatorController
+    //     .povUp()
+    //     .whileTrue(
+    //         Commands.parallel(
+    //             DriveCommands.setRotationGoal(
+    //                 drive,
+    //                 () -> driverController.getLeftY(),
+    //                 () -> driverController.getLeftX(),
+    //                 () -> autoAlign.goalAngle),
+    //             new autoAlign()));
 
     // default commands
     shooter.setDefaultCommand(Commands.run(() -> shooter.defaultCommand(), shooter));
@@ -187,11 +186,11 @@ public class RobotContainer {
     hopper.setDefaultCommand(Commands.run(() -> hopper.setExtended(true), hopper));
 
     // Switch to X pattern when X button is pressed
-    driverController.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
+    // driverController.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
 
-    // Reset gyro to 0° when B button is pressed
+    // Reset gyro to 0° when X button is pressed
     driverController
-        .b()
+        .x()
         .onTrue(
             Commands.runOnce(
                     () ->
@@ -200,50 +199,52 @@ public class RobotContainer {
                     drive)
                 .ignoringDisable(true));
 
-    driverController
-        .povDown()
-        .onTrue(Commands.runOnce(() -> drive.toggleDriveSensitivity(), drive));
+    // driverController
+    //     .povDown()
+    //     .onTrue(Commands.runOnce(() -> drive.toggleDriveSensitivity(), drive));
 
-    driverController
-        .a()
-        .whileTrue(
-            DriveCommands.joystickDrive(
-                drive,
-                () -> -driverController.getLeftY() / 3.0,
-                () -> -driverController.getLeftX() / 3.0,
-                () -> -driverController.getRightX()));
+    // driverController
+    //     .a()
+    //     .whileTrue(
+    //         DriveCommands.joystickDrive(
+    //             drive,
+    //             () -> -driverController.getLeftY() / 3.0,
+    //             () -> -driverController.getLeftX() / 3.0,
+    //             () -> -driverController.getRightX()));
 
     // climb no more
     // operatorController.leftTrigger().whileTrue(Commands.run(() -> climb.setVoltage(6), climb));
     // operatorController.rightTrigger().whileTrue(Commands.run(() -> climb.setVoltage(-6), climb));
 
     // hopper extension
-    operatorController
-        .leftTrigger()
-        .whileTrue(Commands.run(() -> hopper.setExtended(true), hopper));
-    operatorController
-        .rightTrigger()
-        .whileTrue(Commands.run(() -> hopper.setExtended(false), hopper));
+    // operatorController
+    //     .leftTrigger()
+    //     .whileTrue(Commands.run(() -> hopper.setExtended(true), hopper));
+    // operatorController
+    //     .rightTrigger()
+    //     .whileTrue(Commands.run(() -> hopper.setExtended(false), hopper));
 
     // shooter
-    operatorController
-        .leftBumper()
-        .whileTrue(AutoCommands.shootDynamic()); // most likely doesnt work
-    operatorController.b().whileTrue(Commands.run(() -> shooter.forceShoot(), shooter));
-    operatorController
-        .y()
+    // operatorController
+    //     .leftBumper()
+    //     .whileTrue(AutoCommands.shootDynamic()); // most likely doesnt work
+    // driverController.b().whileTrue(Commands.run(() -> shooter.forceShoot(), shooter));
+    driverController
+        .rightTrigger()
         .whileTrue(Commands.run(() -> shooter.revShooter(), shooter)); // spins up shooter
-    driverController.rightBumper().whileTrue(Commands.run(() -> shooter.setGoalStatic(), shooter));
-    operatorController.a().whileTrue(Commands.run(() -> shooter.setGoalStatic(), shooter));
+    // driverController.rightBumper().whileTrue(Commands.run(() -> shooter.setGoalStatic(),
+    // shooter));
+    // operatorController.a().whileTrue(Commands.run(() -> shooter.setGoalStatic(), shooter));
+    driverController.rightBumper().whileTrue(Commands.run(() -> shooter.runIndexer(5), shooter)); // shoots
 
-    driverController.leftBumper().whileTrue(Commands.run(() -> shooter.intake(), shooter));
+    driverController.leftBumper().whileTrue(Commands.run(() -> shooter.intake(), shooter)); // intake
 
-    driverController.rightTrigger().whileTrue(AutoCommands.shootDynamic());
-    driverController.leftTrigger().whileTrue(Commands.run(() -> shooter.revShooter(), shooter));
+    // driverController.rightTrigger().whileTrue(AutoCommands.shootDynamic());
+    // driverController.leftTrigger().whileTrue(Commands.run(() -> shooter.revShooter(), shooter));
 
-    operatorController.povLeft().whileTrue(Commands.run(() -> shooter.unstuck(), shooter));
+    // operatorController.povLeft().whileTrue(Commands.run(() -> shooter.unstuck(), shooter));
 
-    operatorController.povDown().onTrue(Commands.runOnce(() -> shooter.Configure(), shooter));
+    // operatorController.povDown().onTrue(Commands.runOnce(() -> shooter.Configure(), shooter));
 
     // operatorController
     //     .povUp()
