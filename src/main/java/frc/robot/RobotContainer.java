@@ -170,16 +170,16 @@ public class RobotContainer {
                     () -> driverController.getLeftX(),
                     () -> autoAlign.goalAngle),
                 new autoAlign()));
-    operatorController
-        .povUp()
-        .whileTrue(
-            Commands.parallel(
-                DriveCommands.setRotationGoal(
-                    drive,
-                    () -> driverController.getLeftY(),
-                    () -> driverController.getLeftX(),
-                    () -> autoAlign.goalAngle),
-                new autoAlign()));
+    // operatorController
+    //     .povUp()
+    //     .whileTrue(
+    //         Commands.parallel(
+    //             DriveCommands.setRotationGoal(
+    //                 drive,
+    //                 () -> driverController.getLeftY(),
+    //                 () -> driverController.getLeftX(),
+    //                 () -> autoAlign.goalAngle),
+    //             new autoAlign()));
 
     // default commands
     shooter.setDefaultCommand(Commands.run(() -> shooter.defaultCommand(), shooter));
@@ -218,23 +218,23 @@ public class RobotContainer {
     // operatorController.rightTrigger().whileTrue(Commands.run(() -> climb.setVoltage(-6), climb));
 
     // hopper extension
-    operatorController
-        .leftTrigger()
-        .whileTrue(Commands.run(() -> hopper.setExtended(true), hopper));
-    operatorController
-        .rightTrigger()
-        .whileTrue(Commands.run(() -> hopper.setExtended(false), hopper));
+    // operatorController
+    //     .leftTrigger()
+    //     .whileTrue(Commands.run(() -> hopper.setExtended(true), hopper));
+    // operatorController
+    //     .rightTrigger()
+    //     .whileTrue(Commands.run(() -> hopper.setExtended(false), hopper));
 
     // shooter
     operatorController
         .leftBumper()
         .whileTrue(AutoCommands.shootDynamic()); // most likely doesnt work
     operatorController.b().whileTrue(Commands.run(() -> shooter.forceShoot(), shooter));
-    operatorController
-        .y()
-        .whileTrue(Commands.run(() -> shooter.revShooter(), shooter)); // spins up shooter
+    // operatorController
+    //     .y()
+    //     .whileTrue(Commands.run(() -> shooter.revShooter(), shooter)); // spins up shooter
     driverController.rightBumper().whileTrue(Commands.run(() -> shooter.setGoalStatic(), shooter));
-    operatorController.a().whileTrue(Commands.run(() -> shooter.setGoalStatic(), shooter));
+    // operatorController.a().whileTrue(Commands.run(() -> shooter.setGoalStatic(), shooter));
 
     driverController.leftBumper().whileTrue(Commands.run(() -> shooter.intake(), shooter));
 
@@ -243,7 +243,7 @@ public class RobotContainer {
 
     operatorController.povLeft().whileTrue(Commands.run(() -> shooter.unstuck(), shooter));
 
-    operatorController.povDown().onTrue(Commands.runOnce(() -> shooter.Configure(), shooter));
+    // operatorController.povDown().onTrue(Commands.runOnce(() -> shooter.Configure(), shooter));
 
     // operatorController
     //     .povUp()
