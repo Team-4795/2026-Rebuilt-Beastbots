@@ -49,8 +49,8 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 5.0,
-    "maxAcceleration": 4.0,
+    "maxVelocity": 15.0,
+    "maxAcceleration": 15.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -58,7 +58,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -179.33843490856424
+    "rotation": -179.33843490856427
   },
   "reversed": false,
   "folder": "OTB",
@@ -66,5 +66,5 @@
     "velocity": 0.0,
     "rotation": 100.3
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }
