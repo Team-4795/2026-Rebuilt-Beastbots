@@ -15,8 +15,6 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 public class ShooterIOReal implements ShooterIO {
   private SparkMax outTakeMotor1 =
       new SparkMax(ShooterConstants.motorPort1, SparkLowLevel.MotorType.kBrushless);
-  private SparkMax outTakeMotor2 =
-      new SparkMax(ShooterConstants.motorPort2, SparkLowLevel.MotorType.kBrushless);
 
   // shooter only
   private SparkMax outTakeMotor3 =
@@ -27,7 +25,6 @@ public class ShooterIOReal implements ShooterIO {
 
   // Left Motor
   private RelativeEncoder outTakeEncoder1 = outTakeMotor1.getEncoder();
-  private RelativeEncoder outTakeEncoder2 = outTakeMotor2.getEncoder();
   private RelativeEncoder outTakeEncoder3 = outTakeMotor3.getEncoder();
 
   // PID
@@ -56,7 +53,6 @@ public class ShooterIOReal implements ShooterIO {
     config.closedLoop.feedForward.kS(ks).kV(kv).kA(ka);
     outTakeMotor1.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     config.follow(ShooterConstants.motorPort1, true);
-    outTakeMotor2.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
   @Override
@@ -131,10 +127,8 @@ public class ShooterIOReal implements ShooterIO {
         config2, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     config.follow(ShooterConstants.motorPort1, true); // invert?
-    outTakeMotor2.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     outTakeMotor1.clearFaults();
-    outTakeMotor2.clearFaults();
     outTakeMotor3.clearFaults();
   }
 
@@ -164,10 +158,7 @@ public class ShooterIOReal implements ShooterIO {
     inputs1.voltage1 = currentVoltage;
     inputs1.velocity1 = outTakeEncoder1.getVelocity();
     inputs1.currentCurrent1 = outTakeMotor1.getOutputCurrent();
-    inputs1.position2 = outTakeEncoder2.getPosition();
     inputs1.voltage2 = currentVoltage;
-    inputs1.velocity2 = outTakeEncoder2.getVelocity();
-    inputs1.currentCurrent2 = outTakeMotor2.getOutputCurrent();
 
     inputs1.position3 = outTakeEncoder3.getPosition();
     inputs1.voltage3 = currentVoltage3;

@@ -25,7 +25,6 @@ import frc.robot.Subsystems.drive.ModuleIO;
 import frc.robot.Subsystems.drive.ModuleIOSim;
 import frc.robot.Subsystems.drive.ModuleIOSpark;
 import frc.robot.Subsystems.vision.Vision;
-import frc.robot.Subsystems.vision.VisionIoReal;
 import frc.robot.Subsystems.vision.VisionIoSim;
 import frc.robot.commands.AutoCommands;
 import frc.robot.commands.DriveCommands;
@@ -78,7 +77,7 @@ public class RobotContainer {
         }
         shooter = Shooter.Initialize(new ShooterIOReal());
         // hopper = Hopper.Initialize(new HopperIOSim());
-        vision = Vision.createInstance(new VisionIoReal(0));
+        // vision = Vision.createInstance(new VisionIoSim());
         // intake = Intake.Initialize(new IntakeIOReal());
         break;
       case SIM:
@@ -235,10 +234,11 @@ public class RobotContainer {
     driverController.rightBumper().whileTrue(Commands.run(() -> shooter.setGoalStatic(), shooter));
     operatorController.a().whileTrue(Commands.run(() -> shooter.setGoalStatic(), shooter));
 
-    driverController.leftBumper().whileTrue(Commands.run(() -> shooter.intake(), shooter));
+    driverController.leftTrigger().whileTrue(Commands.run(() -> shooter.intake(), shooter));
+    driverController.povUp().whileTrue(Commands.run(() -> shooter.setVoltage(9.0), shooter));
 
     driverController.rightTrigger().whileTrue(AutoCommands.shootDynamic());
-    driverController.leftTrigger().whileTrue(Commands.run(() -> shooter.revShooter(), shooter));
+    driverController.leftBumper().whileTrue(Commands.run(() -> shooter.revShooter(), shooter));
 
     operatorController.povLeft().whileTrue(Commands.run(() -> shooter.unstuck(), shooter));
 

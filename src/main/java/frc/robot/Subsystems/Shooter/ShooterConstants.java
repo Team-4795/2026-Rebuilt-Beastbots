@@ -5,7 +5,6 @@ import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 public class ShooterConstants {
   // combined shooter and intake motors
   public static final int motorPort1 = 10;
-  public static final int motorPort2 = 12;
 
   public static final int motorPort3 = 14; // shooter only
 
